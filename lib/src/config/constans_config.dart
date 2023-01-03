@@ -1,14 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kasir_app/src/ui/auth/index.dart';
-import 'package:shimmer/shimmer.dart';
 import 'size_config.dart';
 import 'dart:ui' as ui;
 
-const globalApi = 'http://kasir.smkalyasini.com';
+const globalApi = 'https://kasir.smkalyasini.com';
 
 const cardColor = Color(0xFFFAFBFB);
 const primaryColor = Color(0xFF63fbcb);

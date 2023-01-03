@@ -120,10 +120,6 @@ class _TransaksiUIState extends State<TransaksiUI> {
   }
 
   Widget _itemProductList(BuildContext context, TransaksiModel item) {
-    // intl date
-    final date =
-        DateFormat('dd MMMM yyyy').format(DateTime.parse(item.date ?? ''));
-
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
@@ -146,7 +142,7 @@ class _TransaksiUIState extends State<TransaksiUI> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  date,
+                  dateFormatddMMMMyyyy(DateTime.parse(item.date ?? '')),
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.black45,

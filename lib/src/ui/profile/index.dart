@@ -67,10 +67,6 @@ class _ProfileUIState extends State<ProfileUI> {
                 ),
                 title: Text('kasir demo'),
                 subtitle: Text('kasir demo'),
-                trailing: Icon(
-                  Icons.settings,
-                  size: 28,
-                ),
               );
             } else {
               return ListTile(
@@ -96,10 +92,6 @@ class _ProfileUIState extends State<ProfileUI> {
                 ),
                 title: Text(user.name ?? ''),
                 subtitle: Text(user.app != null ? user.app!.name! : ''),
-                trailing: Icon(
-                  Icons.settings,
-                  size: 28,
-                ),
               );
             }
           }),
@@ -108,29 +100,21 @@ class _ProfileUIState extends State<ProfileUI> {
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             children: [
-              Obx(() {
-                var user = conAuth.user.value;
-
-                if (isLoading) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-
-                if (user.name == null) {
-                  return Container();
-                } else {
-                  return Container(
-                    width: width(context),
-                    height: height(context) * 0.06,
-                    alignment: Alignment.center,
-                    child: ListTile(
-                      title: Text('Saldo'),
-                      subtitle: Text(toRupiah(double.parse('20000'))),
-                    ),
-                  );
-                }
-              }),
+              _itemProfile(
+                icon: Icons.person,
+                title: 'Profil',
+                onTap: () {},
+              ),
+              _itemProfile(
+                icon: Icons.lock,
+                title: 'Ganti Password',
+                onTap: () {},
+              ),
+              _itemProfile(
+                icon: Icons.info,
+                title: 'Tentang',
+                onTap: () {},
+              ),
             ],
           ),
         ),
@@ -161,6 +145,33 @@ class _ProfileUIState extends State<ProfileUI> {
           ],
         )
       ],
+    );
+  }
+
+  Widget _itemProfile({
+    required IconData icon,
+    required String title,
+    required void Function()? onTap,
+  }) {
+    return ListTile(
+      horizontalTitleGap: 0,
+      leading: Icon(
+        icon,
+        color: Colors.black54,
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 18,
+          color: Colors.black54,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+      trailing: Icon(
+        Icons.arrow_forward_ios,
+        size: 18,
+      ),
+      onTap: onTap,
     );
   }
 }
