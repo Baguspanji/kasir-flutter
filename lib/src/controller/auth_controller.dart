@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:kasir_app/src/model/user_model.dart';
 import 'package:kasir_app/src/repository/api_auth.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
-import 'package:kasir_app/src/ui/nav_ui.dart';
+import 'package:kasir_app/src/ui/splash/index.dart';
 
 class AuthController extends GetxController {
   final api = ApiAuth();
@@ -29,7 +29,8 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     await rmvToken();
     await rmvRole();
-    Get.offAndToNamed(NavUI.routeName);
+    await rmvStyleHome();
+    Get.offAndToNamed(SplashUI.routeName);
   }
 
   Future<void> getUser() async {

@@ -158,8 +158,7 @@ class _HomeUIState extends State<HomeUI> {
                       childAspectRatio: 0.7,
                     ),
                     children: [
-                      ...conProduct.listProduct.value
-                          .map((e) => _itemProductGrid(context, e)),
+                      ...products.map((e) => _itemProductGrid(context, e)),
                     ],
                   ),
                 );
@@ -173,8 +172,7 @@ class _HomeUIState extends State<HomeUI> {
                   child: ListView(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     children: [
-                      ...conProduct.listProduct.value
-                          .map((e) => _itemProductList(context, e)),
+                      ...products.map((e) => _itemProductList(context, e)),
                     ],
                   ),
                 );

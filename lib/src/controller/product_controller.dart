@@ -6,7 +6,7 @@ class ProductController extends GetxController {
   final api = ApiProduct();
 
   final listProduct = <ProductModel>[].obs;
-  RxBool isLoading = false.obs;
+  RxBool isLoading = true.obs;
 
   RxInt productPage = 1.obs;
 

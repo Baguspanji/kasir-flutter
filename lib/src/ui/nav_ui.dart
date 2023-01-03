@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_assets.dart';
-import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/auth_controller.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/ui/cart/index.dart';
 import 'package:kasir_app/src/ui/home/index.dart';
+import 'package:kasir_app/src/ui/income/index.dart';
 import 'package:kasir_app/src/ui/profile/index.dart';
+import 'package:kasir_app/src/ui/transaksi/index.dart';
 
 class NavUI extends StatefulWidget {
   static const String routeName = "/nav";
@@ -50,8 +51,8 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
         controller: _tabController,
         children: [
           HomeUI(),
-          Container(),
-          Container(),
+          TransaksiUI(),
+          IncomeUI(),
           ProfileUI(),
         ],
       ),
@@ -141,7 +142,7 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
               visible: isActive,
               replacement:
                   SvgPicture.asset(svg.svgVisible, color: Colors.black45),
-              child: SvgPicture.asset(svg.svgInvisible, color: primaryColor),
+              child: SvgPicture.asset(svg.svgInvisible, color: Colors.black87),
             ),
             Container(
               margin: EdgeInsets.only(top: 4),
@@ -149,7 +150,7 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
                 svg.title,
                 style: TextStyle(
                   fontSize: 10,
-                  color: isActive ? primaryColor : Colors.black45,
+                  color: isActive ? Colors.black87 : Colors.black45,
                   fontWeight: isActive ? FontWeight.w500 : FontWeight.w400,
                 ),
               ),
