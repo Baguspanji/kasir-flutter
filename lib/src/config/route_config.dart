@@ -1,8 +1,11 @@
 import 'package:get/route_manager.dart';
+import 'package:kasir_app/src/model/transaksi_model.dart';
 import 'package:kasir_app/src/ui/auth/index.dart';
 import 'package:kasir_app/src/ui/cart/index.dart';
 import 'package:kasir_app/src/ui/nav_ui.dart';
+import 'package:kasir_app/src/ui/profile/print_setting.dart';
 import 'package:kasir_app/src/ui/splash/index.dart';
+import 'package:kasir_app/src/ui/transaksi/detail.dart';
 
 // We use name route
 // All our routes will be available here
@@ -23,6 +26,15 @@ final List<GetPage<dynamic>>? routes = [
   GetPage(
     name: CartUI.routeName,
     page: () => CartUI(),
+  ),
+  GetPage(
+    name: TransaksiDetailUI.routeName,
+    page: () => TransaksiDetailUI(),
+    arguments: CommonArgument<TransaksiModel>,
+  ),
+  GetPage(
+    name: PrintSettingUI.routeName,
+    page: () => PrintSettingUI(),
   ),
   // GetPage(
   //   name: TentangUI.routeName,

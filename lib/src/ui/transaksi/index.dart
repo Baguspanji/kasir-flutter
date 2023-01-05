@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
+import 'package:kasir_app/src/config/route_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/transaksi_controller.dart';
 import 'package:kasir_app/src/model/transaksi_model.dart';
 import 'package:kasir_app/src/ui/components/custom_components.dart';
+import 'package:kasir_app/src/ui/transaksi/detail.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TransaksiUI extends StatefulWidget {
@@ -120,60 +122,69 @@ class _TransaksiUIState extends State<TransaksiUI> {
   }
 
   Widget _itemProductList(BuildContext context, TransaksiModel item) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            offset: Offset(0, 3),
-            blurRadius: 6,
-          ),
-        ],
+    return InkWell(
+      onTap: () => Get.toNamed(
+        TransaksiDetailUI.routeName,
+        arguments: CommonArgument<TransaksiModel>(
+          id: item.id,
+          object: item,
+        ),
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  dateFormatddMMMMyyyy(DateTime.parse(item.date ?? '')),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.black45,
-                    fontWeight: FontWeight.w500,
-                    height: 1.2,
-                  ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  item.name ?? '-',
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.black45,
-                    fontWeight: FontWeight.w400,
-                    height: 1.2,
-                  ),
-                ),
-                SizedBox(height: 6),
-                Text(
-                  toRupiah(double.parse(item.totalPrice ?? "0")),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.black45,
-                    fontWeight: FontWeight.w600,
-                    height: 1.2,
-                  ),
-                ),
-              ],
+      child: Container(
+        width: double.infinity,
+        margin: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              offset: Offset(0, 3),
+              blurRadius: 6,
             ),
-          ),
-        ],
+          ],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    dateFormatddMMMMyyyy(DateTime.parse(item.date ?? '')),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.black45,
+                      fontWeight: FontWeight.w500,
+                      height: 1.2,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    item.name ?? '-',
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: Colors.black45,
+                      fontWeight: FontWeight.w400,
+                      height: 1.2,
+                    ),
+                  ),
+                  SizedBox(height: 6),
+                  Text(
+                    toRupiah(double.parse(item.totalPrice ?? "0")),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.black45,
+                      fontWeight: FontWeight.w600,
+                      height: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

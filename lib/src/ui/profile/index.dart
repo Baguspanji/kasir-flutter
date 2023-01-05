@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/auth_controller.dart';
+import 'package:kasir_app/src/ui/profile/print_setting.dart';
 
 class ProfileUI extends StatefulWidget {
   @override
@@ -109,6 +110,11 @@ class _ProfileUIState extends State<ProfileUI> {
                 icon: Icons.lock,
                 title: 'Ganti Password',
                 onTap: () {},
+              ),
+              _itemProfile(
+                icon: Icons.settings,
+                title: 'Pengaturan Printer',
+                onTap: () => Get.toNamed(PrintSettingUI.routeName),
               ),
               _itemProfile(
                 icon: Icons.info,
