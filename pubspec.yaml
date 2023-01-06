@@ -34,8 +34,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_app_name: ^0.1.1
   flutter_slidable: ^2.0.0
-  flutter_svg: ^1.1.6
+  flutter_svg: ^1.0.0
   fluttertoast: ^8.1.2
   get: ^4.6.5
   intl: ^0.18.0
@@ -50,6 +51,14 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: false
+  image_path: "assets/images/logo_main.png" # flutter pub run flutter_launcher_icons:main
+
+flutter_app_name:
+  name: "Kasirku" # flutter pub add flutter_app_name
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
