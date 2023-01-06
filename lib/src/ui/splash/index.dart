@@ -45,15 +45,21 @@ class _SplashUIState extends State<SplashUI> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(color: primaryColor),
+        // decoration: BoxDecoration(color: primaryColor),
         child: Column(
           children: [
             SizedBox(height: 300),
             // Image(
             //   image: AssetImage(logo),
             // ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            Container(
+              width: 200,
+              height: 200,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: primaryColor,
+                borderRadius: BorderRadius.circular(100),
+              ),
               child: Text(
                 'Kasir App',
                 style: TextStyle(
@@ -72,7 +78,7 @@ class _SplashUIState extends State<SplashUI> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.normal,
-                  color: Colors.white,
+                  color: Colors.grey,
                 ),
               ),
             ),

@@ -48,7 +48,7 @@ class _AuthUIState extends State<AuthUI> {
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: primaryColor,
+                color: Colors.grey,
               ),
             ),
             SizedBox(height: height(context) * 0.1),
@@ -57,7 +57,7 @@ class _AuthUIState extends State<AuthUI> {
               "Username",
               Icon(
                 Icons.person,
-                color: primaryColor,
+                color: Colors.grey,
               ),
               emailText,
             ),
@@ -67,7 +67,7 @@ class _AuthUIState extends State<AuthUI> {
                 "Password",
                 Icon(
                   Icons.key,
-                  color: primaryColor,
+                  color: Colors.grey,
                 ),
                 passwordText,
                 isPassword: true),
@@ -113,7 +113,7 @@ class _AuthUIState extends State<AuthUI> {
         borderRadius: BorderRadius.circular(18),
         color: Colors.white,
         border: Border.all(
-          color: primaryColor,
+          color: Colors.grey,
           width: 2,
         ),
         boxShadow: [
