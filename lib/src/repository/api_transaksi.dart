@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:get/get.dart';
@@ -17,6 +18,17 @@ class ApiTransaksi extends GetConnect {
     String token = await getToken();
 
     var res = await get('$url/transaction?page=$page&limit=$limit', headers: {
+      'Authorization': token,
+      'Accept': 'application/json',
+    });
+
+    return getRes(res);
+  }
+
+  Future<Response> createTransaksi(dynamic data) async {
+    String token = await getToken();
+
+    var res = await post('$url/transaction', jsonEncode(data), headers: {
       'Authorization': token,
       'Accept': 'application/json',
     });

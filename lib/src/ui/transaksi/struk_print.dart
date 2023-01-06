@@ -9,7 +9,12 @@ import 'package:http/http.dart' as http;
 class StrukPrint {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
 
-  sample(TransaksiModel transaksi) async {
+  sample(
+    TransaksiModel transaksi, {
+    String? appName,
+    String? appAddress,
+    String? appPhone,
+  }) async {
     //image max 300px X 300px
 
     ///image from Network
@@ -23,17 +28,17 @@ class StrukPrint {
       if (isConnected == true) {
         bluetooth.printNewLine();
         bluetooth.printCustom(
-          "Kasir Demo",
+          appName ?? "Kasir Demo",
           Size.boldMedium.val,
           Align.center.val,
         );
         bluetooth.printCustom(
-          "Purwori Pasuruan",
+          appAddress ?? "Purwori Pasuruan",
           Size.medium.val,
           Align.center.val,
         );
         bluetooth.printCustom(
-          "Telp : 12345678",
+          "Telp : ${appPhone ?? '12345678'}",
           Size.medium.val,
           Align.center.val,
         );

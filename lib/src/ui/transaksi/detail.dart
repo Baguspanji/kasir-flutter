@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/route_config.dart';
 import 'package:kasir_app/src/model/transaksi_model.dart';
+import 'package:kasir_app/src/model/user_model.dart';
+import 'package:kasir_app/src/repository/s_preference.dart';
 import 'package:kasir_app/src/ui/transaksi/struk_print.dart';
 
 import '../../config/size_config.dart';
@@ -141,7 +145,18 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onPressed: () => print.sample(args.object!),
+                onPressed: () async {
+                  var app = await getUser();
+
+                  var data = AppModel.fromJson(jsonDecode(app)['data']['app']);
+
+                  print.sample(
+                    args.object!,
+                    appName: data.name ?? '',
+                    appAddress: data.address ?? '',
+                    appPhone: data.phone ?? '',
+                  );
+                },
                 child: Text("Cetak", style: TextStyle(fontSize: 18)),
               ),
             ),

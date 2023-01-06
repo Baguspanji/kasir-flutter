@@ -50,3 +50,20 @@ Future rmvStyleHome() async {
 
   return prefs.remove("StyleHome");
 }
+
+Future setUser(String value) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.setString("User", value);
+}
+
+Future getUser() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  return prefs.getString("User");
+}
+
+Future rmvUser() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  return prefs.remove("User");
+}

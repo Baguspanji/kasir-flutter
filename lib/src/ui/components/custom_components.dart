@@ -138,3 +138,44 @@ class CustomEmptyData extends StatelessWidget {
     );
   }
 }
+
+class CustomTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final String? hintText;
+  final Widget? prefixIcon;
+  final TextInputType? keyboardType;
+  const CustomTextField({
+    super.key,
+    required this.controller,
+    this.hintText,
+    this.prefixIcon,
+    this.keyboardType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Colors.grey.shade300,
+          width: 1,
+        ),
+      ),
+      child: TextField(
+        controller: controller,
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 8),
+          hintText: hintText,
+          prefixIcon: prefixIcon,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+    );
+  }
+}

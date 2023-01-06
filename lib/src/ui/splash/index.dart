@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
+import 'package:kasir_app/src/controller/auth_controller.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
 import 'package:kasir_app/src/ui/auth/index.dart';
 import 'package:kasir_app/src/ui/nav_ui.dart';
@@ -16,6 +17,8 @@ class SplashUI extends StatefulWidget {
 }
 
 class _SplashUIState extends State<SplashUI> {
+  final conAuth = Get.put(AuthController());
+
   @override
   void initState() {
     _init();
@@ -26,6 +29,7 @@ class _SplashUIState extends State<SplashUI> {
     await Future.delayed(Duration(seconds: 2));
     getToken().then((value) {
       if (value != null) {
+        conAuth.getUser();
         Get.offAllNamed(NavUI.routeName);
       } else {
         Get.offAllNamed(AuthUI.routeName);

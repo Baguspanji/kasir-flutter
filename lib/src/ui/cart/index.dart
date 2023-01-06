@@ -6,6 +6,7 @@ import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/ui/components/custom_components.dart';
+import 'package:kasir_app/src/ui/components/modal.dart';
 
 class CartUI extends StatefulWidget {
   static const String routeName = "/cart";
@@ -16,6 +17,9 @@ class CartUI extends StatefulWidget {
 
 class _CartUIState extends State<CartUI> {
   final cartCon = Get.put(CartController());
+
+  final _formName = TextEditingController();
+  final _formAmount = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +33,43 @@ class _CartUIState extends State<CartUI> {
               height: height(context) * 0.04,
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.arrow_back_ios),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(Icons.arrow_back_ios),
+                      ),
+                      Text(
+                        "Keranjang",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "Keranjang",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Row(
+                    children: [
+                      _miniButton(
+                        icon: Icons.delete,
+                        color: Colors.red,
+                        onTap: () {
+                          cartCon.clearCart();
+                          setState(() {});
+                        },
+                      ),
+                      SizedBox(width: 10),
+                      _miniButton(
+                        icon: Icons.add,
+                        color: primaryColor,
+                        onTap: () => _openModal(context),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -79,8 +107,17 @@ class _CartUIState extends State<CartUI> {
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: [
-                        _tableField("Pemesan", "Tamu"),
-                        _tableField("Uang Dibayar", "Rp. 0"),
+                        _tableField(
+                          "Pemesan",
+                          _formName.text != "" ? _formName.text : "-",
+                        ),
+                        _tableField(
+                            "Uang Dibayar",
+                            toRupiah(
+                              double.parse(
+                                _formAmount.text != "" ? _formAmount.text : "0",
+                              ),
+                            )),
                         Obx(() {
                           final cart = cartCon.listCart.value;
                           final total = cart.fold(
@@ -106,7 +143,20 @@ class _CartUIState extends State<CartUI> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: cartCon.listCart.length == 0
+                          ? () => getToast("Keranjang masih kosong")
+                          : () async {
+                              await cartCon.addTransaction(
+                                name: _formName.text,
+                                amount: double.parse(
+                                  _formAmount.text != ""
+                                      ? _formAmount.text
+                                      : "0",
+                                ),
+                              );
+                              getToast("Transaksi berhasil");
+                              Navigator.pop(context);
+                            },
                       child: Text("Proses", style: TextStyle(fontSize: 18)),
                     ),
                   ),
@@ -115,6 +165,76 @@ class _CartUIState extends State<CartUI> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  _openModal(BuildContext context) {
+    Modals.showModal(
+      title: 'Keranjang',
+      subTitle: '',
+      subTitleWidget: Container(
+        width: width(context) * 0.8,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            SizedBox(height: height(context) * 0.01),
+            CustomTextField(
+              controller: _formName,
+              hintText: "Nama Pemesan",
+              prefixIcon: Icon(Icons.person),
+            ),
+            SizedBox(height: height(context) * 0.01),
+            CustomTextField(
+              controller: _formAmount,
+              hintText: "Uang Dibayar",
+              prefixIcon: Icon(Icons.money),
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: height(context) * 0.02),
+            // button ok
+            Container(
+              width: width(context),
+              height: height(context) * 0.04,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () {
+                  setState(() {});
+                  Navigator.pop(context);
+                },
+                child: Text("OK", style: TextStyle(fontSize: 18)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _miniButton({
+    required IconData icon,
+    required void Function() onTap,
+    required Color color,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: 46,
+        height: 36,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(
+          icon,
+          color: Colors.white,
         ),
       ),
     );

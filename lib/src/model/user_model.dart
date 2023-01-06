@@ -10,7 +10,7 @@ class UserModel {
   String? createdAt;
   String? updatedAt;
   String? deletedAt;
-  App? app;
+  AppModel? app;
 
   UserModel(
       {this.id,
@@ -38,7 +38,7 @@ class UserModel {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     deletedAt = json['deleted_at'];
-    app = json['app'] != null ? new App.fromJson(json['app']) : null;
+    app = json['app'] != null ? new AppModel.fromJson(json['app']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -61,7 +61,7 @@ class UserModel {
   }
 }
 
-class App {
+class AppModel {
   int? id;
   String? name;
   String? address;
@@ -73,7 +73,7 @@ class App {
   String? updatedAt;
   String? deletedAt;
 
-  App(
+  AppModel(
       {this.id,
       this.name,
       this.address,
@@ -85,7 +85,7 @@ class App {
       this.updatedAt,
       this.deletedAt});
 
-  App.fromJson(Map<String, dynamic> json) {
+  AppModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     address = json['address'];
