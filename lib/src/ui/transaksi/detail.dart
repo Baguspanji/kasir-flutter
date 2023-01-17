@@ -40,8 +40,12 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
               height: height(context) * 0.04,
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(Icons.arrow_back_ios),
+                  ),
                   Text(
                     'Detail Transaksi',
                     style: TextStyle(
@@ -110,7 +114,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                   _itemDetailTransaksi(
                     context,
                     'Total Harga',
-                    'Rp. ${args.object!.totalPrice ?? '-'}',
+                    toRupiah(double.parse(args.object!.totalPrice ?? "0")),
                   ),
                   if (args.object!.amountPaid != '0')
                     _itemDetailTransaksi(

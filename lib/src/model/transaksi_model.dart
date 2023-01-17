@@ -12,7 +12,7 @@ class TransaksiModel {
   String? createdAt;
   String? updatedAt;
   String? deletedAt;
-  List<Details>? details;
+  List<DetailTransaksiModel>? details;
 
   TransaksiModel(
       {this.id,
@@ -41,9 +41,9 @@ class TransaksiModel {
     updatedAt = json['updated_at'];
     deletedAt = json['deleted_at'];
     if (json['details'] != null) {
-      details = <Details>[];
+      details = <DetailTransaksiModel>[];
       json['details'].forEach((v) {
-        details!.add(new Details.fromJson(v));
+        details!.add(new DetailTransaksiModel.fromJson(v));
       });
     }
   }
@@ -68,7 +68,7 @@ class TransaksiModel {
   }
 }
 
-class Details {
+class DetailTransaksiModel {
   int? id;
   String? appId;
   String? transactionId;
@@ -81,7 +81,7 @@ class Details {
   String? deletedAt;
   ProductModel? item;
 
-  Details(
+  DetailTransaksiModel(
       {this.id,
       this.appId,
       this.transactionId,
@@ -94,7 +94,7 @@ class Details {
       this.deletedAt,
       this.item});
 
-  Details.fromJson(Map<String, dynamic> json) {
+  DetailTransaksiModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     appId = json['app_id'];
     transactionId = json['transaction_id'];

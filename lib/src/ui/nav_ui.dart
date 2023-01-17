@@ -47,6 +47,7 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: TabBarView(
         controller: _tabController,
         children: [
@@ -56,21 +57,25 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
           ProfileUI(),
         ],
       ),
-      bottomNavigationBar: Container(
-        height: height(context) * 0.09,
-        width: width(context),
-        color: Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            for (var i = 0; i < listNav.length; i++)
-              _navItem(
-                context,
-                listNav[i],
-                isActive: indexNav == i,
-              ),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          for (var i = 0; i < listNav.length; i++)
+            _navItem(
+              context,
+              listNav[i],
+              isActive: indexNav == i,
+            ),
+        ],
+        currentIndex: indexNav,
+        selectedItemColor: Colors.grey[800],
+        unselectedItemColor: Colors.grey[400],
+        showUnselectedLabels: true,
+        onTap: (index) {
+          setState(() {
+            indexNav = index;
+            _tabController.animateTo(index);
+          });
+        },
       ),
       floatingActionButton: indexNav == 0
           ? FloatingActionButton(
@@ -116,48 +121,18 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _navItem(BuildContext context, NavModel svg, {bool isActive = false}) {
-    return GestureDetector(
-      onTap: () {
-        int index = listNav.indexOf(svg);
-        if (index != 0) {
-          setState(() {
-            indexNav = index;
-            _tabController.animateTo(index);
-          });
-        } else {
-          setState(() {
-            indexNav = index;
-            _tabController.animateTo(index);
-          });
-        }
-      },
-      child: Container(
-        width: width(context) / 4,
-        height: width(context) / 4,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Visibility(
-              visible: isActive,
-              replacement:
-                  SvgPicture.asset(svg.svgVisible, color: Colors.black45),
-              child: SvgPicture.asset(svg.svgInvisible, color: Colors.black87),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 4),
-              child: Text(
-                svg.title,
-                style: TextStyle(
-                  fontSize: 10,
-                  color: isActive ? Colors.black87 : Colors.black45,
-                  fontWeight: isActive ? FontWeight.w500 : FontWeight.w400,
-                ),
-              ),
-            )
-          ],
+  BottomNavigationBarItem _navItem(BuildContext context, NavModel svg,
+      {bool isActive = false}) {
+    return BottomNavigationBarItem(
+      icon: Container(
+        margin: EdgeInsets.only(top: 4),
+        child: Visibility(
+          visible: isActive,
+          replacement: SvgPicture.asset(svg.svgVisible, color: Colors.black45),
+          child: SvgPicture.asset(svg.svgInvisible, color: Colors.black87),
         ),
       ),
+      label: svg.title,
     );
   }
 }

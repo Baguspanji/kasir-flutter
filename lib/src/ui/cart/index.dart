@@ -103,7 +103,7 @@ class _CartUIState extends State<CartUI> {
                   SizedBox(height: height(context) * 0.01),
                   Container(
                     width: width(context),
-                    height: height(context) * 0.09,
+                    height: height(context) * 0.12,
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: [
