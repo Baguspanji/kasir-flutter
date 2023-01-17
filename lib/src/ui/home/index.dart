@@ -19,7 +19,7 @@ class _HomeUIState extends State<HomeUI> {
   final conProduct = Get.put(ProductController());
   final conCart = Get.find<CartController>();
 
-  bool _isGridView = true;
+  bool _isGridView = false;
   final _refreshController = RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
@@ -75,13 +75,14 @@ class _HomeUIState extends State<HomeUI> {
                 ),
                 InkWell(
                   onTap: () async {
-                    setState(() {
-                      _isGridView = !_isGridView;
-                      setStyleHome(_isGridView);
-                    });
+                    // setState(() {
+                    //   _isGridView = !_isGridView;
+                    //   setStyleHome(_isGridView);
+                    // });
                   },
                   child: Icon(
-                    _isGridView ? Icons.grid_view : Icons.list,
+                    Icons.search,
+                    // _isGridView ? Icons.grid_view : Icons.list,
                     color: Colors.black87,
                   ),
                 ),
@@ -89,96 +90,63 @@ class _HomeUIState extends State<HomeUI> {
             ),
           ),
           SizedBox(height: height(context) * 0.02),
-          Container(
-            height: height(context) * 0.8,
-            child: Obx(() {
-              final products = conProduct.listProduct.value;
+          Obx(() {
+            final products = conProduct.listProduct.value;
 
-              if (conProduct.isLoading.value) {
-                if (_isGridView) {
-                  return GridView(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.8,
-                    ),
-                    children: [
-                      for (var i = 0; i < 8; i++)
-                        CustomShimmer(
-                          width: width(context) * 0.4,
-                          height: width(context) * 0.4,
+            if (conProduct.isLoading.value) {
+              return Container(
+                height: height(context) * 0.8,
+                child: ListView(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  children: [
+                    for (var i = 0; i < 8; i++)
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        child: CustomShimmer(
+                          width: width(context),
+                          height: width(context) * 0.2,
                           radius: 10,
-                        )
-                    ],
-                  );
-                } else {
-                  return ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    children: [
-                      for (var i = 0; i < 8; i++)
-                        Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          child: CustomShimmer(
-                            width: width(context),
-                            height: width(context) * 0.2,
-                            radius: 10,
-                          ),
-                        )
-                    ],
-                  );
-                }
-              }
+                        ),
+                      )
+                  ],
+                ),
+              );
+            }
 
-              if (products.isEmpty) {
-                return CustomEmptyData(
+            if (products.isEmpty) {
+              return Container(
+                height: height(context) * 0.8,
+                child: CustomEmptyData(
                   height: height(context) * 0.9,
                   text: 'Data tidak ditemukan',
                   onPressed: () async {
                     conProduct.isLoading.value = true;
                     conProduct.getProduct(1);
                   },
-                );
-              }
+                ),
+              );
+            }
 
-              if (_isGridView) {
-                return SmartRefresher(
-                  controller: _refreshController,
-                  enablePullDown: true,
-                  enablePullUp: true,
-                  onRefresh: () => _onRefresh(),
-                  onLoading: () => _onLoading(),
-                  child: GridView(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.7,
-                    ),
-                    children: [
-                      ...products.map((e) => _itemProductGrid(context, e)),
-                    ],
-                  ),
-                );
-              } else {
-                return SmartRefresher(
-                  controller: _refreshController,
-                  enablePullDown: true,
-                  enablePullUp: true,
-                  onRefresh: () => _onRefresh(),
-                  onLoading: () => _onLoading(),
-                  child: ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    children: [
-                      ...products.map((e) => _itemProductList(context, e)),
-                    ],
-                  ),
-                );
-              }
-            }),
-          ),
+            return AnimatedContainer(
+              height: conCart.totalCart != 0
+                  ? height(context) * 0.46
+                  : height(context) * 0.82,
+              duration: const Duration(seconds: 1),
+              child: SmartRefresher(
+                controller: _refreshController,
+                enablePullDown: true,
+                enablePullUp: true,
+                onRefresh: () => _onRefresh(),
+                onLoading: () => _onLoading(),
+                child: ListView(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  children: [
+                    ...products.map((e) => _itemProductList(context, e)),
+                  ],
+                ),
+              ),
+            );
+          }),
         ],
       ),
     );
@@ -296,6 +264,7 @@ class _HomeUIState extends State<HomeUI> {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -309,12 +278,12 @@ class _HomeUIState extends State<HomeUI> {
       ),
       child: Row(
         children: [
-          CustomImageNetwork(
-            item.image ?? '',
-            width: width(context) * 0.2,
-            height: width(context) * 0.2,
-          ),
-          SizedBox(width: 10),
+          // CustomImageNetwork(
+          //   item.image ?? '',
+          //   width: width(context) * 0.2,
+          //   height: width(context) * 0.2,
+          // ),
+          // SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -24,10 +24,6 @@ final List<GetPage<dynamic>>? routes = [
     page: () => AuthUI(),
   ),
   GetPage(
-    name: CartUI.routeName,
-    page: () => CartUI(),
-  ),
-  GetPage(
     name: TransaksiDetailUI.routeName,
     page: () => TransaksiDetailUI(),
     arguments: CommonArgument<TransaksiModel>,
