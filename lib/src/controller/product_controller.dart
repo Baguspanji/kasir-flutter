@@ -9,11 +9,12 @@ class ProductController extends GetxController {
   RxBool isLoading = true.obs;
 
   RxInt productPage = 1.obs;
+  RxString search = ''.obs;
 
   Future<void> getProduct(int page) async {
     try {
       // isLoading.value = true;
-      var res = await api.getProduct(page: page);
+      var res = await api.getProduct(page: page, search: search.value);
 
       if (page == 1) {
         productPage.value = 1;

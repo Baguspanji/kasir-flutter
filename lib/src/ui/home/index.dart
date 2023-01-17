@@ -19,8 +19,9 @@ class _HomeUIState extends State<HomeUI> {
   final conProduct = Get.put(ProductController());
   final conCart = Get.find<CartController>();
 
-  bool _isGridView = false;
   final _refreshController = RefreshController(initialRefresh: false);
+  final _formSearch = TextEditingController();
+  bool _isSearch = false;
 
   void _onRefresh() async {
     await Future.delayed(Duration(milliseconds: 1000));
@@ -41,16 +42,11 @@ class _HomeUIState extends State<HomeUI> {
 
   @override
   void initState() {
-    getStyleHome().then((value) {
-      if (value != null) {
-        setState(() {
-          _isGridView = value;
-        });
-      }
-    });
     conProduct.getProduct(1);
     super.initState();
   }
+
+  _setSearch() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -62,32 +58,65 @@ class _HomeUIState extends State<HomeUI> {
             width: width(context),
             height: height(context) * 0.04,
             margin: EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Daftar Produk',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w600,
+            child: _isSearch
+                ? CustomTextField(
+                    controller: _formSearch,
+                    hintText: "Cari Produk",
+                    onChanged: (value) {
+                      conProduct.search.value = value;
+                      conProduct.getProduct(1);
+                    },
+                    suffixIcon: InkWell(
+                      onTap: () {
+                        setState(() {
+                          _isSearch = !_isSearch;
+                        });
+
+                        conProduct.search.value = '';
+                        conProduct.getProduct(1);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Daftar Produk',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                _isSearch = !_isSearch;
+                              });
+                            },
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          InkWell(
+                            onTap: () {},
+                            child: Icon(
+                              Icons.qr_code,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-                InkWell(
-                  onTap: () async {
-                    // setState(() {
-                    //   _isGridView = !_isGridView;
-                    //   setStyleHome(_isGridView);
-                    // });
-                  },
-                  child: Icon(
-                    Icons.search,
-                    // _isGridView ? Icons.grid_view : Icons.list,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
           ),
           SizedBox(height: height(context) * 0.02),
           Obx(() {

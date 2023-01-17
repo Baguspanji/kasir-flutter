@@ -14,13 +14,16 @@ class ApiProduct extends GetConnect {
     int page = 1,
     int limit = 10,
     int status = 1,
+    String search = '',
   }) async {
     String token = await getToken();
 
-    var res = await get('$url/item?page=$page&limit=$limit', headers: {
-      'Authorization': token,
-      'Accept': 'application/json',
-    });
+    var res = await get(
+        '$url/item?page=$page&limit=$limit${search != "" ? "&keyword=$search" : ""}',
+        headers: {
+          'Authorization': token,
+          'Accept': 'application/json',
+        });
 
     return getRes(res);
   }

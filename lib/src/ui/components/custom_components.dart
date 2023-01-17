@@ -143,13 +143,17 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String? hintText;
   final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final TextInputType? keyboardType;
+  final void Function(String)? onChanged;
   const CustomTextField({
     super.key,
     required this.controller,
     this.hintText,
     this.prefixIcon,
+    this.suffixIcon,
     this.keyboardType,
+    this.onChanged,
   });
 
   @override
@@ -167,10 +171,16 @@ class CustomTextField extends StatelessWidget {
       child: TextField(
         controller: controller,
         keyboardType: keyboardType,
+        onChanged: onChanged,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 8),
           hintText: hintText,
           prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
+          suffixIconConstraints: BoxConstraints(
+            maxHeight: 24,
+            maxWidth: 24,
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
