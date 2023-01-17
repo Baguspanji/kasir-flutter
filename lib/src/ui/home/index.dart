@@ -1,4 +1,6 @@
+import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
@@ -6,7 +8,6 @@ import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/controller/product_controller.dart';
 import 'package:kasir_app/src/model/product_model.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
-import 'package:kasir_app/src/repository/s_preference.dart';
 import 'package:kasir_app/src/ui/components/custom_components.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -19,9 +20,17 @@ class _HomeUIState extends State<HomeUI> {
   final conProduct = Get.put(ProductController());
   final conCart = Get.find<CartController>();
 
+  ScanResult? scanResult;
+
   final _refreshController = RefreshController(initialRefresh: false);
   final _formSearch = TextEditingController();
   bool _isSearch = false;
+  bool _isQR = false;
+
+  static final _possibleFormats = BarcodeFormat.values.toList()
+    ..removeWhere((e) => e == BarcodeFormat.unknown);
+
+  List<BarcodeFormat> selectedFormats = [..._possibleFormats];
 
   void _onRefresh() async {
     await Future.delayed(Duration(milliseconds: 1000));
@@ -46,7 +55,43 @@ class _HomeUIState extends State<HomeUI> {
     super.initState();
   }
 
-  _setSearch() async {}
+  Future<void> _searchQr() async {
+    try {
+      final result = await BarcodeScanner.scan(
+        options: ScanOptions(
+          strings: {
+            'cancel': 'Kembali ',
+            'flash_on': '',
+            'flash_off': '',
+          },
+          restrictFormat: selectedFormats,
+          useCamera: -1,
+          autoEnableFlash: false,
+          android: const AndroidOptions(
+            aspectTolerance: 0.00,
+            useAutoFocus: true,
+          ),
+        ),
+      );
+      setState(() {
+        scanResult = result;
+        _isQR = true;
+      });
+
+      conProduct.search.value = result.rawContent;
+      conProduct.getProduct(1);
+    } on PlatformException catch (e) {
+      setState(() {
+        scanResult = ScanResult(
+          type: ResultType.Error,
+          format: BarcodeFormat.unknown,
+          rawContent: e.code == BarcodeScanner.cameraAccessDenied
+              ? 'The user did not grant the camera permission!'
+              : 'Unknown error: $e',
+        );
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,10 +152,19 @@ class _HomeUIState extends State<HomeUI> {
                           ),
                           SizedBox(width: 10),
                           InkWell(
-                            onTap: () {},
+                            onTap: _isQR
+                                ? () {
+                                    setState(() {
+                                      _isQR = !_isQR;
+                                    });
+
+                                    conProduct.search.value = '';
+                                    conProduct.getProduct(1);
+                                  }
+                                : _searchQr,
                             child: Icon(
                               Icons.qr_code,
-                              color: Colors.black87,
+                              color: _isQR ? Colors.red : Colors.black87,
                             ),
                           ),
                         ],

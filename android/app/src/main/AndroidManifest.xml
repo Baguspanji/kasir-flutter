@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.kasir_app">
+    package="com.jongjava.kasir_ku">
     <application
-        android:label="kasir_app"
+        android:label="Kasirku"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -1,4 +1,4 @@
-package com.example.kasir_app
+package com.jongjava.kasir_ku
 
 import io.flutter.embedding.android.FlutterActivity
 
