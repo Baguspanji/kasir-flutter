@@ -344,6 +344,11 @@ class _HomeUIState extends State<HomeUI> {
   }
 
   Widget _itemProductList(BuildContext context, ProductModel item) {
+    final cart = conCart.listCart.firstWhere(
+      (element) => element.id == item.id,
+      orElse: () => CartModel(0, 0, 0, ProductModel()),
+    );
+
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
@@ -412,29 +417,38 @@ class _HomeUIState extends State<HomeUI> {
             ),
           ),
           SizedBox(width: 10),
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.black12),
-            ),
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              icon: Icon(
-                Icons.add,
-                size: 30,
-                color: Colors.black45,
-              ),
-              onPressed: () => conCart.addCart(CartModel(
-                item.id!,
-                int.parse(item.price!),
-                1,
-                item,
-              )),
-            ),
-          ),
+
+          cart.id == 0
+              ? Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.black12),
+                  ),
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    icon: Icon(
+                      Icons.add,
+                      size: 30,
+                      color: Colors.black45,
+                    ),
+                    onPressed: () {
+                      conCart.addCart(
+                        CartModel(
+                          item.id!,
+                          int.parse(item.price!),
+                          1,
+                          item,
+                        ),
+                      );
+
+                      setState(() {});
+                    },
+                  ),
+                )
+              : Spacer(),
           SizedBox(width: 10),
         ],
       ),

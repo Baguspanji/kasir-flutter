@@ -70,6 +70,16 @@ class CartController extends GetxController {
     listCart.value = allCart
         .where((element) => element.id != cart.id)
         .toList(growable: false);
+
+    var newCart = [];
+
+    listCart.forEach((e) {
+      if (e.id != 0) {
+        newCart.add(e);
+      }
+    });
+
+    listCart.value = [...newCart];
   }
 
   void clearCart() {
