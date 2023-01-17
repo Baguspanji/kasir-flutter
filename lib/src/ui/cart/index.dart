@@ -5,8 +5,7 @@ import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
-import 'package:kasir_app/src/ui/components/custom_components.dart';
-import 'package:kasir_app/src/ui/components/modal.dart';
+import 'package:kasir_app/src/ui/cart/detail.dart';
 
 class CartUI extends StatefulWidget {
   @override
@@ -15,9 +14,6 @@ class CartUI extends StatefulWidget {
 
 class _CartUIState extends State<CartUI> {
   final conCart = Get.find<CartController>();
-
-  final _formName = TextEditingController();
-  final _formAmount = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -98,14 +94,6 @@ class _CartUIState extends State<CartUI> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    if (_formName.text != "")
-                      _tableField("Pemesan", _formName.text),
-                    if (_formAmount.text != "")
-                      _tableField(
-                          "Uang Dibayar",
-                          toRupiah(
-                            double.parse(_formAmount.text),
-                          )),
                     Obx(() {
                       final cart = conCart.listCart.value;
                       final total = cart.fold(
@@ -130,14 +118,7 @@ class _CartUIState extends State<CartUI> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () async {
-                    await conCart.addTransaction(
-                      name: _formName.text,
-                      amount: double.parse(
-                        _formAmount.text != "" ? _formAmount.text : "0",
-                      ),
-                    );
-                  },
+                  onPressed: () => Get.toNamed(CartDetailUI.routeName),
                   child: Text("Proses", style: TextStyle(fontSize: 18)),
                 ),
               ),
@@ -146,53 +127,6 @@ class _CartUIState extends State<CartUI> {
           ),
         ),
       ],
-    );
-  }
-
-  _openModal(BuildContext context) {
-    Modals.showModal(
-      title: 'Keranjang',
-      subTitle: '',
-      subTitleWidget: Container(
-        width: width(context) * 0.8,
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            SizedBox(height: height(context) * 0.01),
-            CustomTextField(
-              controller: _formName,
-              hintText: "Nama Pemesan",
-              prefixIcon: Icon(Icons.person),
-            ),
-            SizedBox(height: height(context) * 0.01),
-            CustomTextField(
-              controller: _formAmount,
-              hintText: "Uang Dibayar",
-              prefixIcon: Icon(Icons.money),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: height(context) * 0.02),
-            // button ok
-            Container(
-              width: width(context),
-              height: height(context) * 0.04,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onPressed: () {
-                  setState(() {});
-                  Navigator.pop(context);
-                },
-                child: Text("OK", style: TextStyle(fontSize: 18)),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -274,11 +208,11 @@ class _CartUIState extends State<CartUI> {
                     //   ),
                     // ),
                     Text(
-                      item.name ?? '-',
+                      (item.name ?? '-') + ' - ' + (item.unit ?? '-'),
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: Colors.black45,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     SizedBox(height: 4),
@@ -291,7 +225,7 @@ class _CartUIState extends State<CartUI> {
                     //     height: 1.2,
                     //   ),
                     // ),
-                    SizedBox(height: 6),
+                    // SizedBox(height: 6),
                     Text(
                       toRupiah(double.parse((item.price) ?? "0") * cart.qty),
                       style: TextStyle(

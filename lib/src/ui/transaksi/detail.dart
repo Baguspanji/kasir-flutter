@@ -85,7 +85,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                       children: [
                         _itemDetailTransaksi(
                           context,
-                          e.item!.name ?? '-',
+                          (e.item!.name ?? '-') + ' - ' + (e.item!.unit ?? '-'),
                           '',
                         ),
                         _itemDetailTransaksi(

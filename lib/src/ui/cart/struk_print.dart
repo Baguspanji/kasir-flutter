@@ -1,19 +1,22 @@
 import 'package:kasir_app/src/config/constans_config.dart';
-import 'package:kasir_app/src/model/transaksi_model.dart';
+import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/ui/components/printer_enum.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
 ///Test printing
-class StrukPrint {
+class StrukPrintCart {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
 
   sample(
-    TransaksiModel transaksi, {
+    List<CartModel> cart, {
     String? appName,
     String? appAddress,
     String? appPhone,
+    int? total,
+    String? buyerName,
+    String? amountPaid,
   }) async {
     //image max 300px X 300px
 
@@ -48,7 +51,7 @@ class StrukPrint {
 
         bluetooth.printLeftRight(
           "Pembeli : ",
-          transaksi.name ?? "-",
+          buyerName ?? "-",
           Size.bold.val,
           format: "%-15s %15s %n",
         );
@@ -60,19 +63,18 @@ class StrukPrint {
         );
         bluetooth.printNewLine();
 
-        transaksi.details?.forEach((e) {
+        cart.forEach((e) {
           bluetooth.printCustom(
-            (e.item!.name ?? '-') + ' - ' + (e.item!.unit ?? '-'),
+            (e.product!.name ?? "-") + ' - ' + (e.product!.unit ?? '-'),
             Size.bold.val,
             Align.left.val,
             charset: "windows-1250",
           );
           bluetooth.printLeftRight(
-            "${e.quantity ?? '-'} x ${toRupiah(double.parse(e.item!.price ?? "0"))}",
+            "${e.qty} x ${toRupiah(double.parse(e.product!.price ?? "0"))}",
             toRupiah(
               double.parse(
-                (int.parse(e.item!.price ?? "0") * int.parse(e.quantity ?? "0"))
-                    .toString(),
+                (int.parse(e.product!.price ?? "0") * e.qty).toString(),
               ),
             ),
             Size.bold.val,
@@ -90,23 +92,22 @@ class StrukPrint {
 
         bluetooth.printLeftRight(
           "Total Harga",
-          toRupiah(double.parse(transaksi.totalPrice ?? "0")),
+          toRupiah(double.parse(total.toString())),
           Size.bold.val,
           charset: "windows-1250",
         );
 
-        if (transaksi.amountPaid != '0') {
+        if (amountPaid != '') {
           bluetooth.printLeftRight(
             "Jumlah Bayar",
-            toRupiah(double.parse(transaksi.amountPaid ?? "0")),
+            toRupiah(double.parse(amountPaid ?? "0")),
             Size.bold.val,
             charset: "windows-1250",
           );
           bluetooth.printLeftRight(
             "Kembalian",
             toRupiah(double.parse(
-              (int.parse(transaksi.amountPaid ?? "0") -
-                      int.parse(transaksi.totalPrice ?? "0"))
+              (int.parse(amountPaid ?? "0") - int.parse(total.toString()))
                   .toString(),
             )),
             Size.bold.val,
@@ -124,8 +125,7 @@ class StrukPrint {
 
         bluetooth.printNewLine();
         bluetooth.printCustom(
-          dateFormatEEEEdMMMMyyyyhhmm(
-              DateTime.parse(transaksi.createdAt ?? '')),
+          dateFormatEEEEdMMMMyyyyhhmm(DateTime.now()),
           Size.bold.val,
           Align.center.val,
         );

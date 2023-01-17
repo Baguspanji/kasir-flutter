@@ -39,8 +39,10 @@ class CartController extends GetxController {
         orElse: () => CartModel(0, 0, 0, null));
 
     if (findCart.id != 0) {
-      findCart.qty -= 1;
-      updateCart(findCart);
+      if (findCart.qty != 1) {
+        findCart.qty -= 1;
+        updateCart(findCart);
+      }
     }
   }
 
@@ -77,13 +79,13 @@ class CartController extends GetxController {
   int get totalCart => listCart.value.length;
 
   // addTransaction
-  Future<void> addTransaction({
+  Future<Response<dynamic>> addTransaction({
     required String name,
-    required double amount,
+    required String amount,
   }) async {
     dynamic data = {
-      'name': name,
-      'amount_paid': amount,
+      if (name != '') 'name': name,
+      if (amount != '') 'amount_paid': amount,
       'items': [
         ...listCart.value.map((e) => {
               'id': e.id,
@@ -93,32 +95,6 @@ class CartController extends GetxController {
       ],
     };
 
-    var res = await api.createTransaksi(data);
-    print(res.bodyString);
-
-    // var app = await getUser();
-
-    // var user = AppModel.fromJson(jsonDecode(app)['data']['app']);
-
-    if (res.statusCode == 201) {
-      // var createTransaksi = CreateTransaksiModel.fromJson(res.body['data']);
-
-      // var transaksi = TransaksiModel(
-      //   name: createTransaksi.name,
-      //   amountPaid: createTransaksi.amountPaid.toString(),
-      //   totalPrice: createTransaksi.totalPrice.toString(),
-      //   totalTakePrice: createTransaksi.totalTakePrice.toString(),
-      //   date: createTransaksi.date,
-      //   details: createTransaksi.details,
-      // );
-
-      // printStruk.sample(
-      //   transaksi,
-      //   appName: user.name ?? '',
-      //   appAddress: user.address ?? '',
-      //   appPhone: user.phone ?? '',
-      // );
-      clearCart();
-    }
+    return await api.createTransaksi(data);
   }
 }

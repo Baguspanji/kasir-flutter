@@ -1,6 +1,7 @@
 import 'package:get/route_manager.dart';
 import 'package:kasir_app/src/model/transaksi_model.dart';
 import 'package:kasir_app/src/ui/auth/index.dart';
+import 'package:kasir_app/src/ui/cart/detail.dart';
 import 'package:kasir_app/src/ui/cart/index.dart';
 import 'package:kasir_app/src/ui/nav_ui.dart';
 import 'package:kasir_app/src/ui/profile/print_setting.dart';
@@ -31,6 +32,10 @@ final List<GetPage<dynamic>>? routes = [
   GetPage(
     name: PrintSettingUI.routeName,
     page: () => PrintSettingUI(),
+  ),
+  GetPage(
+    name: CartDetailUI.routeName,
+    page: () => CartDetailUI(),
   ),
   // GetPage(
   //   name: TentangUI.routeName,
