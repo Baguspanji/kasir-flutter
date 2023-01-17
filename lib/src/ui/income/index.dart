@@ -67,7 +67,7 @@ class _IncomeUIState extends State<IncomeUI> {
           ),
           SizedBox(height: height(context) * 0.02),
           Container(
-            height: height(context) * 0.8,
+            height: height(context) * 0.82,
             child: Obx(() {
               final transaksi = conIncome.listIncome.value;
 

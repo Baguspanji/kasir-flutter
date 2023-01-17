@@ -69,7 +69,7 @@ class _TransaksiUIState extends State<TransaksiUI> {
           ),
           SizedBox(height: height(context) * 0.02),
           Container(
-            height: height(context) * 0.8,
+            height: height(context) * 0.82,
             child: Obx(() {
               final transaksi = conTransaksi.listTransaksi.value;
 
