@@ -64,22 +64,41 @@ class StrukPrintCart {
         bluetooth.printNewLine();
 
         cart.forEach((e) {
+          String s = e.product!.unit ?? "-";
+          final idx = s.split("/");
+
+          int qty = int.parse(idx[0]) * e.qty;
+          String unit = '$qty/${idx[1]}';
+
           bluetooth.printCustom(
-            (e.product!.name ?? "-") + ' - ' + (e.product!.unit ?? '-'),
+            (e.product!.name ?? "-"),
             Size.bold.val,
             Align.left.val,
             charset: "windows-1250",
           );
-          bluetooth.printLeftRight(
-            "${e.qty} x ${toRupiah(double.parse(e.product!.price ?? "0"))}",
-            toRupiah(
-              double.parse(
-                (int.parse(e.product!.price ?? "0") * e.qty).toString(),
-              ),
-            ),
+
+          String desc =
+              "$unit x ${toCurrency(double.parse(e.product!.price ?? "0"))}";
+          String price = toCurrency(double.parse(
+              (int.parse(e.product!.price ?? "0") * e.qty).toString()));
+
+          bluetooth.printCustom(
+            '${desc.padRight(20)}${price.padLeft(10)}',
             Size.bold.val,
+            Align.center.val,
             charset: "windows-1250",
           );
+
+          // bluetooth.printLeftRight(
+          //   "$unit x ${toCurrency(double.parse(e.product!.price ?? "0"))}",
+          //   toCurrency(
+          //     double.parse(
+          //       (int.parse(e.product!.price ?? "0") * e.qty).toString(),
+          //     ),
+          //   ),
+          //   Size.bold.val,
+          //   charset: "windows-1250",
+          // );
         });
         bluetooth.printNewLine();
 
@@ -92,7 +111,7 @@ class StrukPrintCart {
 
         bluetooth.printLeftRight(
           "Total Harga",
-          toRupiah(double.parse(total.toString())),
+          toCurrency(double.parse(total.toString())),
           Size.bold.val,
           charset: "windows-1250",
         );
@@ -100,13 +119,13 @@ class StrukPrintCart {
         if (amountPaid != '') {
           bluetooth.printLeftRight(
             "Jumlah Bayar",
-            toRupiah(double.parse(amountPaid ?? "0")),
+            toCurrency(double.parse(amountPaid ?? "0")),
             Size.bold.val,
             charset: "windows-1250",
           );
           bluetooth.printLeftRight(
             "Kembalian",
-            toRupiah(double.parse(
+            toCurrency(double.parse(
               (int.parse(amountPaid ?? "0") - int.parse(total.toString()))
                   .toString(),
             )),
@@ -118,7 +137,7 @@ class StrukPrintCart {
         bluetooth.printNewLine();
         bluetooth.printNewLine();
         bluetooth.printCustom(
-          "Thank you for shopping",
+          "Barang yang sudah dibeli tidak dapat ditukar / dikembalikan.",
           Size.bold.val,
           Align.center.val,
         );

@@ -68,6 +68,7 @@ OutlineInputBorder outlineInputBorder() {
 
 final formatter = NumberFormat('#,##0', 'id_ID');
 String toRupiah(double number) => 'Rp ${formatter.format(number)}';
+String toCurrency(double number) => formatter.format(number);
 
 String formatTime(DateTime dateTime) {
   return DateFormat('kk:mm:ss').format(dateTime);
