@@ -78,9 +78,8 @@ class StrukPrintCart {
           );
 
           String desc =
-              "$unit x ${toCurrency(double.parse(e.product!.price ?? "0"))}";
-          String price = toCurrency(double.parse(
-              (int.parse(e.product!.price ?? "0") * e.qty).toString()));
+              "$unit x ${toCurrency(double.parse(e.price.toString()))}";
+          String price = toCurrency(double.parse((e.price * e.qty).toString()));
 
           bluetooth.printCustom(
             '${desc.padRight(20)}${price.padLeft(10)}',

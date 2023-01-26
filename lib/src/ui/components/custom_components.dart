@@ -144,6 +144,7 @@ class CustomTextField extends StatelessWidget {
   final String? hintText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final bool? readOnly;
   final TextInputType? keyboardType;
   final void Function(String)? onChanged;
   const CustomTextField({
@@ -154,6 +155,7 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.keyboardType,
     this.onChanged,
+    this.readOnly,
   });
 
   @override
@@ -172,6 +174,7 @@ class CustomTextField extends StatelessWidget {
         controller: controller,
         keyboardType: keyboardType,
         onChanged: onChanged,
+        readOnly: readOnly ?? false,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 8),
           hintText: hintText,

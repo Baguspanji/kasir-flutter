@@ -33,29 +33,29 @@ class CartController extends GetxController {
     }
   }
 
-  void decrementQty(CartModel cart) {
-    var allCart = listCart.value;
-    var findCart = allCart.firstWhere((element) => element.id == cart.id,
-        orElse: () => CartModel(0, 0, 0, null));
+  // void decrementQty(CartModel cart) {
+  //   var allCart = listCart.value;
+  //   var findCart = allCart.firstWhere((element) => element.id == cart.id,
+  //       orElse: () => CartModel(0, 0, 0, null));
 
-    if (findCart.id != 0) {
-      if (findCart.qty != 1) {
-        findCart.qty -= 1;
-        updateCart(findCart);
-      }
-    }
-  }
+  //   if (findCart.id != 0) {
+  //     if (findCart.qty != 1) {
+  //       findCart.qty -= 1;
+  //       updateCart(findCart);
+  //     }
+  //   }
+  // }
 
-  void incrementQty(CartModel cart) {
-    var allCart = listCart.value;
-    var findCart = allCart.firstWhere((element) => element.id == cart.id,
-        orElse: () => CartModel(0, 0, 0, null));
+  // void incrementQty(CartModel cart) {
+  //   var allCart = listCart.value;
+  //   var findCart = allCart.firstWhere((element) => element.id == cart.id,
+  //       orElse: () => CartModel(0, 0, 0, null));
 
-    if (findCart.id != 0) {
-      findCart.qty += 1;
-      updateCart(findCart);
-    }
-  }
+  //   if (findCart.id != 0) {
+  //     findCart.qty += 1;
+  //     updateCart(findCart);
+  //   }
+  // }
 
   void updateCart(CartModel cart) {
     var allCart = listCart.value;

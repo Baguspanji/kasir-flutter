@@ -74,10 +74,9 @@ class StrukPrint {
             charset: "windows-1250",
           );
 
-          String desc =
-              "$unit x ${toCurrency(double.parse(e.item!.price ?? "0"))}";
+          String desc = "$unit x ${toCurrency(double.parse(e.price ?? "0"))}";
           String price = toCurrency(double.parse(
-              (int.parse(e.item!.price ?? "0") * int.parse(e.quantity ?? "0"))
+              (int.parse(e.price ?? "0") * int.parse(e.quantity ?? "0"))
                   .toString()));
 
           bluetooth.printCustom(

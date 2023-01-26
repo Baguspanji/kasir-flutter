@@ -88,12 +88,6 @@ class _CartDetailUIState extends State<CartDetailUI> {
               Expanded(
                 child: ListView(
                   children: [
-                    // _itemDetailTransaksi(
-                    //   context,
-                    //   'Tanggal',
-                    //   dateFormatddMMMMyyyy(
-                    //       DateTime.parse(args.object!.date ?? '')),
-                    // ),
                     _itemDetailTransaksi(
                       context,
                       'Nama Pembeli',
@@ -119,11 +113,10 @@ class _CartDetailUIState extends State<CartDetailUI> {
                           ),
                           _itemDetailTransaksi(
                             context,
-                            '${e.qty} x ${toRupiah(double.parse(e.product!.price ?? "0"))}',
+                            '${e.qty} x ${toRupiah(double.parse(e.price.toString()))}',
                             toRupiah(
                               double.parse(
-                                (int.parse(e.product!.price ?? "0") * e.qty)
-                                    .toString(),
+                                (e.price * e.qty).toString(),
                               ),
                             ),
                             titleBold: false,

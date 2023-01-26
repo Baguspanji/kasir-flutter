@@ -90,10 +90,10 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                         ),
                         _itemDetailTransaksi(
                           context,
-                          '${e.quantity ?? '-'} x ${toRupiah(double.parse(e.item!.price ?? "0"))}',
+                          '${e.quantity ?? '-'} x ${toRupiah(double.parse(e.price ?? "0"))}',
                           toRupiah(
                             double.parse(
-                              (int.parse(e.item!.price ?? "0") *
+                              (int.parse(e.price ?? "0") *
                                       int.parse(e.quantity ?? "0"))
                                   .toString(),
                             ),
