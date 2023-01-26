@@ -166,7 +166,7 @@ class _IncomeUIState extends State<IncomeUI> {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  '${item.quantity} - ${toRupiah(double.parse(item.item!.price ?? "0"))}',
+                  '${item.quantity} - ${toRupiah(double.parse(item.price ?? "0"))} = ${toRupiah(double.parse(item.price ?? "0") * double.parse(item.quantity ?? "0"))}',
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.black45,
