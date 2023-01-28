@@ -6,6 +6,8 @@ import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/ui/cart/detail.dart';
+import 'package:kasir_app/src/ui/components/custom_components.dart';
+import 'package:kasir_app/src/ui/components/modal.dart';
 
 class CartUI extends StatefulWidget {
   @override
@@ -14,6 +16,11 @@ class CartUI extends StatefulWidget {
 
 class _CartUIState extends State<CartUI> {
   final conCart = Get.find<CartController>();
+
+  CartModel cartEdit = CartModel(0, 0, 0, null);
+  final _formName = TextEditingController();
+  final _formPrice = TextEditingController();
+  final _formQty = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -186,27 +193,12 @@ class _CartUIState extends State<CartUI> {
         ),
         child: Row(
           children: [
-            // CustomImageNetwork(
-            //   item.image ?? '',
-            //   width: width(context) * 0.2,
-            //   height: width(context) * 0.2,
-            // ),
-            // SizedBox(width: 10),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Text(
-                    //   item.code ?? '-',
-                    //   style: TextStyle(
-                    //     fontSize: 12,
-                    //     color: Colors.black45,
-                    //     fontWeight: FontWeight.w500,
-                    //     height: 1.2,
-                    //   ),
-                    // ),
                     Text(
                       (item.name ?? '-') + ' - ' + (item.unit ?? '-'),
                       style: TextStyle(
@@ -216,18 +208,8 @@ class _CartUIState extends State<CartUI> {
                       ),
                     ),
                     SizedBox(height: 4),
-                    // Text(
-                    //   item.unit ?? '-',
-                    //   style: TextStyle(
-                    //     fontSize: 10,
-                    //     color: Colors.black45,
-                    //     fontWeight: FontWeight.w400,
-                    //     height: 1.2,
-                    //   ),
-                    // ),
-                    // SizedBox(height: 6),
                     Text(
-                      toRupiah(double.parse((item.price) ?? "0") * cart.qty),
+                      toRupiah(double.parse(cart.price.toString()) * cart.qty),
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.black45,
@@ -240,48 +222,100 @@ class _CartUIState extends State<CartUI> {
               ),
             ),
             SizedBox(width: 10),
-            Container(
-              height: 50,
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                color: Colors.black12,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                children: [
-                  _buttonAction(
-                    onTap: () {
-                      conCart.decrementQty(cart);
-                      setState(() {});
-                    },
-                    icon: Icons.remove,
+            InkWell(
+              onTap: () {
+                setState(() {
+                  cartEdit = cart;
+
+                  _formName.text = item.name ?? '';
+                  _formPrice.text = cart.price.toString();
+                  _formQty.text = cart.qty.toString();
+                });
+
+                _openModal(context);
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black26, width: 2),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  cart.qty.toString(),
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black45,
+                    fontWeight: FontWeight.w400,
                   ),
-                  Container(
-                    width: 40,
-                    height: 30,
-                    child: Center(
-                      child: Text(
-                        cart.qty.toString(),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black45,
-                          fontWeight: FontWeight.w600,
-                          height: 1.2,
-                        ),
-                      ),
-                    ),
-                  ),
-                  _buttonAction(
-                    onTap: () {
-                      conCart.incrementQty(cart);
-                      setState(() {});
-                    },
-                    icon: Icons.add,
-                  ),
-                ],
+                ),
               ),
             ),
             SizedBox(width: 10),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _openModal(BuildContext context) {
+    Modals.showModal(
+      title: 'Keranjang',
+      subTitle: '',
+      subTitleWidget: Container(
+        width: width(context) * 0.8,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            SizedBox(height: height(context) * 0.01),
+            CustomTextField(
+              controller: _formName,
+              hintText: "Nama Barang",
+              prefixIcon: Icon(Icons.add_box),
+              readOnly: true,
+            ),
+            SizedBox(height: height(context) * 0.01),
+            CustomTextField(
+              controller: _formPrice,
+              hintText: "Uang Harga",
+              prefixIcon: Icon(Icons.money),
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: height(context) * 0.01),
+            CustomTextField(
+              controller: _formQty,
+              hintText: "Banyak",
+              prefixIcon: Icon(Icons.numbers),
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: height(context) * 0.02),
+            // button ok
+            Container(
+              width: width(context),
+              height: height(context) * 0.04,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () {
+                  cartEdit.price = int.parse(_formPrice.text);
+                  cartEdit.qty = int.parse(_formQty.text);
+
+                  conCart.updateCart(cartEdit);
+
+                  setState(() {
+                    _formName.clear();
+                    _formPrice.clear();
+                    _formQty.clear();
+                  });
+                  Navigator.pop(context);
+                },
+                child: Text("OK", style: TextStyle(fontSize: 18)),
+              ),
+            ),
           ],
         ),
       ),
