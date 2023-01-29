@@ -105,10 +105,9 @@ class _CartDetailUIState extends State<CartDetailUI> {
                         children: [
                           _itemDetailTransaksi(
                             context,
-                            (e.product!.name ?? '-') +
-                                ' - ' +
-                                (e.product!.unit ?? '-'),
+                            e.product!.name ?? '-',
                             '',
+                            desc: e.product!.unit ?? '-',
                           ),
                           _itemDetailTransaksi(
                             context,
@@ -184,6 +183,8 @@ class _CartDetailUIState extends State<CartDetailUI> {
                         appName: data.name ?? '',
                         appAddress: data.address ?? '',
                         appPhone: data.phone ?? '',
+                        openTime: data.openTime ?? '',
+                        strukMessage: data.strukMessage ?? '',
                         total: total,
                         buyerName: _formName.text,
                         amountPaid: _formAmount.text,
@@ -213,6 +214,7 @@ class _CartDetailUIState extends State<CartDetailUI> {
     BuildContext context,
     String title,
     String value, {
+    String desc = '',
     bool titleBold = true,
     bool valueBold = false,
   }) {
@@ -222,14 +224,36 @@ class _CartDetailUIState extends State<CartDetailUI> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
-              fontWeight: titleBold ? FontWeight.w600 : FontWeight.w400,
+          if (!desc.isNotEmpty)
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black87,
+                fontWeight: titleBold ? FontWeight.w600 : FontWeight.w400,
+              ),
             ),
-          ),
+          if (desc.isNotEmpty)
+            RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                  text: title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black87,
+                    fontWeight: titleBold ? FontWeight.w600 : FontWeight.w400,
+                  ),
+                ),
+                TextSpan(
+                  text: ' - ' + desc,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ]),
+            ),
           Text(
             value,
             style: TextStyle(

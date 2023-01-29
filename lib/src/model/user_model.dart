@@ -67,6 +67,8 @@ class AppModel {
   String? address;
   String? phone;
   String? prName;
+  String? openTime;
+  String? strukMessage;
   String? status;
   List<String>? messages;
   String? createdAt;
@@ -79,6 +81,8 @@ class AppModel {
       this.address,
       this.phone,
       this.prName,
+      this.openTime,
+      this.strukMessage,
       this.status,
       this.messages,
       this.createdAt,
@@ -91,6 +95,8 @@ class AppModel {
     address = json['address'];
     phone = json['phone'];
     prName = json['pr_name'];
+    openTime = json['open_time'];
+    strukMessage = json['struk_message'];
     status = json['status'];
     messages = json['messages'].cast<String>();
     createdAt = json['created_at'];
@@ -105,6 +111,8 @@ class AppModel {
     data['address'] = this.address;
     data['phone'] = this.phone;
     data['pr_name'] = this.prName;
+    data['open_time'] = this.openTime;
+    data['struk_message'] = this.strukMessage;
     data['status'] = this.status;
     data['messages'] = this.messages;
     data['created_at'] = this.createdAt;
