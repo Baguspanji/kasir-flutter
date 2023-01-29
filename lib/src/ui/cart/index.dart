@@ -200,11 +200,43 @@ class _CartUIState extends State<CartUI> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      (item.name ?? '-') + ' - ' + (item.unit ?? '-'),
+                      item.name ?? '-',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.black45,
                         fontWeight: FontWeight.w400,
+                        height: 1,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: cart.qty.toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black45,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' x ',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black45,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          TextSpan(
+                            text: item.unit ?? '-',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.black45,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(height: 4),
@@ -222,33 +254,32 @@ class _CartUIState extends State<CartUI> {
               ),
             ),
             SizedBox(width: 10),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  cartEdit = cart;
-
-                  _formName.text = item.name ?? '';
-                  _formPrice.text = cart.price.toString();
-                  _formQty.text = cart.qty.toString();
-                });
-
-                _openModal(context);
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black26, width: 2),
-                  borderRadius: BorderRadius.circular(10),
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.black12),
+              ),
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                icon: Icon(
+                  Icons.edit,
+                  size: 24,
+                  color: Colors.black45,
                 ),
-                child: Text(
-                  cart.qty.toString(),
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black45,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
+                onPressed: () {
+                  setState(() {
+                    cartEdit = cart;
+
+                    _formName.text = item.name ?? '';
+                    _formPrice.text = cart.price.toString();
+                    _formQty.text = cart.qty.toString();
+                  });
+
+                  _openModal(context);
+                },
               ),
             ),
             SizedBox(width: 10),

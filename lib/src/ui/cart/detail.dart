@@ -3,14 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
+import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/model/user_model.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
-import 'package:kasir_app/src/ui/cart/struk_print.dart';
 import 'package:kasir_app/src/ui/components/custom_components.dart';
 import 'package:kasir_app/src/ui/components/modal.dart';
-
-import '../../config/size_config.dart';
+import 'package:kasir_app/src/ui/components/struk_print.dart';
 
 class CartDetailUI extends StatefulWidget {
   static const routeName = '/cart/detail';

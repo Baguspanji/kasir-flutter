@@ -101,10 +101,8 @@ class _TransaksiUIState extends State<TransaksiUI> {
                 );
               }
 
-              return SmartRefresher(
+              return CustomRefresh(
                 controller: _refreshController,
-                enablePullDown: true,
-                enablePullUp: true,
                 onRefresh: () => _onRefresh(),
                 onLoading: () => _onLoading(),
                 child: ListView(

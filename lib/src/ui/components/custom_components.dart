@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kasir_app/src/config/constans_assets.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CustomImageNetwork extends StatelessWidget {
@@ -189,6 +190,47 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class CustomRefresh extends StatelessWidget {
+  final RefreshController controller;
+  final Widget child;
+  final void Function()? onRefresh;
+  final void Function()? onLoading;
+
+  CustomRefresh({
+    required this.controller,
+    required this.child,
+    this.onRefresh,
+    this.onLoading,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SmartRefresher(
+      controller: controller,
+      enablePullDown: true,
+      enablePullUp: true,
+      onRefresh: onRefresh,
+      onLoading: onLoading,
+      header: WaterDropHeader(
+        complete: Icon(
+          Icons.check,
+          color: Colors.white,
+        ),
+        waterDropColor: primaryColor,
+        refresh: Container(
+          height: 30,
+          width: 30,
+          child: CircularProgressIndicator(
+            strokeWidth: 1,
+            color: primaryColor,
+          ),
+        ),
+      ),
+      child: child,
     );
   }
 }
