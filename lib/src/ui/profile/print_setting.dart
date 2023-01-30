@@ -43,6 +43,7 @@ class _PrintSettingUIState extends State<PrintSettingUI> {
     // }
     bool? isConnected = await bluetooth.isConnected;
     List<BluetoothDevice> devices = [];
+    setState(() {});
     try {
       devices = await bluetooth.getBondedDevices();
     } on PlatformException {}
@@ -67,30 +68,30 @@ class _PrintSettingUIState extends State<PrintSettingUI> {
             print("bluetooth device state: disconnect requested");
           });
           break;
-        case BlueThermalPrinter.STATE_TURNING_OFF:
-          setState(() {
-            _connected = false;
-            print("bluetooth device state: bluetooth turning off");
-          });
-          break;
+        // case BlueThermalPrinter.STATE_TURNING_OFF:
+        //   setState(() {
+        //     _connected = false;
+        //     print("bluetooth device state: bluetooth turning off");
+        //   });
+        //   break;
         case BlueThermalPrinter.STATE_OFF:
           setState(() {
             _connected = false;
             print("bluetooth device state: bluetooth off");
           });
           break;
-        case BlueThermalPrinter.STATE_ON:
-          setState(() {
-            _connected = false;
-            print("bluetooth device state: bluetooth on");
-          });
-          break;
-        case BlueThermalPrinter.STATE_TURNING_ON:
-          setState(() {
-            _connected = false;
-            print("bluetooth device state: bluetooth turning on");
-          });
-          break;
+        // case BlueThermalPrinter.STATE_ON:
+        //   setState(() {
+        //     _connected = false;
+        //     print("bluetooth device state: bluetooth on");
+        //   });
+        //   break;
+        // case BlueThermalPrinter.STATE_TURNING_ON:
+        //   setState(() {
+        //     _connected = false;
+        //     print("bluetooth device state: bluetooth turning on");
+        //   });
+        //   break;
         case BlueThermalPrinter.ERROR:
           setState(() {
             _connected = false;
@@ -288,10 +289,10 @@ class _PrintSettingUIState extends State<PrintSettingUI> {
         print(isConnected);
         if (isConnected == false) {
           bluetooth.connect(_device!).catchError((error) {
-            setState(() => _connected = false);
+            setState(() => _connected = isConnected!);
           });
-          setState(() => _connected = true);
         }
+        setState(() => _connected = isConnected!);
       });
     } else {
       getToast('No device selected.');
