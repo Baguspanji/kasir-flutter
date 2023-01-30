@@ -21,7 +21,6 @@ class TransaksiDetailUI extends StatefulWidget {
 
 class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
   final args = Get.arguments as CommonArgument<TransaksiModel>;
-
   final print = StrukPrintCart();
 
   @override
@@ -54,6 +53,14 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                       color: Colors.black87,
                       fontWeight: FontWeight.w600,
                     ),
+                  ),
+                  Spacer(),
+                  IconButton(
+                    // onPressed: () => Get.to(ShareStruk(
+                    //   transaksi: args.object!,
+                    // )),
+                    onPressed: () => getToast('Fitur belum tersedia'),
+                    icon: Icon(Icons.share),
                   ),
                 ],
               ),
