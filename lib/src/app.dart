@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Kasir App',
+      title: 'Kasir JJ',
       initialRoute: SplashUI.routeName,
       theme: theme(),
       getPages: routes,

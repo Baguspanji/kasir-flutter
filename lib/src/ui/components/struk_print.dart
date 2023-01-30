@@ -86,7 +86,7 @@ class StrukPrintCart {
           final idx = s.split("/");
 
           int qty = int.parse(idx[0]) * e.qty;
-          String unit = '$qty/${idx[1]}';
+          String unit = '$qty ${idx[1]}';
 
           bluetooth.printCustom(
             (e.product!.name ?? "-"),
