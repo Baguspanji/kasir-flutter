@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kasir_app/src/config/constans_assets.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/auth_controller.dart';
@@ -121,6 +122,8 @@ class _ProfileUIState extends State<ProfileUI> {
                 title: 'Tentang',
                 onTap: () {},
               ),
+              _itemProfile(
+                  icon: Icons.add_business, title: 'Barang', onTap: () {})
             ],
           ),
         ),
