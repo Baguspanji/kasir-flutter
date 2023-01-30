@@ -7,13 +7,11 @@ import 'package:kasir_app/src/model/user_model.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/repository/api_transaksi.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
-import 'package:kasir_app/src/ui/transaksi/struk_print.dart';
 
 class CartController extends GetxController {
   final api = ApiTransaksi();
 
   final listCart = <CartModel>[].obs;
-  final printStruk = StrukPrint();
 
   void addCart(CartModel cart) {
     var allCart = listCart.value;

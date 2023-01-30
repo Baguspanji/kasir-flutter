@@ -215,10 +215,8 @@ class _HomeUIState extends State<HomeUI> {
                   ? height(context) * 0.46
                   : height(context) * 0.82,
               duration: const Duration(seconds: 1),
-              child: SmartRefresher(
+              child: CustomRefresh(
                 controller: _refreshController,
-                enablePullDown: true,
-                enablePullUp: true,
                 onRefresh: () => _onRefresh(),
                 onLoading: () => _onLoading(),
                 child: ListView(
@@ -266,15 +264,6 @@ class _HomeUIState extends State<HomeUI> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      item.code ?? '-',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black45,
-                        fontWeight: FontWeight.w500,
-                        height: 1.2,
-                      ),
-                    ),
                     Text(
                       item.name ?? '-',
                       maxLines: 2,
@@ -377,22 +366,27 @@ class _HomeUIState extends State<HomeUI> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item.code ?? '-',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.black45,
-                    fontWeight: FontWeight.w500,
-                    height: 1.2,
-                  ),
-                ),
-                Text(
                   item.name ?? '-',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.black45,
                     fontWeight: FontWeight.w600,
+                    height: 1,
                   ),
                 ),
+                if (item.description != null) SizedBox(height: 4),
+                if (item.description != null)
+                  Text(
+                    item.description ?? '-',
+                    overflow: TextOverflow.clip,
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.black45,
+                      fontWeight: FontWeight.w400,
+                      height: 1,
+                    ),
+                  ),
                 SizedBox(height: 4),
                 Text(
                   item.unit ?? '-',

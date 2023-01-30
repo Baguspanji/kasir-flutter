@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_assets.dart';
+import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/auth_controller.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
@@ -44,52 +45,68 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
     });
   }
 
+  DateTime currentBackPressTime = DateTime.now();
+
+  Future<bool> onWillPop() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      getToast('Tekan sekali lagi untuk keluar');
+      return Future.value(false);
+    }
+    return Future.value(true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          TabBarView(
-            controller: _tabController,
-            children: [
-              HomeUI(),
-              TransaksiUI(),
-              IncomeUI(),
-              ProfileUI(),
-            ],
-          ),
-          if (indexNav == 0)
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Obx(
-                () => AnimatedContainer(
-                  duration: const Duration(seconds: 1),
-                  height: conCart.totalCart != 0 ? 400 : 0,
-                  width: width(context),
-                  curve: Curves.fastOutSlowIn,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 1,
-                        blurRadius: 5,
-                        offset: Offset(0, 0), // changes position of shadow
+      body: WillPopScope(
+        onWillPop: onWillPop,
+        child: Stack(
+          children: [
+            TabBarView(
+              controller: _tabController,
+              children: [
+                HomeUI(),
+                TransaksiUI(),
+                IncomeUI(),
+                ProfileUI(),
+              ],
+            ),
+            if (indexNav == 0)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Obx(
+                  () => AnimatedContainer(
+                    duration: const Duration(seconds: 1),
+                    height: conCart.totalCart != 0 ? 400 : 0,
+                    width: width(context),
+                    curve: Curves.fastOutSlowIn,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
                       ),
-                    ],
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(0, 0), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: conCart.totalCart != 0 ? CartUI() : null,
                   ),
-                  child: conCart.totalCart != 0 ? CartUI() : null,
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[

@@ -1,6 +1,4 @@
-const String logo = 'assets/images/logo.png';
-const String maskGroup = 'assets/images/mask-group.png';
-const String maskGroup2 = 'assets/images/mask-group2.png';
+const String logo = 'assets/images/logo_main.png';
 
 // navigation bar
 const String iconCategory = 'assets/svg/category.svg';

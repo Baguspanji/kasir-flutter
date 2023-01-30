@@ -15,6 +15,9 @@ class StrukPrintCart {
     String? appAddress,
     String? appPhone,
     int? total,
+    String? openTime,
+    String? strukMessage,
+    String? dateTransaction,
     String? buyerName,
     String? amountPaid,
   }) async {
@@ -49,15 +52,30 @@ class StrukPrintCart {
         // bluetooth.printImageBytes(imageBytesFromNetwork); //image from Network
         // bluetooth.printNewLine();
 
-        bluetooth.printLeftRight(
-          "Pembeli : ",
-          buyerName ?? "-",
+        bluetooth.printCustom(
+          "Tgl Trx : " +
+              dateFormatddMMMMyyyyhhmm(dateTransaction != null
+                  ? DateTime.tryParse(dateTransaction)
+                  : DateTime.now()),
           Size.bold.val,
-          format: "%-15s %15s %n",
+          Align.left.val,
+          charset: "windows-1250",
+        );
+        bluetooth.printCustom(
+          "Jml Jns Brg : " + cart.length.toString(),
+          Size.bold.val,
+          Align.left.val,
+          charset: "windows-1250",
+        );
+        bluetooth.printCustom(
+          "Pembeli : " + (buyerName ?? "-"),
+          Size.bold.val,
+          Align.left.val,
+          charset: "windows-1250",
         );
 
         bluetooth.printCustom(
-          "----------------------------------------",
+          "========================================",
           Size.medium.val,
           Align.center.val,
         );
@@ -68,7 +86,7 @@ class StrukPrintCart {
           final idx = s.split("/");
 
           int qty = int.parse(idx[0]) * e.qty;
-          String unit = '$qty/${idx[1]}';
+          String unit = '$qty ${idx[1]}';
 
           bluetooth.printCustom(
             (e.product!.name ?? "-"),
@@ -102,46 +120,51 @@ class StrukPrintCart {
         bluetooth.printNewLine();
 
         bluetooth.printCustom(
-          "----------------------------------------",
+          "========================================",
           Size.medium.val,
           Align.center.val,
         );
         bluetooth.printNewLine();
 
-        bluetooth.printLeftRight(
-          "Total Harga",
-          toCurrency(double.parse(total.toString())),
+        bluetooth.printCustom(
+          '${"Total Harga".padRight(20)}${toRupiah(double.parse(total.toString())).padLeft(10)}',
           Size.bold.val,
+          Align.center.val,
           charset: "windows-1250",
         );
 
         if (amountPaid != '') {
-          bluetooth.printLeftRight(
-            "Jumlah Bayar",
-            toCurrency(double.parse(amountPaid ?? "0")),
+          bluetooth.printCustom(
+            '${"Jumlah Bayar".padRight(20)}${toRupiah(double.parse(amountPaid ?? '0')).padLeft(10)}',
             Size.bold.val,
+            Align.center.val,
             charset: "windows-1250",
           );
-          bluetooth.printLeftRight(
-            "Kembalian",
-            toCurrency(double.parse(
+          bluetooth.printCustom(
+            '${"Kembalian".padRight(20)}${toRupiah(double.parse(
               (int.parse(amountPaid ?? "0") - int.parse(total.toString()))
                   .toString(),
-            )),
+            )).padLeft(10)}',
             Size.bold.val,
+            Align.center.val,
             charset: "windows-1250",
           );
         }
 
         bluetooth.printNewLine();
-        bluetooth.printNewLine();
+        // bluetooth.printNewLine();
         bluetooth.printCustom(
-          "Barang yang sudah dibeli tidak dapat ditukar / dikembalikan.",
+          openTime ?? "Buka : 08.00 - 17.00",
+          Size.bold.val,
+          Align.center.val,
+        );
+        bluetooth.printCustom(
+          strukMessage ?? "Terima kasih telah berbelanja",
           Size.bold.val,
           Align.center.val,
         );
 
-        bluetooth.printNewLine();
+        // bluetooth.printNewLine();
         bluetooth.printCustom(
           dateFormatEEEEdMMMMyyyyhhmm(DateTime.now()),
           Size.bold.val,

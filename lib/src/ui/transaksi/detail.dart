@@ -6,8 +6,9 @@ import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/route_config.dart';
 import 'package:kasir_app/src/model/transaksi_model.dart';
 import 'package:kasir_app/src/model/user_model.dart';
+import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
-import 'package:kasir_app/src/ui/transaksi/struk_print.dart';
+import 'package:kasir_app/src/ui/components/struk_print.dart';
 
 import '../../config/size_config.dart';
 
@@ -20,8 +21,7 @@ class TransaksiDetailUI extends StatefulWidget {
 
 class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
   final args = Get.arguments as CommonArgument<TransaksiModel>;
-
-  final print = StrukPrint();
+  final print = StrukPrintCart();
 
   @override
   void initState() {
@@ -54,6 +54,14 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                  Spacer(),
+                  IconButton(
+                    // onPressed: () => Get.to(ShareStruk(
+                    //   transaksi: args.object!,
+                    // )),
+                    onPressed: () => getToast('Fitur belum tersedia'),
+                    icon: Icon(Icons.share),
+                  ),
                 ],
               ),
             ),
@@ -85,7 +93,8 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                       children: [
                         _itemDetailTransaksi(
                           context,
-                          (e.item!.name ?? '-') + ' - ' + (e.item!.unit ?? '-'),
+                          e.item!.name ?? '-',
+                          desc: e.item!.unit ?? '-',
                           '',
                         ),
                         _itemDetailTransaksi(
@@ -154,11 +163,26 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
 
                   var data = AppModel.fromJson(jsonDecode(app)['data']['app']);
 
+                  final List<CartModel> cart = [
+                    ...args.object!.details!.map((e) => CartModel(
+                          int.parse(e.itemId ?? '0'),
+                          int.parse(e.price ?? '0'),
+                          int.parse(e.quantity ?? '0'),
+                          e.item,
+                        ))
+                  ];
+
                   print.sample(
-                    args.object!,
+                    cart,
                     appName: data.name ?? '',
                     appAddress: data.address ?? '',
                     appPhone: data.phone ?? '',
+                    openTime: data.openTime ?? '',
+                    strukMessage: data.strukMessage ?? '',
+                    total: int.parse(args.object!.totalPrice ?? '0'),
+                    buyerName: args.object!.name ?? '',
+                    amountPaid: args.object!.amountPaid ?? '0',
+                    dateTransaction: args.object!.createdAt ?? '',
                   );
                 },
                 child: Text("Cetak", style: TextStyle(fontSize: 18)),
@@ -175,6 +199,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
     BuildContext context,
     String title,
     String value, {
+    String desc = '',
     bool titleBold = true,
     bool valueBold = false,
   }) {
@@ -184,14 +209,36 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
-              fontWeight: titleBold ? FontWeight.w600 : FontWeight.w400,
+          if (!desc.isNotEmpty)
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black87,
+                fontWeight: titleBold ? FontWeight.w600 : FontWeight.w400,
+              ),
             ),
-          ),
+          if (desc.isNotEmpty)
+            RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                  text: title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black87,
+                    fontWeight: titleBold ? FontWeight.w600 : FontWeight.w400,
+                  ),
+                ),
+                TextSpan(
+                  text: ' - ' + desc,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ]),
+            ),
           Text(
             value,
             style: TextStyle(
