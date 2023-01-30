@@ -17,7 +17,7 @@ class StrukPrintCart {
     int? total,
     String? openTime,
     String? strukMessage,
-    String? date,
+    String? dateTransaction,
     String? buyerName,
     String? amountPaid,
   }) async {
@@ -54,22 +54,23 @@ class StrukPrintCart {
 
         bluetooth.printCustom(
           "Tgl Trx : " +
-              dateFormatEEEEdMMMMyyyyhhmm(
-                  date != null ? DateTime.tryParse(date) : DateTime.now()),
+              dateFormatddMMMMyyyyhhmm(dateTransaction != null
+                  ? DateTime.tryParse(dateTransaction)
+                  : DateTime.now()),
           Size.bold.val,
-          Align.center.val,
+          Align.left.val,
           charset: "windows-1250",
         );
         bluetooth.printCustom(
           "Jml Jns Brg : " + cart.length.toString(),
           Size.bold.val,
-          Align.center.val,
+          Align.left.val,
           charset: "windows-1250",
         );
         bluetooth.printCustom(
           "Pembeli : " + (buyerName ?? "-"),
           Size.bold.val,
-          Align.center.val,
+          Align.left.val,
           charset: "windows-1250",
         );
 
@@ -126,7 +127,7 @@ class StrukPrintCart {
         bluetooth.printNewLine();
 
         bluetooth.printCustom(
-          '${"Total Harga".padRight(20)}${toCurrency(double.parse(total.toString())).padLeft(10)}',
+          '${"Total Harga".padRight(20)}${toRupiah(double.parse(total.toString())).padLeft(10)}',
           Size.bold.val,
           Align.center.val,
           charset: "windows-1250",
@@ -134,13 +135,13 @@ class StrukPrintCart {
 
         if (amountPaid != '') {
           bluetooth.printCustom(
-            '${"Jumlah Bayar".padRight(20)}${toCurrency(double.parse(amountPaid ?? '0')).padLeft(10)}',
+            '${"Jumlah Bayar".padRight(20)}${toRupiah(double.parse(amountPaid ?? '0')).padLeft(10)}',
             Size.bold.val,
             Align.center.val,
             charset: "windows-1250",
           );
           bluetooth.printCustom(
-            '${"Kembalian".padRight(20)}${toCurrency(double.parse(
+            '${"Kembalian".padRight(20)}${toRupiah(double.parse(
               (int.parse(amountPaid ?? "0") - int.parse(total.toString()))
                   .toString(),
             )).padLeft(10)}',

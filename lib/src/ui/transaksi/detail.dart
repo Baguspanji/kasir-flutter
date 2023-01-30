@@ -182,7 +182,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                     total: int.parse(args.object!.totalPrice ?? '0'),
                     buyerName: args.object!.name ?? '',
                     amountPaid: args.object!.amountPaid ?? '0',
-                    date: args.object!.date ?? '',
+                    dateTransaction: args.object!.createdAt ?? '',
                   );
                 },
                 child: Text("Cetak", style: TextStyle(fontSize: 18)),
