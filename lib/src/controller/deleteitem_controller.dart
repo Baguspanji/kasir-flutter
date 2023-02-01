@@ -6,7 +6,7 @@ class DeleteItemController extends GetxController {
   RxBool isLoading = true.obs;
   Future<void> hapusProduk(int id) async {
     isLoading.value = true;
-    final response = await api.deleteItem(id);
+    final response = await api.deleteItem(id: id);
     if (response != null) {
       isLoading.value = false;
     } else {

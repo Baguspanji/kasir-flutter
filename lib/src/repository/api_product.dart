@@ -30,14 +30,14 @@ class ApiProduct extends GetConnect {
   }
 
 // ================ delete item ==============
-  Future<Response> deleteItem({int id = 0}) async {
+  Future<Response> deleteItem({int? id}) async {
     String token = await getToken();
 
-    final res = await delete('$url/item$id', headers: {
+    final res = await delete('$url/item/$id', headers: {
       'Authorization': token,
       'Accept': 'application/json',
     });
-
+    print(res.body);
     return getRes(res);
   }
 // ==========================================
