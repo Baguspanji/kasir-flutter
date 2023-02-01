@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
+import 'package:kasir_app/src/controller/deleteitem_controller.dart';
 import 'package:kasir_app/src/controller/product_controller.dart';
 import 'package:kasir_app/src/model/product_model.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/ui/components/custom_components.dart';
+import 'package:kasir_app/src/ui/profile/editbarang.dart';
+import 'package:kasir_app/src/ui/profile/tambahbarang.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ListBarang extends StatefulWidget {
@@ -18,6 +21,7 @@ class ListBarang extends StatefulWidget {
 
 class _ListBarangState extends State<ListBarang> {
   final conProduct = Get.put(ProductController());
+  DeleteItemController deleteItem = Get.put(DeleteItemController());
   final _refreshController = RefreshController(initialRefresh: false);
   void _onRefresh() async {
     await Future.delayed(Duration(milliseconds: 1000));
@@ -40,7 +44,9 @@ class _ListBarangState extends State<ListBarang> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    conProduct.getProduct(1);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      conProduct.getProduct(1);
+    });
   }
 
   @override
@@ -125,21 +131,24 @@ class _ListBarangState extends State<ListBarang> {
                 left: 20,
                 right: 20,
               ),
-              child: Container(
-                  width: width(context),
-                  height: height(context) * 0.050,
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(17)),
-                  child: Center(
-                      child: Text(
-                    'Tambah',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black87,
-                      // fontWeight: FontWeight.w600,
-                    ),
-                  ))),
+              child: InkWell(
+                onTap: () => Get.toNamed(TambahBarang.routeName),
+                child: Container(
+                    width: width(context),
+                    height: height(context) * 0.050,
+                    decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(17)),
+                    child: const Center(
+                        child: Text(
+                      'Tambah',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black87,
+                        // fontWeight: FontWeight.w600,
+                      ),
+                    ))),
+              ),
             )
           ],
         ),
@@ -221,29 +230,41 @@ class _ListBarangState extends State<ListBarang> {
             ),
           ),
           SizedBox(width: 10),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.amber.shade300),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.edit,
-                color: Colors.white,
+          InkWell(
+            onTap: () => Get.toNamed(EditBarang.routeName),
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.amber.shade300),
+              child: const Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15), color: Colors.red),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.delete,
-                color: Colors.white,
+          InkWell(
+            onTap: () {
+              setState(() {
+                deleteItem.hapusProduk(item.id!);
+                _onRefresh();
+                print(item.id);
+              });
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15), color: Colors.red),
+              child: const Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
               ),
             ),
           )

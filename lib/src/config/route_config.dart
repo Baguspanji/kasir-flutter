@@ -5,14 +5,16 @@ import 'package:kasir_app/src/ui/cart/detail.dart';
 import 'package:kasir_app/src/ui/cart/index.dart';
 import 'package:kasir_app/src/ui/nav_ui.dart';
 import 'package:kasir_app/src/ui/profile/barang.dart';
+import 'package:kasir_app/src/ui/profile/editbarang.dart';
 import 'package:kasir_app/src/ui/profile/print_setting.dart';
+import 'package:kasir_app/src/ui/profile/tambahbarang.dart';
 import 'package:kasir_app/src/ui/splash/index.dart';
 import 'package:kasir_app/src/ui/transaksi/detail.dart';
 
 // We use name route
 // All our routes will be available here
 
-final List<GetPage<dynamic>>? routes = [
+final List<GetPage<dynamic>> routes = [
   GetPage(
     name: SplashUI.routeName,
     page: () => SplashUI(),
@@ -38,7 +40,9 @@ final List<GetPage<dynamic>>? routes = [
     name: CartDetailUI.routeName,
     page: () => CartDetailUI(),
   ),
-  GetPage(name: ListBarang.routeName, page: () => ListBarang())
+  GetPage(name: ListBarang.routeName, page: () => ListBarang()),
+  GetPage(name: TambahBarang.routeName, page: () => TambahBarang()),
+  GetPage(name: EditBarang.routeName, page: () => EditBarang())
   // GetPage(
   //   name: TentangUI.routeName,
   //   page: () => TentangUI(),

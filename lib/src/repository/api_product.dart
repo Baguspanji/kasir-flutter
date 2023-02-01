@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
+import 'package:kasir_app/src/model/deleteunit_model.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
 
 class ApiProduct extends GetConnect {
@@ -28,6 +29,17 @@ class ApiProduct extends GetConnect {
     return getRes(res);
   }
 
+// ================ delete item ==============
+  Future<Response> deleteItem({int id = 0}) async {
+    String token = await getToken();
+
+    final res = await delete('$url/item$id', headers: {
+      'Authorization': token,
+      'Accept': 'application/json',
+    });
+
+    return getRes(res);
+  }
 // ==========================================
 
   Future<Response> getRes(Response res) async {
