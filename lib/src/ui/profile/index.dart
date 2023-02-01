@@ -4,6 +4,7 @@ import 'package:kasir_app/src/config/constans_assets.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/auth_controller.dart';
+import 'package:kasir_app/src/ui/profile/barang.dart';
 import 'package:kasir_app/src/ui/profile/print_setting.dart';
 
 class ProfileUI extends StatefulWidget {
@@ -123,7 +124,9 @@ class _ProfileUIState extends State<ProfileUI> {
                 onTap: () {},
               ),
               _itemProfile(
-                  icon: Icons.add_business, title: 'Barang', onTap: () {})
+                  icon: Icons.add_business,
+                  title: 'Barang',
+                  onTap: () => Get.toNamed(ListBarang.routeName))
             ],
           ),
         ),

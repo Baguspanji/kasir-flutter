@@ -4,6 +4,7 @@ import 'package:kasir_app/src/ui/auth/index.dart';
 import 'package:kasir_app/src/ui/cart/detail.dart';
 import 'package:kasir_app/src/ui/cart/index.dart';
 import 'package:kasir_app/src/ui/nav_ui.dart';
+import 'package:kasir_app/src/ui/profile/barang.dart';
 import 'package:kasir_app/src/ui/profile/print_setting.dart';
 import 'package:kasir_app/src/ui/splash/index.dart';
 import 'package:kasir_app/src/ui/transaksi/detail.dart';
@@ -37,6 +38,7 @@ final List<GetPage<dynamic>>? routes = [
     name: CartDetailUI.routeName,
     page: () => CartDetailUI(),
   ),
+  GetPage(name: ListBarang.routeName, page: () => ListBarang())
   // GetPage(
   //   name: TentangUI.routeName,
   //   page: () => TentangUI(),
