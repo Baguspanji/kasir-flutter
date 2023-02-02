@@ -231,7 +231,14 @@ class _ListBarangState extends State<ListBarang> {
           ),
           SizedBox(width: 10),
           InkWell(
-            onTap: () => Get.toNamed(EditBarang.routeName),
+            onTap: () => Get.toNamed(EditBarang.routeName, arguments: [
+              item.id,
+              item.code1,
+              item.name,
+              item.unit,
+              item.takePrice,
+              item.price
+            ]),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),

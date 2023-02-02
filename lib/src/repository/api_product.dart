@@ -52,6 +52,17 @@ class ApiProduct extends GetConnect {
     print(res.body);
     return getRes(res);
   }
+  // ================ add item ==============
+  Future<Response> editItem(int id, {dynamic data}) async {
+    String token = await getToken();
+
+    final res = await put('$url/item/$id', jsonEncode(data), headers: {
+      'Authorization': token,
+      'Accept': 'application/json',
+    });
+    print(res.body);
+    return getRes(res);
+  }
 // ==========================================
 
   Future<Response> getRes(Response res) async {
