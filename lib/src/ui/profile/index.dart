@@ -125,7 +125,7 @@ class _ProfileUIState extends State<ProfileUI> {
               ),
               _itemProfile(
                   icon: Icons.add_business,
-                  title: 'Barang',
+                  title: 'Produk',
                   onTap: () => Get.toNamed(ListBarang.routeName))
             ],
           ),

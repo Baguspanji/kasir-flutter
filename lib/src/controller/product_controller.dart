@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:kasir_app/src/model/product_model.dart';
 import 'package:kasir_app/src/repository/api_product.dart';
+import 'package:kasir_app/src/ui/profile/barang.dart';
 
 class ProductController extends GetxController {
   final api = ApiProduct();
@@ -38,6 +39,28 @@ class ProductController extends GetxController {
       }
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<bool> addItem(String code, String name, String unit, String takeprice,
+      String price) async {
+    try {
+      final res = await api.addItem(data: {
+        "code_1": code,
+        "name": name,
+        "unit": unit,
+        "take_price": takeprice,
+        "price": price
+      });
+      if (res.body != null) {
+        Get.toNamed(ListBarang.routeName);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e.toString());
+      return false;
     }
   }
 }

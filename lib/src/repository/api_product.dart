@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:get/get.dart';
@@ -34,6 +35,17 @@ class ApiProduct extends GetConnect {
     String token = await getToken();
 
     final res = await delete('$url/item/$id', headers: {
+      'Authorization': token,
+      'Accept': 'application/json',
+    });
+    print(res.body);
+    return getRes(res);
+  }
+  // ================ add item ==============
+  Future<Response> addItem({dynamic data}) async {
+    String token = await getToken();
+
+    final res = await post('$url/item', jsonEncode(data), headers: {
       'Authorization': token,
       'Accept': 'application/json',
     });
