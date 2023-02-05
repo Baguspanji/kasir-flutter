@@ -42,12 +42,36 @@ class ProductController extends GetxController {
     }
   }
 
-  Future<bool> addItem(String code, String name, String unit, String takeprice,
+  Future<bool> addItem(
+      String code1,
+      String code2,
+      String code3,
+      String code4,
+      String code5,
+      String code6,
+      String code7,
+      String code8,
+      String code9,
+      String code10,
+      String name,
+      String deskripsi,
+      String unit,
+      String takeprice,
       String price) async {
     try {
       final res = await api.addItem(data: {
-        "code_1": code,
+        "code_1": code1,
+        "code_2": code2,
+        "code_3": code3,
+        "code_4": code4,
+        "code_5": code5,
+        "code_6": code6,
+        "code_7": code7,
+        "code_8": code8,
+        "code_9": code9,
+        "code_10": code10,
         "name": name,
+        "description": deskripsi,
         "unit": unit,
         "take_price": takeprice,
         "price": price

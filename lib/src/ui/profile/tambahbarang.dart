@@ -12,8 +12,18 @@ class TambahBarang extends StatefulWidget {
 }
 
 class _TambahBarangState extends State<TambahBarang> {
-  TextEditingController code = TextEditingController();
+  TextEditingController code1 = TextEditingController();
+  TextEditingController code2 = TextEditingController();
+  TextEditingController code3 = TextEditingController();
+  TextEditingController code4 = TextEditingController();
+  TextEditingController code5 = TextEditingController();
+  TextEditingController code6 = TextEditingController();
+  TextEditingController code7 = TextEditingController();
+  TextEditingController code8 = TextEditingController();
+  TextEditingController code9 = TextEditingController();
+  TextEditingController code10 = TextEditingController();
   TextEditingController name = TextEditingController();
+  TextEditingController deskripsi = TextEditingController();
   TextEditingController unit = TextEditingController();
   TextEditingController takeprice = TextEditingController();
   TextEditingController price = TextEditingController();
@@ -37,10 +47,22 @@ class _TambahBarangState extends State<TambahBarang> {
       body: Container(
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
-          child: Column(
+          child: ListView(
             children: [
               const SizedBox(
                 height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Code 1',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
               ),
               Container(
                 width: width(context),
@@ -53,7 +75,7 @@ class _TambahBarangState extends State<TambahBarang> {
                   ),
                 ),
                 child: TextField(
-                  controller: code,
+                  controller: code1,
                   decoration: InputDecoration(
                     hintText: "Code",
                     border: OutlineInputBorder(
@@ -64,6 +86,333 @@ class _TambahBarangState extends State<TambahBarang> {
               ),
               const SizedBox(
                 height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Code 2',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: width(context),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                ),
+                child: TextField(
+                  controller: code2,
+                  decoration: InputDecoration(
+                    hintText: "Code",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Code 3',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: width(context),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                ),
+                child: TextField(
+                  controller: code3,
+                  decoration: InputDecoration(
+                    hintText: "Code",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Code 4',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: width(context),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                ),
+                child: TextField(
+                  controller: code4,
+                  decoration: InputDecoration(
+                    hintText: "Code",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Code 5',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: width(context),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                ),
+                child: TextField(
+                  controller: code5,
+                  decoration: InputDecoration(
+                    hintText: "Code",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Code 6',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: width(context),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                ),
+                child: TextField(
+                  controller: code6,
+                  decoration: InputDecoration(
+                    hintText: "Code",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Code 7',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: width(context),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                ),
+                child: TextField(
+                  controller: code7,
+                  decoration: InputDecoration(
+                    hintText: "Code",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Code 8',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: width(context),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                ),
+                child: TextField(
+                  controller: code8,
+                  decoration: InputDecoration(
+                    hintText: "Code",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Code 9',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: width(context),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                ),
+                child: TextField(
+                  controller: code9,
+                  decoration: InputDecoration(
+                    hintText: "Code",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Code 10',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: width(context),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                ),
+                child: TextField(
+                  controller: code10,
+                  decoration: InputDecoration(
+                    hintText: "Code",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Nama',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
               ),
               Container(
                 width: width(context),
@@ -88,6 +437,53 @@ class _TambahBarangState extends State<TambahBarang> {
               const SizedBox(
                 height: 10,
               ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Deskripsi',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: width(context),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                ),
+                child: TextField(
+                  controller: deskripsi,
+                  decoration: InputDecoration(
+                    hintText: "Deskripsi",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Unit',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
               Container(
                 width: width(context),
                 decoration: BoxDecoration(
@@ -110,6 +506,18 @@ class _TambahBarangState extends State<TambahBarang> {
               ),
               const SizedBox(
                 height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Take Price',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
               ),
               Container(
                 width: width(context),
@@ -135,6 +543,18 @@ class _TambahBarangState extends State<TambahBarang> {
               const SizedBox(
                 height: 10,
               ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Harga',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: height(context) * 0.021),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
               Container(
                 width: width(context),
                 decoration: BoxDecoration(
@@ -156,12 +576,27 @@ class _TambahBarangState extends State<TambahBarang> {
                   ),
                 ),
               ),
-              const Spacer(),
+              const SizedBox(
+                height: 20,
+              ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: InkWell(
                   onTap: () {
-                    product.addItem(code.text, name.text, unit.text,
+                    product.addItem(
+                        code1.text,
+                        code2.text,
+                        code3.text,
+                        code4.text,
+                        code5.text,
+                        code6.text,
+                        code7.text,
+                        code8.text,
+                        code9.text,
+                        code10.text,
+                        name.text,
+                        deskripsi.text,
+                        unit.text,
                         takeprice.text, price.text);
                   },
                   child: Container(
