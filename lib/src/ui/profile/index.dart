@@ -114,6 +114,11 @@ class _ProfileUIState extends State<ProfileUI> {
                 onTap: () {},
               ),
               _itemProfile(
+                icon: Icons.add_business,
+                title: 'Produk',
+                onTap: () => Get.toNamed(ListBarang.routeName),
+              ),
+              _itemProfile(
                 icon: Icons.settings,
                 title: 'Pengaturan Printer',
                 onTap: () => Get.toNamed(PrintSettingUI.routeName),
@@ -123,10 +128,6 @@ class _ProfileUIState extends State<ProfileUI> {
                 title: 'Tentang',
                 onTap: () {},
               ),
-              _itemProfile(
-                  icon: Icons.add_business,
-                  title: 'Produk',
-                  onTap: () => Get.toNamed(ListBarang.routeName))
             ],
           ),
         ),
