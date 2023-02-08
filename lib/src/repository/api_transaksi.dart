@@ -9,7 +9,7 @@ import 'package:kasir_app/src/repository/s_preference.dart';
 class ApiTransaksi extends GetConnect {
   final String url = '$globalApi/api';
 
-  // ============ Sampah ============
+  // ============ Transaksi ============
 
   Future<Response> getTransaksi({
     int page = 1,
@@ -29,6 +29,16 @@ class ApiTransaksi extends GetConnect {
     String token = await getToken();
 
     var res = await post('$url/transaction', jsonEncode(data), headers: {
+      'Authorization': token,
+      'Accept': 'application/json',
+    });
+
+    return getRes(res);
+  }
+  Future<Response> editTransaksi(dynamic data, int id) async {
+    String token = await getToken();
+
+    var res = await put('$url/transaction/$id', jsonEncode(data), headers: {
       'Authorization': token,
       'Accept': 'application/json',
     });

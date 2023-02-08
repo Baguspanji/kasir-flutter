@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/route_config.dart';
+import 'package:kasir_app/src/controller/cart_controller.dart';
+import 'package:kasir_app/src/model/product_model.dart';
 import 'package:kasir_app/src/model/transaksi_model.dart';
 import 'package:kasir_app/src/model/user_model.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
 import 'package:kasir_app/src/ui/components/struk_print.dart';
+import 'package:kasir_app/src/ui/nav_ui.dart';
 
 import '../../config/size_config.dart';
 
@@ -21,7 +24,9 @@ class TransaksiDetailUI extends StatefulWidget {
 
 class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
   final args = Get.arguments as CommonArgument<TransaksiModel>;
-  final print = StrukPrintCart();
+
+  final CartController conCart = Get.put(CartController());
+  final print1 = StrukPrintCart();
 
   @override
   void initState() {
@@ -153,7 +158,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: primaryColor,
+                  backgroundColor: primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -172,7 +177,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                         ))
                   ];
 
-                  print.sample(
+                  print1.sample(
                     cart,
                     appName: data.name ?? '',
                     appAddress: data.address ?? '',
@@ -186,6 +191,38 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                   );
                 },
                 child: Text("Cetak", style: TextStyle(fontSize: 18)),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: width(context),
+              height: height(context) * 0.05,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.amber,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () async {
+                  conCart.status.value = "edit";
+                  conCart.idEdit.value = args.id!;
+                  // print(conCart.status.value);
+                  args.object!.details!
+                      .map((e) => conCart.addCart(CartModel(
+                          int.parse(e.itemId!),
+                          int.parse(e.price!),
+                          int.parse(e.quantity!),
+                          e.item)))
+                      .toList();
+
+                  Get.offAndToNamed(NavUI.routeName);
+                  // print(item);
+                },
+                child: Text("Edit", style: TextStyle(fontSize: 18)),
               ),
             ),
             SizedBox(height: height(context) * 0.01),

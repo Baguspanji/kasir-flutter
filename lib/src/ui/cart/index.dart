@@ -16,11 +16,16 @@ class CartUI extends StatefulWidget {
 
 class _CartUIState extends State<CartUI> {
   final conCart = Get.find<CartController>();
-
   CartModel cartEdit = CartModel(0, 0, 0, null);
   final _formName = TextEditingController();
   final _formPrice = TextEditingController();
   final _formQty = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(conCart.status.value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +49,7 @@ class _CartUIState extends State<CartUI> {
               ),
               InkWell(
                 onTap: () {
+                  conCart.status.value = "new";
                   conCart.clearCart();
                   setState(() {});
                 },
@@ -120,13 +126,17 @@ class _CartUIState extends State<CartUI> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: primaryColor,
+                    backgroundColor: conCart.status.value == "new"
+                        ? primaryColor
+                        : Colors.amber,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                   onPressed: () => Get.toNamed(CartDetailUI.routeName),
-                  child: Text("Proses", style: TextStyle(fontSize: 18)),
+                  child: conCart.status.value == "edit"
+                      ? Text("Edit", style: TextStyle(fontSize: 18))
+                      : Text("Proses", style: TextStyle(fontSize: 18)),
                 ),
               ),
               SizedBox(height: height(context) * 0.01),

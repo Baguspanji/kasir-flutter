@@ -312,19 +312,21 @@ class _HomeUIState extends State<HomeUI> {
                 border: Border.all(color: Colors.black12),
               ),
               child: IconButton(
-                padding: EdgeInsets.zero,
-                icon: Icon(
-                  Icons.add,
-                  size: 30,
-                  color: Colors.black45,
-                ),
-                onPressed: () => conCart.addCart(CartModel(
-                  item.id!,
-                  int.parse(item.price!),
-                  1,
-                  item,
-                )),
-              ),
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    Icons.add,
+                    size: 30,
+                    color: Colors.black45,
+                  ),
+                  onPressed: () {
+                    // conCart.status.value = "new";
+                    conCart.addCart(CartModel(
+                      item.id!,
+                      int.parse(item.price!),
+                      1,
+                      item,
+                    ));
+                  }),
             ),
           ),
         ],
@@ -429,6 +431,7 @@ class _HomeUIState extends State<HomeUI> {
                       color: Colors.black45,
                     ),
                     onPressed: () {
+                      // conCart.status.value = "new";
                       conCart.addCart(
                         CartModel(
                           item.id!,

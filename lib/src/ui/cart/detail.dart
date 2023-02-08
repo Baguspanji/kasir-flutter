@@ -161,7 +161,9 @@ class _CartDetailUIState extends State<CartDetailUI> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: primaryColor,
+                    backgroundColor: conCart.status.value == "new"
+                        ? primaryColor
+                        : Colors.amber,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -171,35 +173,65 @@ class _CartDetailUIState extends State<CartDetailUI> {
 
                     var data =
                         AppModel.fromJson(jsonDecode(app)['data']['app']);
-
-                    var res = await conCart.addTransaction(
-                      name: _formName.text,
-                      amount: _formAmount.text,
-                    );
-
-                    if (res.statusCode == 201) {
-                      print.sample(
-                        cartData,
-                        appName: data.name ?? '',
-                        appAddress: data.address ?? '',
-                        appPhone: data.phone ?? '',
-                        openTime: data.openTime ?? '',
-                        strukMessage: data.strukMessage ?? '',
-                        total: total,
-                        buyerName: _formName.text,
-                        amountPaid: _formAmount.text,
+                    if (conCart.status.value == "new") {
+                      var res = await conCart.addTransaction(
+                        name: _formName.text,
+                        amount: _formAmount.text,
                       );
 
-                      conCart.clearCart();
-                      getToast('Berhasil menambahkan transaksi');
-                      Future.delayed(Duration(seconds: 2), () {
-                        Navigator.pop(context);
-                      });
+                      if (res.statusCode == 201) {
+                        print.sample(
+                          cartData,
+                          appName: data.name ?? '',
+                          appAddress: data.address ?? '',
+                          appPhone: data.phone ?? '',
+                          openTime: data.openTime ?? '',
+                          strukMessage: data.strukMessage ?? '',
+                          total: total,
+                          buyerName: _formName.text,
+                          amountPaid: _formAmount.text,
+                        );
+
+                        conCart.clearCart();
+                        getToast('Berhasil menambahkan transaksi');
+                        Future.delayed(Duration(seconds: 2), () {
+                          Navigator.pop(context);
+                        });
+                      } else {
+                        getToast('Gagal menambahkan transaksi');
+                      }
                     } else {
-                      getToast('Gagal menambahkan transaksi');
+                      var res = await conCart.editTransaction(
+                        name: _formName.text,
+                        amount: _formAmount.text,
+                      );
+
+                      if (res.statusCode == 201) {
+                        print.sample(
+                          cartData,
+                          appName: data.name ?? '',
+                          appAddress: data.address ?? '',
+                          appPhone: data.phone ?? '',
+                          openTime: data.openTime ?? '',
+                          strukMessage: data.strukMessage ?? '',
+                          total: total,
+                          buyerName: _formName.text,
+                          amountPaid: _formAmount.text,
+                        );
+                        conCart.status.value = "new";
+                        conCart.clearCart();
+                        getToast('Berhasil Mengedit transaksi');
+                        Future.delayed(Duration(seconds: 2), () {
+                          Navigator.pop(context);
+                        });
+                      } else {
+                        getToast('Gagal Mengedit transaksi');
+                      }
                     }
                   },
-                  child: Text("Proses", style: TextStyle(fontSize: 18)),
+                  child: conCart.status.value == "new"
+                      ? const Text("Proses", style: TextStyle(fontSize: 18))
+                      : const Text("Edit", style: TextStyle(fontSize: 18)),
                 ),
               ),
               SizedBox(height: height(context) * 0.01),

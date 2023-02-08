@@ -161,7 +161,7 @@ class _TransaksiUIState extends State<TransaksiUI> {
                   SizedBox(height: 4),
                   Text(
                     item.name ?? '-',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 10,
                       color: Colors.black45,
                       fontWeight: FontWeight.w400,

@@ -10,13 +10,15 @@ import 'package:kasir_app/src/repository/s_preference.dart';
 
 class CartController extends GetxController {
   final api = ApiTransaksi();
-
+  RxString status = "new".obs;
+  RxInt idEdit = 0.obs;
   final listCart = <CartModel>[].obs;
 
   void addCart(CartModel cart) {
     var allCart = listCart.value;
     if (allCart.isEmpty) {
       listCart.add(cart);
+      print(status.value);
       return;
     }
 
@@ -104,5 +106,23 @@ class CartController extends GetxController {
     };
 
     return await api.createTransaksi(data);
+  }
+
+  // EditTransaction
+  Future<Response<dynamic>> editTransaction(
+      {required String name, required String amount}) async {
+    dynamic data = {
+      if (name != '') 'name': name,
+      if (amount != '') 'amount_paid': amount,
+      'items': [
+        ...listCart.value.map((e) => {
+              'id': e.id,
+              'quantity': e.qty,
+              'price': e.price,
+            }),
+      ],
+    };
+
+    return await api.editTransaksi(data, idEdit.value);
   }
 }
