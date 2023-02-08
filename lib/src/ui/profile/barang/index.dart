@@ -5,10 +5,10 @@ import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/deleteitem_controller.dart';
 import 'package:kasir_app/src/controller/product_controller.dart';
 import 'package:kasir_app/src/model/product_model.dart';
-import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/ui/components/custom_components.dart';
-import 'package:kasir_app/src/ui/profile/editbarang.dart';
-import 'package:kasir_app/src/ui/profile/tambahbarang.dart';
+import 'package:kasir_app/src/ui/components/modal.dart';
+import 'package:kasir_app/src/ui/profile/barang/edit.dart';
+import 'package:kasir_app/src/ui/profile/barang/tambah.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ListBarang extends StatefulWidget {
@@ -51,23 +51,34 @@ class _ListBarangState extends State<ListBarang> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        centerTitle: true,
-        title: Text(
-          "List Barang",
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.black87,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-      body: Container(
-        child: Column(
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
           children: [
+            SizedBox(height: height(context) * 0.01),
+            Container(
+              width: width(context),
+              height: height(context) * 0.04,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(Icons.arrow_back_ios),
+                  ),
+                  Text(
+                    'Daftar Barang',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Spacer(),
+                ],
+              ),
+            ),
             SizedBox(height: height(context) * 0.02),
             Column(
               children: [
@@ -231,18 +242,32 @@ class _ListBarangState extends State<ListBarang> {
           ),
           SizedBox(width: 10),
           InkWell(
-            onTap: () => Get.toNamed(EditBarang.routeName, arguments: [
-              item.id,
-              item.code1,
-              item.name,
-              item.unit,
-              item.takePrice,
-              item.price
-            ]),
+            onTap: () => Get.toNamed(
+              EditBarang.routeName,
+              arguments: [
+                item.id,
+                item.code1,
+                item.code2,
+                item.code3,
+                item.code4,
+                item.code5,
+                item.code6,
+                item.code7,
+                item.code8,
+                item.code9,
+                item.code10,
+                item.name,
+                item.description,
+                item.unit,
+                item.takePrice,
+                item.price,
+              ],
+            ),
             child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.amber.shade300),
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.amber.shade300,
+              ),
               child: const Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Icon(
@@ -257,11 +282,17 @@ class _ListBarangState extends State<ListBarang> {
           ),
           InkWell(
             onTap: () {
-              setState(() {
-                deleteItem.hapusProduk(item.id!);
-                _onRefresh();
-                print(item.id);
-              });
+              Modals.showModal(
+                title: 'Peringatan',
+                subTitle: 'Apakah anda yakin ingin menghapus data ini?',
+                confirmText: 'Ya',
+                confirmAction: () {
+                  deleteItem.hapusProduk(item.id!);
+                  _onRefresh();
+                },
+                cancleText: 'Tidak',
+                cancleAction: () => Get.back(),
+              );
             },
             child: Container(
               decoration: BoxDecoration(

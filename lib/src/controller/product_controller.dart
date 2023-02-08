@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:kasir_app/src/model/product_model.dart';
 import 'package:kasir_app/src/repository/api_product.dart';
-import 'package:kasir_app/src/ui/profile/barang.dart';
 
 class ProductController extends GetxController {
   final api = ApiProduct();
@@ -43,41 +42,45 @@ class ProductController extends GetxController {
   }
 
   Future<bool> addItem(
-      String code1,
-      String code2,
-      String code3,
-      String code4,
-      String code5,
-      String code6,
-      String code7,
-      String code8,
-      String code9,
-      String code10,
-      String name,
-      String deskripsi,
-      String unit,
-      String takeprice,
-      String price) async {
+    String code1,
+    String code2,
+    String code3,
+    String code4,
+    String code5,
+    String code6,
+    String code7,
+    String code8,
+    String code9,
+    String code10,
+    String name,
+    String deskripsi,
+    String perUnit,
+    String unit,
+    String takeprice,
+    String price,
+  ) async {
     try {
-      final res = await api.addItem(data: {
-        "code_1": code1,
-        "code_2": code2,
-        "code_3": code3,
-        "code_4": code4,
-        "code_5": code5,
-        "code_6": code6,
-        "code_7": code7,
-        "code_8": code8,
-        "code_9": code9,
-        "code_10": code10,
-        "name": name,
-        "description": deskripsi,
-        "unit": unit,
-        "take_price": takeprice,
-        "price": price
-      });
+      final res = await api.addItem(
+        data: {
+          "code_1": code1,
+          "code_2": code2,
+          "code_3": code3,
+          "code_4": code4,
+          "code_5": code5,
+          "code_6": code6,
+          "code_7": code7,
+          "code_8": code8,
+          "code_9": code9,
+          "code_10": code10,
+          "name": name,
+          "description": deskripsi,
+          "unit": unit,
+          "per_unit": perUnit,
+          "take_price": takeprice,
+          "price": price,
+        },
+      );
       if (res.body != null) {
-        Get.toNamed(ListBarang.routeName);
         return true;
       } else {
         return false;
@@ -87,18 +90,49 @@ class ProductController extends GetxController {
       return false;
     }
   }
-  Future<bool> editItem(int id, String code, String name, String unit,
-      String takeprice, String price) async {
+
+  Future<bool> editItem(
+    int id,
+    String code1,
+    String code2,
+    String code3,
+    String code4,
+    String code5,
+    String code6,
+    String code7,
+    String code8,
+    String code9,
+    String code10,
+    String name,
+    String deskripsi,
+    String perUnit,
+    String unit,
+    String takeprice,
+    String price,
+  ) async {
     try {
-      final res = await api.editItem(id, data: {
-        "code_1": code,
-        "name": name,
-        "unit": unit,
-        "take_price": takeprice,
-        "price": price
-      });
+      final res = await api.editItem(
+        id,
+        data: {
+          "code_1": code1,
+          "code_2": code2,
+          "code_3": code3,
+          "code_4": code4,
+          "code_5": code5,
+          "code_6": code6,
+          "code_7": code7,
+          "code_8": code8,
+          "code_9": code9,
+          "code_10": code10,
+          "name": name,
+          "description": deskripsi,
+          "unit": unit,
+          "per_unit": perUnit,
+          "take_price": takeprice,
+          "price": price,
+        },
+      );
       if (res.body != null) {
-        Get.toNamed(ListBarang.routeName);
         return true;
       } else {
         return false;

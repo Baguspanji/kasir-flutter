@@ -4,7 +4,7 @@ import 'package:kasir_app/src/config/constans_assets.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/auth_controller.dart';
-import 'package:kasir_app/src/ui/profile/barang.dart';
+import 'package:kasir_app/src/ui/profile/barang/index.dart';
 import 'package:kasir_app/src/ui/profile/print_setting.dart';
 
 class ProfileUI extends StatefulWidget {

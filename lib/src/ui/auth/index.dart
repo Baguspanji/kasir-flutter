@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kasir_app/src/config/constans_assets.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/auth_controller.dart';
@@ -17,6 +18,8 @@ class _AuthUIState extends State<AuthUI> {
 
   final emailText = TextEditingController();
   final passwordText = TextEditingController();
+
+  bool isPassword = true;
 
   void onLogin() async {
     if (emailText.text == '' || passwordText.text == '') {
@@ -41,16 +44,34 @@ class _AuthUIState extends State<AuthUI> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: height(context) * 0.2),
-            Text(
-              "Kasir",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
+            SizedBox(height: height(context) * 0.17),
+            Container(
+              width: 200,
+              height: 200,
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.orangeAccent.shade200,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Image(
+                image: AssetImage(logo),
               ),
             ),
-            SizedBox(height: height(context) * 0.1),
+            SizedBox(height: 20),
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                'Kasir JJ',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            SizedBox(height: height(context) * 0.07),
             _input(
               context,
               "Username",
@@ -62,14 +83,26 @@ class _AuthUIState extends State<AuthUI> {
             ),
             SizedBox(height: 20),
             _input(
-                context,
-                "Password",
-                Icon(
-                  Icons.key,
+              context,
+              "Password",
+              Icon(
+                Icons.key,
+                color: Colors.grey,
+              ),
+              passwordText,
+              isPassword: isPassword,
+              suffixIcon: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isPassword = !isPassword;
+                  });
+                },
+                child: Icon(
+                  isPassword ? Icons.visibility : Icons.visibility_off,
                   color: Colors.grey,
                 ),
-                passwordText,
-                isPassword: true),
+              ),
+            ),
             SizedBox(height: 40),
             SizedBox(
               width: width(context),
@@ -105,6 +138,7 @@ class _AuthUIState extends State<AuthUI> {
     Icon icon,
     TextEditingController controller, {
     bool isPassword = false,
+    Widget suffixIcon = const SizedBox(),
   }) {
     return Container(
       width: width(context),
@@ -129,6 +163,7 @@ class _AuthUIState extends State<AuthUI> {
         decoration: InputDecoration(
           hintText: hint,
           prefixIcon: icon,
+          suffixIcon: suffixIcon,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
