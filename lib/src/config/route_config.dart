@@ -4,10 +4,10 @@ import 'package:kasir_app/src/ui/auth/index.dart';
 import 'package:kasir_app/src/ui/cart/detail.dart';
 import 'package:kasir_app/src/ui/cart/index.dart';
 import 'package:kasir_app/src/ui/nav_ui.dart';
-import 'package:kasir_app/src/ui/profile/barang.dart';
-import 'package:kasir_app/src/ui/profile/editbarang.dart';
+import 'package:kasir_app/src/ui/profile/barang/index.dart';
+import 'package:kasir_app/src/ui/profile/barang/edit.dart';
 import 'package:kasir_app/src/ui/profile/print_setting.dart';
-import 'package:kasir_app/src/ui/profile/tambahbarang.dart';
+import 'package:kasir_app/src/ui/profile/barang/tambah.dart';
 import 'package:kasir_app/src/ui/splash/index.dart';
 import 'package:kasir_app/src/ui/transaksi/detail.dart';
 
