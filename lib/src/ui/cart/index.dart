@@ -49,7 +49,6 @@ class _CartUIState extends State<CartUI> {
               ),
               InkWell(
                 onTap: () {
-                  conCart.status.value = "new";
                   conCart.clearCart();
                   setState(() {});
                 },
@@ -126,17 +125,13 @@ class _CartUIState extends State<CartUI> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: conCart.status.value == "new"
-                        ? primaryColor
-                        : Colors.amber,
+                    backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                   onPressed: () => Get.toNamed(CartDetailUI.routeName),
-                  child: conCart.status.value == "edit"
-                      ? Text("Edit", style: TextStyle(fontSize: 18))
-                      : Text("Proses", style: TextStyle(fontSize: 18)),
+                  child: Text("Proses", style: TextStyle(fontSize: 18)),
                 ),
               ),
               SizedBox(height: height(context) * 0.01),
