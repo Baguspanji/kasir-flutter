@@ -13,6 +13,7 @@ class AuthController extends GetxController {
     try {
       final res =
           await api.login(data: {"username": username, "password": password});
+      print(res.body);
       if (res.body['access_token'] != null) {
         setToken('Bearer ${res.body['access_token']}');
         setRole(res.body['role']);

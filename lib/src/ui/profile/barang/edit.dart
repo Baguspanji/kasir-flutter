@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/product_controller.dart';
+import 'package:kasir_app/src/ui/profile/barang/index.dart';
 
 class EditBarang extends StatefulWidget {
   static const routeName = '/profile/editbarang';
@@ -402,6 +403,7 @@ class _EditBarangState extends State<EditBarang> {
 
                     // back to list
                     Get.back();
+                    // Get.offAndToNamed(ListBarang.routeName);
                   } else {
                     getToast('Gagal mengubah barang');
                   }
