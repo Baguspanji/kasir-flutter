@@ -178,7 +178,7 @@ class _HomeUIState extends State<HomeUI> {
 
             if (conProduct.isLoading.value) {
               return Container(
-                height: height(context) * 0.82,
+                height: height(context) * 0.8,
                 child: ListView(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   children: [
@@ -198,7 +198,7 @@ class _HomeUIState extends State<HomeUI> {
 
             if (products.isEmpty) {
               return Container(
-                height: height(context) * 0.82,
+                height: height(context) * 0.8,
                 child: CustomEmptyData(
                   height: height(context) * 0.9,
                   text: 'Data tidak ditemukan',
@@ -213,7 +213,7 @@ class _HomeUIState extends State<HomeUI> {
             return AnimatedContainer(
               height: conCart.totalCart != 0
                   ? height(context) * 0.46
-                  : height(context) * 0.82,
+                  : height(context) * 0.8,
               duration: const Duration(seconds: 1),
               child: CustomRefresh(
                 controller: _refreshController,

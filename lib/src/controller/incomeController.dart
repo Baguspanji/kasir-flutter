@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/model/income_model.dart';
 import 'package:kasir_app/src/repository/api_income.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
+import 'package:open_filex/open_filex.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -53,8 +55,11 @@ class IncomeController extends GetxController {
   }
 
   // export excel
-  Future<void> exportExcel() async {
-    dynamic data = {"date": "2023-02-17", "type": "daily"};
+  Future<void> exportExcel(DateTime dateFrom, String selectType) async {
+    dynamic data = {
+      "date": DateFormat('yyyy-MM-dd').format(dateFrom),
+      "type": selectType == 'Harian' ? 'daily' : 'monthly',
+    };
 
     _permissionReady = await _checkPermission();
     if (_permissionReady) {
@@ -65,6 +70,7 @@ class IncomeController extends GetxController {
         await apiExportExcel(data);
       } catch (e) {
         print('e: $e');
+        getToast('Gagal mengunduh laporan');
       }
     }
   }
@@ -95,11 +101,9 @@ class IncomeController extends GetxController {
     return false;
   }
 
-  // exportExcel
   Future<void> apiExportExcel(dynamic data) async {
     String token = await getToken();
 
-    // download file using http
     var res = await dio.Dio().post(
       '$globalApi/api/transaction-income/export',
       data: {
@@ -115,17 +119,52 @@ class IncomeController extends GetxController {
       ),
     );
 
-    // print('res: ${res.data}');
-    print('status: ${res.statusCode}');
+    // print('status: ${res.statusCode}');
 
-    // Uint8List
     var bytes = res.data;
-
-    // save file
     var file = File('$_localPath/kasir-laporan.xlsx');
-    await file.writeAsBytes(bytes);
+    // await file.writeAsBytes(bytes);
 
     print('file: ${file.path}');
+
+    Get.showSnackbar(
+      GetBar(
+        duration: Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.black87,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        messageText: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Laporan berhasil diunduh',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (file.existsSync()) {
+                  OpenFilex.open(file.path);
+                } else {
+                  getToast('File tidak ditemukan');
+                }
+              },
+              child: Text(
+                'Lihat',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.green.shade600,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> _prepareSaveDir() async {
@@ -141,7 +180,7 @@ class IncomeController extends GetxController {
 
   Future<String?> _findLocalPath() async {
     if (platform == TargetPlatform.android) {
-      return "/storage";
+      return "/storage/emulated/0/Download";
     } else {
       var directory = await getApplicationDocumentsDirectory();
       return directory.path + Platform.pathSeparator + 'Download';

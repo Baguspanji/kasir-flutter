@@ -41,7 +41,7 @@ class Modals {
         right: 16,
         top: 16,
       ),
-      title: 'Peringatan',
+      title: title,
       content: subTitleWidget ??
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),

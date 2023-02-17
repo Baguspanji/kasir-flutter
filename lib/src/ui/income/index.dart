@@ -6,6 +6,7 @@ import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/incomeController.dart';
 import 'package:kasir_app/src/model/income_model.dart';
 import 'package:kasir_app/src/ui/components/custom_components.dart';
+import 'package:kasir_app/src/ui/components/modal.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class IncomeUI extends StatefulWidget {
@@ -15,6 +16,9 @@ class IncomeUI extends StatefulWidget {
 
 class _IncomeUIState extends State<IncomeUI> {
   final conIncome = Get.put(IncomeController());
+
+  DateTime dateFrom = DateTime.now();
+  String selectType = 'Harian';
 
   final _refreshController = RefreshController(initialRefresh: false);
 
@@ -43,6 +47,205 @@ class _IncomeUIState extends State<IncomeUI> {
     super.initState();
   }
 
+  Future<void> _openModalForm() async {
+    await Modals.showModal(
+      title: 'Pilih Tanggal',
+      subTitle: '',
+      subTitleWidget: StatefulBuilder(
+        builder: (context, setState) => formExport(context, setState),
+      ),
+    );
+  }
+
+  Widget formExport(BuildContext context, Function setState) {
+    return Column(
+      children: [
+        SizedBox(height: height(context) * 0.01),
+        Container(
+          width: width(context) * 0.8,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Text(
+                  'Tanggal',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              Container(
+                width: width(context),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                margin: const EdgeInsets.only(bottom: 10, top: 5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 6,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: InkWell(
+                  onTap: () async {
+                    final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: dateFrom,
+                      firstDate: DateTime(2015, 8),
+                      lastDate: DateTime(2101),
+                    );
+                    if (picked != null && picked != DateTime.now())
+                      setState(() {
+                        dateFrom = picked;
+                      });
+                  },
+                  child: Text(
+                    dateFormatddMMMMyyyy(dateFrom),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: height(context) * 0.01),
+        Container(
+          width: width(context) * 0.8,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Text(
+                  'Tipe Laporan',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              Container(
+                width: width(context),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                margin: const EdgeInsets.only(bottom: 10, top: 5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 6,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: selectType,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectType = newValue!;
+                      });
+                    },
+                    items: <String>[
+                      'Harian',
+                      'Bulanan',
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: height(context) * 0.01),
+        Container(
+          width: width(context) * 0.8,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: width(context),
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                margin: const EdgeInsets.only(
+                  bottom: 10,
+                  top: 5,
+                  right: 20,
+                  left: 20,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18),
+                  color: primaryColor,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 6,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: InkWell(
+                  onTap: () {
+                    conIncome.exportExcel(dateFrom, selectType);
+                    Get.back();
+                  },
+                  child: Center(
+                    child: Text(
+                      'Export',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -66,7 +269,8 @@ class _IncomeUIState extends State<IncomeUI> {
                 ),
                 InkWell(
                   onTap: () {
-                    conIncome.exportExcel();
+                    // conIncome.exportExcel();
+                    _openModalForm();
                   },
                   child: Icon(
                     Icons.file_download_outlined,
