@@ -38,6 +38,8 @@ class _IncomeUIState extends State<IncomeUI> {
   @override
   void initState() {
     conIncome.getTransaksi(1);
+
+    conIncome.init();
     super.initState();
   }
 
@@ -60,6 +62,15 @@ class _IncomeUIState extends State<IncomeUI> {
                     fontSize: 20,
                     color: Colors.black87,
                     fontWeight: FontWeight.w600,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    conIncome.exportExcel();
+                  },
+                  child: Icon(
+                    Icons.file_download_outlined,
+                    color: Colors.black87,
                   ),
                 ),
               ],

@@ -6,7 +6,7 @@ import FlutterMacOS
 import Foundation
 
 import blue_thermal_printer
-import path_provider_macos
+import path_provider_foundation
 import shared_preferences_macos
 import sqflite
 

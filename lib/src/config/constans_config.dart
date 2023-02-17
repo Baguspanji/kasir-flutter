@@ -6,7 +6,7 @@ import 'package:kasir_app/src/ui/auth/index.dart';
 import 'size_config.dart';
 import 'dart:ui' as ui;
 
-const globalApi = 'https://kasir.smkalyasini.com';
+const globalApi = 'https://kasirjj.com';
 
 const cardColor = Color(0xFFFAFBFB);
 const primaryColor = Color(0xFF63fbcb);
