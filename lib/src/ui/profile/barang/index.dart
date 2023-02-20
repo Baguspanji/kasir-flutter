@@ -20,6 +20,8 @@ class ListBarang extends StatefulWidget {
 }
 
 class _ListBarangState extends State<ListBarang> {
+  bool _isSearch = false;
+  final _formSearch = TextEditingController();
   final conProduct = Get.put(ProductController());
   DeleteItemController deleteItem = Get.put(DeleteItemController());
   final _refreshController = RefreshController(initialRefresh: false);
@@ -53,6 +55,7 @@ class _ListBarangState extends State<ListBarang> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Column(
           children: [
             SizedBox(height: height(context) * 0.01),
@@ -60,22 +63,62 @@ class _ListBarangState extends State<ListBarang> {
               width: width(context),
               height: height(context) * 0.04,
               margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
+              child: _isSearch
+                  ? CustomTextField(
+                      controller: _formSearch,
+                      hintText: "Cari Produk",
+                      onChanged: (value) {
+                        conProduct.search.value = value;
+                        conProduct.getProduct(1);
+                      },
+                      suffixIcon: InkWell(
+                        onTap: () {
+                          setState(() {
+                            _isSearch = !_isSearch;
+                          });
+
+                          conProduct.search.value = '';
+                          conProduct.getProduct(1);
+                        },
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    )
+                  : Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   IconButton(
                     onPressed: () => Navigator.pop(context),
                     icon: Icon(Icons.arrow_back_ios),
                   ),
-                  Text(
-                    'Daftar Barang',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Spacer(),
+                        const Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Text(
+                            'Daftar Barang',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                _isSearch = !_isSearch;
+                              });
+                            },
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
