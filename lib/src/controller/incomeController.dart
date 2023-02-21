@@ -56,18 +56,16 @@ class IncomeController extends GetxController {
 
   // export excel
   Future<void> exportExcel(DateTime dateFrom, String selectType) async {
-    dynamic data = {
-      "date": DateFormat('yyyy-MM-dd').format(dateFrom),
-      "type": selectType == 'Harian' ? 'daily' : 'monthly',
-    };
-
     _permissionReady = await _checkPermission();
     if (_permissionReady) {
       await _prepareSaveDir();
       print("Downloading");
 
       try {
-        await apiExportExcel(data);
+        await apiExportExcel(
+          DateFormat('yyyy-MM-dd').format(dateFrom),
+          selectType == 'Harian' ? 'daily' : 'monthly',
+        );
       } catch (e) {
         print('e: $e');
         getToast('Gagal mengunduh laporan');
@@ -101,29 +99,39 @@ class IncomeController extends GetxController {
     return false;
   }
 
-  Future<void> apiExportExcel(dynamic data) async {
+  Future<void> apiExportExcel(String date, String type) async {
     String token = await getToken();
 
     var res = await dio.Dio().post(
       '$globalApi/api/transaction-income/export',
       data: {
-        "date": "2023-02-17",
-        "type": "daily",
+        'date': date,
+        'type': type,
       },
       options: dio.Options(
         responseType: dio.ResponseType.bytes,
         headers: {
           'Authorization': token,
           'Accept': 'application/json',
+          'Content-Type': 'application/json',
         },
       ),
     );
 
     // print('status: ${res.statusCode}');
+    if (type == 'monthly') {
+      date = DateFormat('yyyy-MM').format(DateTime.parse(date));
+    }
 
     var bytes = res.data;
-    var file = File('$_localPath/kasir-laporan.xlsx');
-    // await file.writeAsBytes(bytes);
+    var file = File('$_localPath/kasir-laporan-$date.xlsx');
+
+    if (file.existsSync()) {
+      await file.delete();
+      print('file deleted');
+    }
+
+    await file.writeAsBytes(bytes);
 
     print('file: ${file.path}');
 
