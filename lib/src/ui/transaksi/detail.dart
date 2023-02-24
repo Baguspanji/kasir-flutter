@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
@@ -12,6 +13,8 @@ import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
 import 'package:kasir_app/src/ui/components/struk_print.dart';
 import 'package:kasir_app/src/ui/nav_ui.dart';
+import 'package:kasir_app/src/ui/transaksi/share_struk.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../../config/size_config.dart';
 
@@ -28,9 +31,56 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
   final CartController conCart = Get.put(CartController());
   final print1 = StrukPrintCart();
 
+  int _counter = 0;
+  Uint8List? _imageFile;
+
+  //Create an instance of ScreenshotController
+  ScreenshotController screenshotController = ScreenshotController();
+
   @override
   void initState() {
     super.initState();
+  }
+
+  void scren(TransaksiModel transaksi) async {
+    var container = ShareStruk.struk(transaksi);
+
+    screenshotController
+        .captureFromWidget(
+      InheritedTheme.captureAll(context, Material(child: container)),
+      delay: Duration(seconds: 1),
+      pixelRatio: 1,
+    )
+        .then((capturedImage) {
+      ShowCapturedWidget(
+        context,
+        capturedImage,
+      );
+    });
+  }
+
+  Future<dynamic> ShowCapturedWidget(
+      BuildContext context, Uint8List capturedImage) {
+    return showDialog(
+      useSafeArea: false,
+      context: context,
+      builder: (context) => Scaffold(
+        appBar: AppBar(
+          title: Text("Captured widget screenshot"),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Center(
+                child: capturedImage != null
+                    ? Image.memory(capturedImage)
+                    : Container(),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -61,9 +111,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                   ),
                   Spacer(),
                   IconButton(
-                    // onPressed: () => Get.to(ShareStruk(
-                    //   transaksi: args.object!,
-                    // )),
+                    // onPressed: () => scren(args.object!),
                     onPressed: () => getToast('Fitur belum tersedia'),
                     icon: Icon(Icons.share),
                   ),

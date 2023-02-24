@@ -1,8 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/model/transaksi_model.dart';
-import 'package:screenshot/screenshot.dart';
 
 class ShareStruk {
   static Widget struk(TransaksiModel transaksi) {
@@ -13,6 +11,7 @@ class ShareStruk {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 20),
             Text(
               'Toko Palapa',
               style: TextStyle(
@@ -68,7 +67,7 @@ class ShareStruk {
               ),
             ),
             Text(
-              '=============================',
+              '===========================',
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.black87,
@@ -76,13 +75,13 @@ class ShareStruk {
                 height: 1.2,
               ),
             ),
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 4; i++)
               ...transaksi.details!.map((e) {
                 String s = e.item!.unit ?? "-";
                 final idx = s.split("/");
 
                 int qty = int.parse(idx[0]) * int.parse(e.quantity ?? '0');
-                String unit = '$qty/${idx[1]}';
+                String unit = '$qty ${idx[1]}';
 
                 String desc =
                     "$unit x ${toCurrency(double.parse(e.price ?? '0'))}";
@@ -127,7 +126,7 @@ class ShareStruk {
                 );
               }),
             Text(
-              '=============================',
+              '===========================',
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.black87,
@@ -233,6 +232,7 @@ class ShareStruk {
                 height: 1.2,
               ),
             ),
+            SizedBox(height: 20),
           ],
         ),
       ),
