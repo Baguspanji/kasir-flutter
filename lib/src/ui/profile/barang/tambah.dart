@@ -89,10 +89,14 @@ class _TambahBarangState extends State<TambahBarang> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.arrow_back_ios),
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      size: 20,
+                    ),
                   ),
+                  SizedBox(width: width(context) * 0.02),
                   Text(
                     'Tambah Barang',
                     style: TextStyle(
@@ -334,10 +338,9 @@ class _TambahBarangState extends State<TambahBarang> {
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 20),
-              padding: const EdgeInsets.only(bottom: 20),
+            SizedBox(height: height(context) * 0.02),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
               child: InkWell(
                 onTap: () async {
                   bool res = await productCon.addItem(
@@ -373,7 +376,7 @@ class _TambahBarangState extends State<TambahBarang> {
                 },
                 child: Container(
                   width: width(context),
-                  height: height(context) * 0.050,
+                  height: height(context) * 0.05,
                   decoration: BoxDecoration(
                       color: Colors.green,
                       borderRadius: BorderRadius.circular(17)),

@@ -53,12 +53,16 @@ class _CartDetailUIState extends State<CartDetailUI> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: Icon(Icons.arrow_back_ios),
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        size: 20,
+                      ),
                     ),
+                    SizedBox(width: width(context) * 0.02),
                     Text(
-                      'Detail Transaksi',
+                      'Detail Keranjang',
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black87,
@@ -171,34 +175,33 @@ class _CartDetailUIState extends State<CartDetailUI> {
 
                     var data =
                         AppModel.fromJson(jsonDecode(app)['data']['app']);
-                 
-                      var res = await conCart.addTransaction(
-                        name: _formName.text,
-                        amount: _formAmount.text,
+
+                    var res = await conCart.addTransaction(
+                      name: _formName.text,
+                      amount: _formAmount.text,
+                    );
+
+                    if (res.statusCode == 201) {
+                      print.sample(
+                        cartData,
+                        appName: data.name ?? '',
+                        appAddress: data.address ?? '',
+                        appPhone: data.phone ?? '',
+                        openTime: data.openTime ?? '',
+                        strukMessage: data.strukMessage ?? '',
+                        total: total,
+                        buyerName: _formName.text,
+                        amountPaid: _formAmount.text,
                       );
 
-                      if (res.statusCode == 201) {
-                        print.sample(
-                          cartData,
-                          appName: data.name ?? '',
-                          appAddress: data.address ?? '',
-                          appPhone: data.phone ?? '',
-                          openTime: data.openTime ?? '',
-                          strukMessage: data.strukMessage ?? '',
-                          total: total,
-                          buyerName: _formName.text,
-                          amountPaid: _formAmount.text,
-                        );
-
-                        conCart.clearCart();
-                        getToast('Berhasil menambahkan transaksi');
-                        Future.delayed(Duration(seconds: 2), () {
-                          Navigator.pop(context);
-                        });
-                      } else {
-                        getToast('Gagal menambahkan transaksi');
+                      conCart.clearCart();
+                      getToast('Berhasil menambahkan transaksi');
+                      Future.delayed(Duration(seconds: 2), () {
+                        Navigator.pop(context);
+                      });
+                    } else {
+                      getToast('Gagal menambahkan transaksi');
                     }
-                   
                   },
                   child: Text("Proses", style: TextStyle(fontSize: 18)),
                 ),

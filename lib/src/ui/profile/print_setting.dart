@@ -128,8 +128,16 @@ class _PrintSettingUIState extends State<PrintSettingUI> {
               height: height(context) * 0.04,
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      size: 20,
+                    ),
+                  ),
+                  SizedBox(width: width(context) * 0.02),
                   Text(
                     'Pengaturan Printer',
                     style: TextStyle(
@@ -138,6 +146,7 @@ class _PrintSettingUIState extends State<PrintSettingUI> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                  Spacer(),
                 ],
               ),
             ),

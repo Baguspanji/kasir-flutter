@@ -37,7 +37,7 @@ class AuthController extends GetxController {
   Future<void> getUser() async {
     try {
       final res = await api.getUser();
-      if (res.body['data'] != null) {
+      if (res.statusCode == 200) {
         user.value = UserModel.fromJson(res.body['data']);
         await setUser(res.bodyString!);
       }

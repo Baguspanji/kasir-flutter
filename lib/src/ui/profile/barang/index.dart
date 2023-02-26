@@ -87,24 +87,25 @@ class _ListBarangState extends State<ListBarang> {
                       ),
                     )
                   : Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.arrow_back_ios),
-                  ),
-                        const Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Text(
-                            'Daftar Barang',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w600,
-                            ),
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            size: 20,
                           ),
                         ),
-                        const Spacer(),
+                        SizedBox(width: width(context) * 0.02),
+                        Text(
+                          'Daftar Barang',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Spacer(),
                         Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: InkWell(
@@ -119,8 +120,8 @@ class _ListBarangState extends State<ListBarang> {
                             ),
                           ),
                         ),
-                ],
-              ),
+                      ],
+                    ),
             ),
             SizedBox(height: height(context) * 0.02),
             Column(
@@ -180,28 +181,29 @@ class _ListBarangState extends State<ListBarang> {
                 }),
               ],
             ),
+            SizedBox(height: height(context) * 0.02),
             Padding(
-              padding: const EdgeInsets.only(
-                left: 20,
-                right: 20,
-              ),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               child: InkWell(
                 onTap: () => Get.toNamed(TambahBarang.routeName),
                 child: Container(
-                    width: width(context),
-                    height: height(context) * 0.050,
-                    decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(17)),
-                    child: const Center(
-                        child: Text(
+                  width: width(context),
+                  height: height(context) * 0.05,
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(17),
+                  ),
+                  child: const Center(
+                    child: Text(
                       'Tambah',
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.white,
                         // fontWeight: FontWeight.w600,
                       ),
-                    ))),
+                    ),
+                  ),
+                ),
               ),
             )
           ],
