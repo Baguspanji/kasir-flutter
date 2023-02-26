@@ -210,11 +210,8 @@ class _HomeUIState extends State<HomeUI> {
               );
             }
 
-            return AnimatedContainer(
-              height: conCart.totalCart != 0
-                  ? height(context) * 0.36
-                  : height(context) * 0.8,
-              duration: const Duration(seconds: 1),
+            return Container(
+              height: height(context) * 0.8,
               child: CustomRefresh(
                 controller: _refreshController,
                 onRefresh: () => _onRefresh(),

@@ -10,6 +10,8 @@ import 'package:kasir_app/src/ui/components/custom_components.dart';
 import 'package:kasir_app/src/ui/components/modal.dart';
 
 class CartUI extends StatefulWidget {
+  static const String routeName = "/cart";
+
   @override
   State<CartUI> createState() => _CartUIState();
 }
@@ -29,116 +31,131 @@ class _CartUIState extends State<CartUI> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: height(context) * 0.01),
-        Container(
-          width: width(context),
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "Keranjang",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  conCart.clearCart();
-                  setState(() {});
-                },
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    Icons.delete,
-                    size: 20,
-                    color: Colors.white,
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-        SizedBox(height: height(context) * 0.01),
-        Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            itemCount: conCart.listCart.length,
-            itemBuilder: (context, index) {
-              final item = conCart.listCart.reversed.toList()[index];
-              return _itemProductList(context, item);
-            },
-          ),
-        ),
-        Container(
-          width: width(context),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 7,
-                offset: Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              SizedBox(height: height(context) * 0.01),
-              Container(
-                width: width(context),
-                height: height(context) * 0.04,
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    Obx(() {
-                      final cart = conCart.listCart.value;
-                      final total = cart.fold(
-                          0,
-                          (previousValue, element) =>
-                              previousValue + (element.price * element.qty));
-
-                      return _tableField(
-                          "Total", toRupiah(double.parse('$total')));
-                    }),
-                  ],
-                ),
-              ),
-              Container(
-                width: width(context),
-                height: height(context) * 0.04,
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            SizedBox(height: height(context) * 0.01),
+            Container(
+              width: width(context),
+              height: height(context) * 0.04,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      size: 20,
                     ),
                   ),
-                  onPressed: () => Get.toNamed(CartDetailUI.routeName),
-                  child: Text("Proses", style: TextStyle(fontSize: 18)),
-                ),
+                  SizedBox(width: width(context) * 0.02),
+                  Text(
+                    'Keranjang',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Spacer(),
+                  InkWell(
+                    onTap: () {
+                      conCart.clearCart();
+                      setState(() {});
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(6),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        Icons.delete,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                ],
               ),
-              SizedBox(height: height(context) * 0.01),
-            ],
-          ),
+            ),
+            SizedBox(height: height(context) * 0.02),
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                itemCount: conCart.listCart.length,
+                itemBuilder: (context, index) {
+                  final item = conCart.listCart.reversed.toList()[index];
+                  return _itemProductList(context, item);
+                },
+              ),
+            ),
+            Container(
+              width: width(context),
+              padding: EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  SizedBox(height: height(context) * 0.01),
+                  Container(
+                    width: width(context),
+                    height: height(context) * 0.04,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        Obx(() {
+                          final cart = conCart.listCart.value;
+                          final total = cart.fold(
+                              0,
+                              (previousValue, element) =>
+                                  previousValue +
+                                  (element.price * element.qty));
+
+                          return _tableField(
+                              "Total", toRupiah(double.parse('$total')));
+                        }),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: width(context),
+                    height: height(context) * 0.04,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () => Get.toNamed(CartDetailUI.routeName),
+                      child: Text("Proses", style: TextStyle(fontSize: 18)),
+                    ),
+                  ),
+                  SizedBox(height: height(context) * 0.01),
+                ],
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 

@@ -37,6 +37,10 @@ final List<GetPage<dynamic>> routes = [
     page: () => PrintSettingUI(),
   ),
   GetPage(
+    name: CartUI.routeName,
+    page: () => CartUI(),
+  ),
+  GetPage(
     name: CartDetailUI.routeName,
     page: () => CartDetailUI(),
   ),

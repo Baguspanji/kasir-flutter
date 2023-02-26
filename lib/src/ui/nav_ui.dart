@@ -64,47 +64,13 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
       resizeToAvoidBottomInset: false,
       body: WillPopScope(
         onWillPop: onWillPop,
-        child: Stack(
+        child: TabBarView(
+          controller: _tabController,
           children: [
-            TabBarView(
-              controller: _tabController,
-              children: [
-                HomeUI(),
-                TransaksiUI(),
-                IncomeUI(),
-                ProfileUI(),
-              ],
-            ),
-            if (indexNav == 0)
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Obx(
-                  () => AnimatedContainer(
-                    duration: const Duration(seconds: 1),
-                    height: conCart.totalCart != 0 ? 400 : 0,
-                    width: width(context),
-                    curve: Curves.fastOutSlowIn,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: Offset(0, 0), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: conCart.totalCart != 0 ? CartUI() : null,
-                  ),
-                ),
-              ),
+            HomeUI(),
+            TransaksiUI(),
+            IncomeUI(),
+            ProfileUI(),
           ],
         ),
       ),
@@ -128,47 +94,47 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
           });
         },
       ),
-      // floatingActionButton: indexNav == 0
-      //     ? Obx(() => conCart.totalCart != 0
-      //         ? FloatingActionButton(
-      //             onPressed: () {
-      //               Get.toNamed(CartUI.routeName);
-      //             },
-      //             backgroundColor: Colors.grey,
-      //             child: Stack(
-      //               children: [
-      //                 Icon(
-      //                   Icons.shopping_cart,
-      //                   color: Colors.white,
-      //                 ),
-      //                 if (conCart.totalCart > 0)
-      //                   Positioned(
-      //                     right: 0,
-      //                     child: Container(
-      //                       padding: EdgeInsets.all(1),
-      //                       decoration: BoxDecoration(
-      //                         color: Colors.red,
-      //                         borderRadius: BorderRadius.circular(6),
-      //                       ),
-      //                       constraints: BoxConstraints(
-      //                         minWidth: 12,
-      //                         minHeight: 12,
-      //                       ),
-      //                       child: Text(
-      //                         '${conCart.totalCart}',
-      //                         style: TextStyle(
-      //                           color: Colors.white,
-      //                           fontSize: 8,
-      //                         ),
-      //                         textAlign: TextAlign.center,
-      //                       ),
-      //                     ),
-      //                   ),
-      //               ],
-      //             ),
-      //           )
-      //         : Container())
-      //     : null,
+      floatingActionButton: indexNav == 0
+          ? Obx(() => conCart.totalCart != 0
+              ? FloatingActionButton(
+                  onPressed: () {
+                    Get.toNamed(CartUI.routeName);
+                  },
+                  backgroundColor: primaryColor,
+                  child: Stack(
+                    children: [
+                      Icon(
+                        Icons.shopping_cart,
+                        color: Colors.white,
+                      ),
+                      if (conCart.totalCart > 0)
+                        Positioned(
+                          right: 0,
+                          child: Container(
+                            padding: EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            constraints: BoxConstraints(
+                              minWidth: 12,
+                              minHeight: 12,
+                            ),
+                            child: Text(
+                              '${conCart.totalCart}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 8,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                )
+              : Container())
+          : null,
     );
   }
 
