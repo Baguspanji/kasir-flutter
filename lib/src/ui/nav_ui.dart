@@ -9,6 +9,7 @@ import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/ui/cart/index.dart';
 import 'package:kasir_app/src/ui/home/index.dart';
+import 'package:kasir_app/src/ui/home/index_2.dart';
 import 'package:kasir_app/src/ui/income/index.dart';
 import 'package:kasir_app/src/ui/profile/index.dart';
 import 'package:kasir_app/src/ui/transaksi/index.dart';
@@ -67,7 +68,8 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
         child: TabBarView(
           controller: _tabController,
           children: [
-            HomeUI(),
+            // HomeUI(),
+            HomeUI2(),
             TransaksiUI(),
             IncomeUI(),
             ProfileUI(),
