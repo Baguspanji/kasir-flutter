@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/route_config.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
+import 'package:kasir_app/src/controller/transaksi_controller.dart';
 import 'package:kasir_app/src/model/cart_db_model.dart';
 import 'package:kasir_app/src/model/transaksi_model.dart';
 import 'package:kasir_app/src/model/user_model.dart';
@@ -31,6 +32,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
   final args = Get.arguments as CommonArgument<TransaksiModel>;
 
   final CartController conCart = Get.put(CartController());
+  final conTransaksi = Get.find<TransaksiController>();
   final print1 = StrukPrintCart();
 
   int _counter = 0;
@@ -41,6 +43,9 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
 
   @override
   void initState() {
+    conTransaksi.detailTransaksi.value = args.object!;
+
+    conTransaksi.getDetailTransaksi(args.id!);
     super.initState();
   }
 
@@ -58,51 +63,6 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
         context,
         capturedImage,
       );
-    });
-  }
-
-  void _onEdit() async {
-    int cartId = await dbHelper.insertCart(CartDBModel.fromMap({
-      'name': '',
-      'bill_amount': int.parse(
-        args.object!.amountPaid!,
-      ),
-    }));
-
-    conCart.cartDb.value = CartDBModel(
-      id: cartId,
-      name: '',
-      billAmoount: int.parse(
-        args.object!.amountPaid!,
-      ),
-    );
-
-    conCart.status.value = "edit";
-    conCart.idEdit.value = args.id!;
-    print(conCart.status.value);
-    args.object!.details!.forEach((e) async {
-      conCart.addCart(CartModel(
-        int.parse(e.itemId!),
-        int.parse(e.price!),
-        int.parse(e.quantity!),
-        e.item,
-        cartId,
-      ));
-    });
-
-    Get.to(
-      HomeProductUI(
-        cartDb: CartDBModel(
-          id: cartId,
-          name: '',
-          billAmoount: int.parse(
-            args.object!.amountPaid!,
-          ),
-        ),
-      ),
-    )!
-        .then((value) {
-      dbHelper.deleteCart(cartId);
     });
   }
 
@@ -134,7 +94,8 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
+          body: Obx(
+        () => Column(
           children: [
             SizedBox(height: height(context) * 0.01),
             Container(
@@ -158,7 +119,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                   ),
                   Spacer(),
                   IconButton(
-                    // onPressed: () => scren(args.object!),
+                    // onPressed: () => scren(conTransaksi.detailTransaksi.value),
                     onPressed: () => getToast('Fitur belum tersedia'),
                     icon: Icon(Icons.share),
                   ),
@@ -172,13 +133,13 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                   _itemDetailTransaksi(
                     context,
                     'Tanggal',
-                    dateFormatddMMMMyyyy(
-                        DateTime.parse(args.object!.date ?? '')),
+                    dateFormatddMMMMyyyy(DateTime.parse(
+                        conTransaksi.detailTransaksi.value.date ?? '')),
                   ),
                   _itemDetailTransaksi(
                     context,
                     'Nama Pembeli',
-                    args.object!.name ?? '-',
+                    conTransaksi.detailTransaksi.value.name ?? '-',
                   ),
                   SizedBox(height: height(context) * 0.01),
                   Divider(
@@ -188,7 +149,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                     endIndent: 20,
                   ),
                   SizedBox(height: height(context) * 0.01),
-                  ...args.object!.details!.map(
+                  ...conTransaksi.detailTransaksi.value.details!.map(
                     (e) => Column(
                       children: [
                         _itemDetailTransaksi(
@@ -223,22 +184,29 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                   _itemDetailTransaksi(
                     context,
                     'Total Harga',
-                    toRupiah(double.parse(args.object!.totalPrice ?? "0")),
+                    toRupiah(double.parse(
+                        conTransaksi.detailTransaksi.value.totalPrice ?? "0")),
                   ),
-                  if (args.object!.amountPaid != '0')
+                  if (conTransaksi.detailTransaksi.value.amountPaid != '0')
                     _itemDetailTransaksi(
                       context,
                       'Jumlah Bayar',
-                      toRupiah(double.parse(args.object!.amountPaid ?? "0")),
+                      toRupiah(double.parse(
+                          conTransaksi.detailTransaksi.value.amountPaid ??
+                              "0")),
                     ),
-                  if (args.object!.amountPaid != '0')
+                  if (conTransaksi.detailTransaksi.value.amountPaid != '0')
                     _itemDetailTransaksi(
                       context,
                       'Kembalian',
                       toRupiah(
                         double.parse(
-                          (int.parse(args.object!.amountPaid ?? "0") -
-                                  int.parse(args.object!.totalPrice ?? "0"))
+                          (int.parse(conTransaksi
+                                          .detailTransaksi.value.amountPaid ??
+                                      "0") -
+                                  int.parse(conTransaksi
+                                          .detailTransaksi.value.totalPrice ??
+                                      "0"))
                               .toString(),
                         ),
                       ),
@@ -258,7 +226,52 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onPressed: () => _onEdit(),
+                onPressed: () async {
+                  int cartId = await dbHelper.insertCart(CartDBModel.fromMap({
+                    'name': conTransaksi.detailTransaksi.value.name!,
+                    'bill_amount': int.parse(
+                      conTransaksi.detailTransaksi.value.amountPaid!,
+                    ),
+                  }));
+
+                  conCart.cartDb.value = CartDBModel.fromMap({
+                    'id': cartId,
+                    'name': conTransaksi.detailTransaksi.value.name!,
+                    'bill_amount': int.parse(
+                      conTransaksi.detailTransaksi.value.amountPaid!,
+                    ),
+                  });
+
+                  conCart.status.value = "edit";
+                  conCart.idEdit.value = args.id!;
+
+                  conTransaksi.detailTransaksi.value.details!
+                      .forEach((e) async {
+                    conCart.addCart(CartModel(
+                      int.parse(e.itemId!),
+                      int.parse(e.price!),
+                      int.parse(e.quantity!),
+                      e.item,
+                      cartId,
+                    ));
+                  });
+
+                  Get.to(() => HomeProductUI(
+                            cartDb: CartDBModel(
+                              id: cartId,
+                              name: conTransaksi.detailTransaksi.value.name!,
+                              billAmoount: int.parse(
+                                conTransaksi.detailTransaksi.value.amountPaid!,
+                              ),
+                            ),
+                          ))!
+                      .then((value) async {
+                    await conTransaksi.getDetailTransaksi(args.id!);
+                    setState(() {});
+
+                    await dbHelper.deleteCart(cartId);
+                  });
+                },
                 child: Text("Edit", style: TextStyle(fontSize: 18)),
               ),
             ),
@@ -280,13 +293,14 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                   var data = AppModel.fromJson(jsonDecode(app)['data']['app']);
 
                   final List<CartModel> cart = [
-                    ...args.object!.details!.map((e) => CartModel(
-                          int.parse(e.itemId ?? '0'),
-                          int.parse(e.price ?? '0'),
-                          int.parse(e.quantity ?? '0'),
-                          e.item,
-                          null,
-                        ))
+                    ...conTransaksi.detailTransaksi.value.details!
+                        .map((e) => CartModel(
+                              int.parse(e.itemId ?? '0'),
+                              int.parse(e.price ?? '0'),
+                              int.parse(e.quantity ?? '0'),
+                              e.item,
+                              null,
+                            ))
                   ];
 
                   print1.sample(
@@ -296,10 +310,13 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                     appPhone: data.phone ?? '',
                     openTime: data.openTime ?? '',
                     strukMessage: data.strukMessage ?? '',
-                    total: int.parse(args.object!.totalPrice ?? '0'),
-                    buyerName: args.object!.name ?? '',
-                    amountPaid: args.object!.amountPaid ?? '0',
-                    dateTransaction: args.object!.createdAt ?? '',
+                    total: int.parse(
+                        conTransaksi.detailTransaksi.value.totalPrice ?? '0'),
+                    buyerName: conTransaksi.detailTransaksi.value.name ?? '',
+                    amountPaid:
+                        conTransaksi.detailTransaksi.value.amountPaid ?? '0',
+                    dateTransaction:
+                        conTransaksi.detailTransaksi.value.createdAt ?? '',
                   );
                 },
                 child: Text("Cetak", style: TextStyle(fontSize: 18)),
@@ -308,7 +325,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
             SizedBox(height: height(context) * 0.01),
           ],
         ),
-      ),
+      )),
     );
   }
 

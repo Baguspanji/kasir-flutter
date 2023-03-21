@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
 import 'package:kasir_app/src/model/user_model.dart';
 import 'package:kasir_app/src/repository/api_auth.dart';
+import 'package:kasir_app/src/repository/cart_db.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
 import 'package:kasir_app/src/ui/splash/index.dart';
 
 class AuthController extends GetxController {
+  DbHelper dbHelper = DbHelper();
   final api = ApiAuth();
 
   final user = UserModel().obs;
@@ -28,6 +30,8 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
+    await dbHelper.truncateCart();
+
     await rmvToken();
     await rmvRole();
     await rmvStyleHome();

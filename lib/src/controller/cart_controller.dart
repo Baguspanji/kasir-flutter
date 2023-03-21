@@ -16,10 +16,13 @@ class CartController extends GetxController {
 
   final cartDb = CartDBModel().obs;
 
-  Future<void> initCartDb(CartDBModel cart) async {
-    var cardDetailList = await dbHelper.getCartDetailList(cart.id!);
+  Future<void> initCartDb() async {
+    var cardDetailList = await dbHelper.getCartDetailList(cartDb.value.id!);
 
-    print(status.value);
+    print('cart id : ${cartDb.value.id}');
+    print('cart name : ${cartDb.value.name}');
+    print('cart amount : ${cartDb.value.billAmoount}');
+    print('total : ${cardDetailList.length}');
 
     listCart.value = cardDetailList
         .map(
@@ -58,7 +61,7 @@ class CartController extends GetxController {
       await updateCart(findCart);
     }
 
-    await initCartDb(cartDb.value);
+    await initCartDb();
   }
 
   Future<void> updateCart(CartModel cart) async {

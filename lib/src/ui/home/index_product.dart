@@ -58,12 +58,7 @@ class _HomeProductUIState extends State<HomeProductUI> {
   void initState() {
     conProduct.getProduct(1);
 
-    if (conCart.status.value != "edit") {
-      conCart.cartDb.value = widget.cartDb;
-      conCart.status.value = "new";
-      conCart.idEdit.value = 0;
-    }
-    conCart.initCartDb(widget.cartDb);
+    conCart.initCartDb();
     super.initState();
   }
 

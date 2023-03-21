@@ -25,6 +25,17 @@ class ApiTransaksi extends GetConnect {
     return getRes(res);
   }
 
+  Future<Response> getDetailTransaksi(int idTransaksi) async {
+    String token = await getToken();
+
+    var res = await get('$url/transaction/$idTransaksi', headers: {
+      'Authorization': token,
+      'Accept': 'application/json',
+    });
+
+    return getRes(res);
+  }
+
   Future<Response> createTransaksi(dynamic data) async {
     String token = await getToken();
 
@@ -35,6 +46,7 @@ class ApiTransaksi extends GetConnect {
 
     return getRes(res);
   }
+
   Future<Response> editTransaksi(dynamic data, int id) async {
     String token = await getToken();
 

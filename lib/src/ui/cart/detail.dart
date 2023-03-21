@@ -19,14 +19,21 @@ class CartDetailUI extends StatefulWidget {
 }
 
 class _CartDetailUIState extends State<CartDetailUI> {
-  final conCart = Get.put(CartController());
+  final conCart = Get.find<CartController>();
 
-  final print = StrukPrintCart();
+  final printData = StrukPrintCart();
   final _formName = TextEditingController();
   final _formAmount = TextEditingController();
 
   @override
   void initState() {
+    setState(() {
+      _formName.text = conCart.cartDb.value.name!;
+      _formAmount.text = conCart.cartDb.value.billAmoount.toString();
+    });
+
+    print(_formName.text);
+
     super.initState();
   }
 
@@ -94,7 +101,7 @@ class _CartDetailUIState extends State<CartDetailUI> {
                     _itemDetailTransaksi(
                       context,
                       'Nama Pembeli',
-                      _formName.text != '' ? '-' : _formName.text,
+                      _formName.text == '' ? '-' : _formName.text,
                     ),
                     SizedBox(height: height(context) * 0.01),
                     Divider(
@@ -192,7 +199,7 @@ class _CartDetailUIState extends State<CartDetailUI> {
                     }
 
                     if (res.statusCode == 201) {
-                      print.sample(
+                      printData.sample(
                         cartData,
                         appName: data.name ?? '',
                         appAddress: data.address ?? '',

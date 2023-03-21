@@ -6,6 +6,7 @@ class TransaksiController extends GetxController {
   final api = ApiTransaksi();
 
   final listTransaksi = <TransaksiModel>[].obs;
+  final detailTransaksi = TransaksiModel().obs;
   RxBool isLoading = true.obs;
   RxInt transaksiPage = 1.obs;
 
@@ -33,6 +34,19 @@ class TransaksiController extends GetxController {
                     .map((e) => TransaksiModel.fromJson(e))
               ]
             : listTransaksi.value;
+      }
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> getDetailTransaksi(int idTransaksi) async {
+    try {
+      isLoading.value = true;
+      var res = await api.getDetailTransaksi(idTransaksi);
+
+      if (res.statusCode == 200) {
+        detailTransaksi.value = TransaksiModel.fromJson(res.body['data']);
       }
     } finally {
       isLoading.value = false;

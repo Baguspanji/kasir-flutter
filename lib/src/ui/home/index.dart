@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
+import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/model/cart_db_model.dart';
 import 'package:kasir_app/src/repository/cart_db.dart';
 import 'package:kasir_app/src/ui/components/custom_components.dart';
@@ -14,6 +15,7 @@ class HomeUI extends StatefulWidget {
 }
 
 class _HomeUIState extends State<HomeUI> {
+  final conCart = Get.put(CartController());
   DbHelper dbHelper = DbHelper();
   int count = 0;
   List<CartDBModel> cartList = [];
@@ -211,6 +213,9 @@ class _HomeUIState extends State<HomeUI> {
   Widget _cartItem(BuildContext context, CartDBModel cart) {
     return GestureDetector(
       onTap: () {
+        conCart.status.value = "new";
+        conCart.idEdit.value = 0;
+        conCart.cartDb.value = cart;
         Get.to(() => HomeProductUI(cartDb: cart))!.then((value) => getCart());
       },
       child: Container(

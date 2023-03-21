@@ -3,12 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_assets.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
-import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/auth_controller.dart';
-import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
-import 'package:kasir_app/src/ui/cart/index.dart';
-import 'package:kasir_app/src/ui/home/index_product.dart';
 import 'package:kasir_app/src/ui/home/index.dart';
 import 'package:kasir_app/src/ui/income/index.dart';
 import 'package:kasir_app/src/ui/profile/index.dart';
@@ -23,7 +19,6 @@ class NavUI extends StatefulWidget {
 
 class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
   final conAuth = Get.put(AuthController());
-  final conCart = Get.put(CartController());
 
   int indexNav = 0;
   late TabController _tabController;
