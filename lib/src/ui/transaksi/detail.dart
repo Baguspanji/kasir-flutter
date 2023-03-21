@@ -7,14 +7,13 @@ import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/route_config.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/model/cart_db_model.dart';
-import 'package:kasir_app/src/model/product_model.dart';
 import 'package:kasir_app/src/model/transaksi_model.dart';
 import 'package:kasir_app/src/model/user_model.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
+import 'package:kasir_app/src/repository/cart_db.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
 import 'package:kasir_app/src/ui/components/struk_print.dart';
-import 'package:kasir_app/src/ui/home/index.dart';
-import 'package:kasir_app/src/ui/nav_ui.dart';
+import 'package:kasir_app/src/ui/home/index_product.dart';
 import 'package:kasir_app/src/ui/transaksi/share_struk.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -28,6 +27,7 @@ class TransaksiDetailUI extends StatefulWidget {
 }
 
 class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
+  DbHelper dbHelper = DbHelper();
   final args = Get.arguments as CommonArgument<TransaksiModel>;
 
   final CartController conCart = Get.put(CartController());
@@ -58,6 +58,51 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
         context,
         capturedImage,
       );
+    });
+  }
+
+  void _onEdit() async {
+    int cartId = await dbHelper.insertCart(CartDBModel.fromMap({
+      'name': '',
+      'bill_amount': int.parse(
+        args.object!.amountPaid!,
+      ),
+    }));
+
+    conCart.cartDb.value = CartDBModel(
+      id: cartId,
+      name: '',
+      billAmoount: int.parse(
+        args.object!.amountPaid!,
+      ),
+    );
+
+    conCart.status.value = "edit";
+    conCart.idEdit.value = args.id!;
+    print(conCart.status.value);
+    args.object!.details!.forEach((e) async {
+      conCart.addCart(CartModel(
+        int.parse(e.itemId!),
+        int.parse(e.price!),
+        int.parse(e.quantity!),
+        e.item,
+        cartId,
+      ));
+    });
+
+    Get.to(
+      HomeProductUI(
+        cartDb: CartDBModel(
+          id: cartId,
+          name: '',
+          billAmoount: int.parse(
+            args.object!.amountPaid!,
+          ),
+        ),
+      ),
+    )!
+        .then((value) {
+      dbHelper.deleteCart(cartId);
     });
   }
 
@@ -204,7 +249,23 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
             SizedBox(height: height(context) * 0.02),
             Container(
               width: width(context),
-              height: height(context) * 0.05,
+              height: height(context) * 0.04,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.amber,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () => _onEdit(),
+                child: Text("Edit", style: TextStyle(fontSize: 18)),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: width(context),
+              height: height(context) * 0.04,
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -242,50 +303,6 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                   );
                 },
                 child: Text("Cetak", style: TextStyle(fontSize: 18)),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
-              width: width(context),
-              height: height(context) * 0.05,
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onPressed: () async {
-                  conCart.status.value = "edit";
-                  conCart.idEdit.value = args.id!;
-                  // print(conCart.status.value);
-                  args.object!.details!
-                      .map((e) => conCart.addCart(CartModel(
-                            int.parse(e.itemId!),
-                            int.parse(e.price!),
-                            int.parse(e.quantity!),
-                            e.item,
-                            null,
-                          )))
-                      .toList();
-
-                  Get.to(
-                    HomeUI(
-                      cartDb: CartDBModel(
-                        id: 0,
-                        name: args.object!.name,
-                        billAmoount: int.parse(
-                          args.object!.amountPaid!,
-                        ),
-                      ),
-                    ),
-                  );
-                  // print(item);
-                },
-                child: Text("Edit", style: TextStyle(fontSize: 18)),
               ),
             ),
             SizedBox(height: height(context) * 0.01),

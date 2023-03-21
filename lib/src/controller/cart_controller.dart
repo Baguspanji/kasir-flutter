@@ -17,35 +17,25 @@ class CartController extends GetxController {
   final cartDb = CartDBModel().obs;
 
   Future<void> initCartDb(CartDBModel cart) async {
-    cartDb.value = cart;
+    var cardDetailList = await dbHelper.getCartDetailList(cart.id!);
 
-    if (cart.id == 0) {
-      status.value = "edit";
-      idEdit.value = 0;
-    } else {
-      status.value = "new";
-      idEdit.value = 0;
+    print(status.value);
 
-      var cardDetailList = await dbHelper.getCartDetailList(cart.id!);
-
-      print(cardDetailList.length);
-
-      listCart.value = cardDetailList
-          .map(
-            (e) => CartModel(
-              e.productId!,
-              e.quantity!,
-              e.price!,
-              ProductModel(
-                id: e.productId,
-                name: e.productName!,
-                unit: e.productUnit!,
-              ),
-              e.id!,
+    listCart.value = cardDetailList
+        .map(
+          (e) => CartModel(
+            e.productId!,
+            e.quantity!,
+            e.price!,
+            ProductModel(
+              id: e.productId,
+              name: e.productName!,
+              unit: e.productUnit!,
             ),
-          )
-          .toList();
-    }
+            e.id!,
+          ),
+        )
+        .toList();
   }
 
   void addCart(CartModel cart) async {
@@ -113,6 +103,11 @@ class CartController extends GetxController {
   void clearCart() {
     listCart.value = [];
     dbHelper.deleteCartDetailByCartId(cartDb.value.id!);
+  }
+
+  void clearCartAll() {
+    listCart.value = [];
+    dbHelper.deleteCart(cartDb.value.id!);
   }
 
   int get totalCart => listCart.value.length;

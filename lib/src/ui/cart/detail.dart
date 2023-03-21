@@ -165,7 +165,9 @@ class _CartDetailUIState extends State<CartDetailUI> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryColor,
+                    backgroundColor: conCart.status.value == 'edit'
+                        ? Colors.amber
+                        : primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -176,10 +178,18 @@ class _CartDetailUIState extends State<CartDetailUI> {
                     var data =
                         AppModel.fromJson(jsonDecode(app)['data']['app']);
 
-                    var res = await conCart.addTransaction(
-                      name: _formName.text,
-                      amount: _formAmount.text,
-                    );
+                    Response<dynamic> res;
+                    if (conCart.status.value == 'edit') {
+                      res = await conCart.editTransaction(
+                        name: _formName.text,
+                        amount: _formAmount.text,
+                      );
+                    } else {
+                      res = await conCart.addTransaction(
+                        name: _formName.text,
+                        amount: _formAmount.text,
+                      );
+                    }
 
                     if (res.statusCode == 201) {
                       print.sample(
@@ -194,9 +204,14 @@ class _CartDetailUIState extends State<CartDetailUI> {
                         amountPaid: _formAmount.text,
                       );
 
-                      conCart.clearCart();
-                      getToast('Berhasil menambahkan transaksi');
+                      conCart.clearCartAll();
+                      if (conCart.status.value == 'edit') {
+                        getToast('Berhasil update transaksi');
+                      } else {
+                        getToast('Berhasil menambahkan transaksi');
+                      }
                       Future.delayed(Duration(seconds: 2), () {
+                        Navigator.pop(context);
                         Navigator.pop(context);
                         Navigator.pop(context);
                       });
