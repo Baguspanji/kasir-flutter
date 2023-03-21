@@ -198,6 +198,7 @@ class _CartDetailUIState extends State<CartDetailUI> {
                       getToast('Berhasil menambahkan transaksi');
                       Future.delayed(Duration(seconds: 2), () {
                         Navigator.pop(context);
+                        Navigator.pop(context);
                       });
                     } else {
                       getToast('Gagal menambahkan transaksi');
