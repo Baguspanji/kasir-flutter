@@ -24,23 +24,27 @@ class CartDetailDBModel {
   int? id;
   int? cartId;
   int? productId;
-  String? name;
+  String? productName;
+  String? productUnit;
   int? price;
   int? quantity;
 
-  CartDetailDBModel(
-      {this.id,
-      this.cartId,
-      this.productId,
-      this.name,
-      this.price,
-      this.quantity});
+  CartDetailDBModel({
+    this.id,
+    this.cartId,
+    this.productId,
+    this.productName,
+    this.productUnit,
+    this.price,
+    this.quantity,
+  });
 
   CartDetailDBModel.fromMap(Map<String, dynamic> map) {
     id = map['id'];
     cartId = map['cart_id'];
     productId = map['product_id'];
-    name = map['name'];
+    productName = map['product_name'];
+    productUnit = map['product_unit'];
     price = map['price'];
     quantity = map['quantity'];
   }
@@ -50,7 +54,8 @@ class CartDetailDBModel {
     // data['id'] = this.id;
     data['cart_id'] = this.cartId;
     data['product_id'] = this.productId;
-    data['name'] = this.name;
+    data['product_name'] = this.productName;
+    data['product_unit'] = this.productUnit;
     data['price'] = this.price;
     data['quantity'] = this.quantity;
     return data;

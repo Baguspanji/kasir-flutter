@@ -21,6 +21,13 @@ class CartModel {
   int price;
   int qty;
   ProductModel? product;
+  int? dbId;
 
-  CartModel(this.id, this.price, this.qty, this.product);
+  CartModel(
+    this.id,
+    this.price,
+    this.qty,
+    this.product,
+    this.dbId,
+  );
 }

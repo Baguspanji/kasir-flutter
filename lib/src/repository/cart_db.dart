@@ -34,14 +34,14 @@ class DbHelper {
   }
 
   //buat tabel baru dengan nama cart
-  void _createDb(Database db, int version) async {
+  Future<void> _createDb(Database db, int version) async {
     await db.execute('DROP TABLE IF EXISTS carts');
     await db.execute(
         'CREATE TABLE carts (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, bill_amount INTEGER)');
 
     await db.execute('DROP TABLE IF EXISTS cart_details');
     await db.execute(
-        'CREATE TABLE cart_details (id INTEGER PRIMARY KEY AUTOINCREMENT, cart_id INTEGER, product_id INTEGER, name TEXT, price INTEGER, quantity INTEGER, FOREIGN KEY (cart_id) REFERENCES carts(id))');
+        'CREATE TABLE cart_details (id INTEGER PRIMARY KEY AUTOINCREMENT, cart_id INTEGER, product_id INTEGER, price INTEGER, quantity INTEGER, product_name STRING, product_unit STRING, FOREIGN KEY (cart_id) REFERENCES carts(id))');
   }
 
   Future<Database> get database async {
@@ -53,7 +53,7 @@ class DbHelper {
 
   Future<List<Map<String, dynamic>>> selectCart() async {
     Database db = await this.database;
-    var mapList = await db.query('carts', orderBy: 'name');
+    var mapList = await db.query('carts', orderBy: 'id');
     return mapList;
   }
 
@@ -80,6 +80,20 @@ class DbHelper {
     return count;
   }
 
+  // truncate cart
+  Future<void> truncateCart() async {
+    Database db = await this.database;
+    await db.delete('cart_details');
+    await db.delete('carts');
+
+    await db.execute('DROP TABLE carts');
+    await db.execute('DROP TABLE cart_details');
+    await db.execute(
+        'CREATE TABLE carts (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, bill_amount INTEGER)');
+    await db.execute(
+        'CREATE TABLE cart_details (id INTEGER PRIMARY KEY AUTOINCREMENT, cart_id INTEGER, product_id INTEGER, price INTEGER, quantity INTEGER, product_name STRING, product_unit STRING, FOREIGN KEY (cart_id) REFERENCES carts(id))');
+  }
+
   Future<List<CartDBModel>> getCartList() async {
     var cartMapList = await selectCart();
     int count = cartMapList.length;
@@ -90,9 +104,14 @@ class DbHelper {
     return cartList;
   }
 
-  Future<List<Map<String, dynamic>>> selectCartDetail() async {
+  Future<List<Map<String, dynamic>>> selectCartDetail(int cart_id) async {
     Database db = await this.database;
-    var mapList = await db.query('cart_details', orderBy: 'name');
+    var mapList = await db.query(
+      'cart_details',
+      orderBy: 'id',
+      where: 'cart_id=?',
+      whereArgs: [cart_id],
+    );
     return mapList;
   }
 
@@ -118,8 +137,8 @@ class DbHelper {
     return count;
   }
 
-  Future<List<CartDetailDBModel>> getCartDetailList() async {
-    var cartMapList = await selectCartDetail();
+  Future<List<CartDetailDBModel>> getCartDetailList(int cart_id) async {
+    var cartMapList = await selectCartDetail(cart_id);
     int count = cartMapList.length;
     List<CartDetailDBModel> cartList = [];
     for (int i = 0; i < count; i++) {

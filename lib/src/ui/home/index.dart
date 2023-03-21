@@ -6,12 +6,17 @@ import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/controller/product_controller.dart';
+import 'package:kasir_app/src/model/cart_db_model.dart';
 import 'package:kasir_app/src/model/product_model.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
+import 'package:kasir_app/src/ui/cart/index.dart';
 import 'package:kasir_app/src/ui/components/custom_components.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomeUI extends StatefulWidget {
+  final CartDBModel cartDb;
+
+  const HomeUI({Key? key, required this.cartDb}) : super(key: key);
   @override
   State<HomeUI> createState() => _HomeUIState();
 }
@@ -52,6 +57,8 @@ class _HomeUIState extends State<HomeUI> {
   @override
   void initState() {
     conProduct.getProduct(1);
+
+    conCart.initCartDb(widget.cartDb);
     super.initState();
   }
 
@@ -96,237 +103,185 @@ class _HomeUIState extends State<HomeUI> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        children: [
-          SizedBox(height: height(context) * 0.01),
-          Container(
-            width: width(context),
-            height: height(context) * 0.04,
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            child: _isSearch
-                ? CustomTextField(
-                    controller: _formSearch,
-                    hintText: "Cari Produk",
-                    onChanged: (value) {
-                      conProduct.search.value = value;
-                      conProduct.getProduct(1);
-                    },
-                    suffixIcon: InkWell(
-                      onTap: () {
-                        setState(() {
-                          _isSearch = !_isSearch;
-                        });
-
-                        conProduct.search.value = '';
+      child: Scaffold(
+        body: Column(
+          children: [
+            SizedBox(height: height(context) * 0.01),
+            Container(
+              width: width(context),
+              height: height(context) * 0.04,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: _isSearch
+                  ? CustomTextField(
+                      controller: _formSearch,
+                      hintText: "Cari Produk",
+                      onChanged: (value) {
+                        conProduct.search.value = value;
                         conProduct.getProduct(1);
                       },
-                      child: Icon(
-                        Icons.close,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Daftar Produk',
-                        style: TextStyle(
-                          fontSize: 20,
+                      suffixIcon: InkWell(
+                        onTap: () {
+                          setState(() {
+                            _isSearch = !_isSearch;
+                          });
+
+                          conProduct.search.value = '';
+                          conProduct.getProduct(1);
+                        },
+                        child: Icon(
+                          Icons.close,
                           color: Colors.black87,
-                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                _isSearch = !_isSearch;
-                              });
-                            },
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.black87,
-                            ),
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            size: 20,
                           ),
-                          SizedBox(width: 10),
-                          InkWell(
-                            onTap: _isQR
-                                ? () {
-                                    setState(() {
-                                      _isQR = !_isQR;
-                                    });
+                        ),
+                        SizedBox(width: width(context) * 0.02),
+                        Text(
+                          'Daftar Produk',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Spacer(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _isSearch = !_isSearch;
+                                });
+                              },
+                              child: Icon(
+                                Icons.search,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            InkWell(
+                              onTap: _isQR
+                                  ? () {
+                                      setState(() {
+                                        _isQR = !_isQR;
+                                      });
 
-                                    conProduct.search.value = '';
-                                    conProduct.getProduct(1);
-                                  }
-                                : _searchQr,
-                            child: Icon(
-                              Icons.qr_code,
-                              color: _isQR ? Colors.red : Colors.black87,
+                                      conProduct.search.value = '';
+                                      conProduct.getProduct(1);
+                                    }
+                                  : _searchQr,
+                              child: Icon(
+                                Icons.qr_code,
+                                color: _isQR ? Colors.red : Colors.black87,
+                              ),
                             ),
+                          ],
+                        ),
+                      ],
+                    ),
+            ),
+            SizedBox(height: height(context) * 0.02),
+            Obx(() {
+              final products = conProduct.listProduct.value;
+
+              if (conProduct.isLoading.value) {
+                return Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    children: [
+                      for (var i = 0; i < 8; i++)
+                        Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: CustomShimmer(
+                            width: width(context),
+                            height: width(context) * 0.2,
+                            radius: 10,
                           ),
-                        ],
-                      ),
+                        )
                     ],
                   ),
-          ),
-          SizedBox(height: height(context) * 0.02),
-          Obx(() {
-            final products = conProduct.listProduct.value;
+                );
+              }
 
-            if (conProduct.isLoading.value) {
-              return Container(
-                height: height(context) * 0.8,
-                child: ListView(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  children: [
-                    for (var i = 0; i < 8; i++)
-                      Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        child: CustomShimmer(
-                          width: width(context),
-                          height: width(context) * 0.2,
-                          radius: 10,
-                        ),
-                      )
-                  ],
-                ),
-              );
-            }
-
-            if (products.isEmpty) {
-              return Container(
-                height: height(context) * 0.8,
-                child: CustomEmptyData(
-                  height: height(context) * 0.9,
-                  text: 'Data tidak ditemukan',
-                  onPressed: () async {
-                    conProduct.isLoading.value = true;
-                    conProduct.getProduct(1);
-                  },
-                ),
-              );
-            }
-
-            return Container(
-              height: height(context) * 0.8,
-              child: CustomRefresh(
-                controller: _refreshController,
-                onRefresh: () => _onRefresh(),
-                onLoading: () => _onLoading(),
-                child: ListView(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  children: [
-                    ...products.map((e) => _itemProductList(context, e)),
-                  ],
-                ),
-              ),
-            );
-          }),
-        ],
-      ),
-    );
-  }
-
-  Widget _itemProductGrid(BuildContext context, ProductModel item) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 6),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            offset: Offset(0, 3),
-            blurRadius: 6,
-          ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomImageNetwork(
-                item.image ?? '',
-                width: double.infinity,
-                height: width(context) * 0.4,
-              ),
-              SizedBox(height: 6),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.name ?? '-',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black45,
-                        fontWeight: FontWeight.w600,
-                        height: 1.2,
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      item.unit ?? '-',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.black45,
-                        fontWeight: FontWeight.w400,
-                        height: 1.2,
-                      ),
-                    ),
-                    SizedBox(height: 6),
-                    Text(
-                      toRupiah(double.parse(item.price ?? "0")),
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black45,
-                        fontWeight: FontWeight.w600,
-                        height: 1.2,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.black12),
-              ),
-              child: IconButton(
-                  padding: EdgeInsets.zero,
-                  icon: Icon(
-                    Icons.add,
-                    size: 30,
-                    color: Colors.black45,
+              if (products.isEmpty) {
+                return Container(
+                  height: height(context) * 0.8,
+                  child: CustomEmptyData(
+                    height: height(context) * 0.9,
+                    text: 'Data tidak ditemukan',
+                    onPressed: () async {
+                      conProduct.isLoading.value = true;
+                      conProduct.getProduct(1);
+                    },
                   ),
-                  onPressed: () {
-                    // conCart.status.value = "new";
-                    conCart.addCart(CartModel(
-                      item.id!,
-                      int.parse(item.price!),
-                      1,
-                      item,
-                    ));
-                  }),
-            ),
-          ),
-        ],
+                );
+              }
+
+              return Expanded(
+                child: CustomRefresh(
+                  controller: _refreshController,
+                  onRefresh: () => _onRefresh(),
+                  onLoading: () => _onLoading(),
+                  child: ListView(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    children: [
+                      ...products.map((e) => _itemProductList(context, e)),
+                    ],
+                  ),
+                ),
+              );
+            }),
+          ],
+        ),
+        floatingActionButton: Obx(() => conCart.totalCart != 0
+            ? FloatingActionButton(
+                onPressed: () {
+                  Get.toNamed(CartUI.routeName);
+                },
+                backgroundColor: primaryColor,
+                child: Stack(
+                  children: [
+                    Icon(
+                      Icons.shopping_cart,
+                      color: Colors.white,
+                    ),
+                    if (conCart.totalCart > 0)
+                      Positioned(
+                        right: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(1),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          constraints: BoxConstraints(
+                            minWidth: 12,
+                            minHeight: 12,
+                          ),
+                          child: Text(
+                            '${conCart.totalCart}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 8,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              )
+            : Container()),
       ),
     );
   }
@@ -334,7 +289,7 @@ class _HomeUIState extends State<HomeUI> {
   Widget _itemProductList(BuildContext context, ProductModel item) {
     final cart = conCart.listCart.firstWhere(
       (element) => element.id == item.id,
-      orElse: () => CartModel(0, 0, 0, ProductModel()),
+      orElse: () => CartModel(0, 0, 0, null, null),
     );
 
     return Container(
@@ -435,6 +390,7 @@ class _HomeUIState extends State<HomeUI> {
                           int.parse(item.price!),
                           1,
                           item,
+                          null,
                         ),
                       );
 

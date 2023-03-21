@@ -6,12 +6,14 @@ import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/route_config.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
+import 'package:kasir_app/src/model/cart_db_model.dart';
 import 'package:kasir_app/src/model/product_model.dart';
 import 'package:kasir_app/src/model/transaksi_model.dart';
 import 'package:kasir_app/src/model/user_model.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
 import 'package:kasir_app/src/ui/components/struk_print.dart';
+import 'package:kasir_app/src/ui/home/index.dart';
 import 'package:kasir_app/src/ui/nav_ui.dart';
 import 'package:kasir_app/src/ui/transaksi/share_struk.dart';
 import 'package:screenshot/screenshot.dart';
@@ -222,6 +224,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                           int.parse(e.price ?? '0'),
                           int.parse(e.quantity ?? '0'),
                           e.item,
+                          null,
                         ))
                   ];
 
@@ -261,13 +264,25 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                   // print(conCart.status.value);
                   args.object!.details!
                       .map((e) => conCart.addCart(CartModel(
-                          int.parse(e.itemId!),
-                          int.parse(e.price!),
-                          int.parse(e.quantity!),
-                          e.item)))
+                            int.parse(e.itemId!),
+                            int.parse(e.price!),
+                            int.parse(e.quantity!),
+                            e.item,
+                            null,
+                          )))
                       .toList();
 
-                  Get.offAndToNamed(NavUI.routeName);
+                  Get.to(
+                    HomeUI(
+                      cartDb: CartDBModel(
+                        id: 0,
+                        name: args.object!.name,
+                        billAmoount: int.parse(
+                          args.object!.amountPaid!,
+                        ),
+                      ),
+                    ),
+                  );
                   // print(item);
                 },
                 child: Text("Edit", style: TextStyle(fontSize: 18)),

@@ -99,12 +99,14 @@ class CustomShimmer extends StatelessWidget {
 class CustomEmptyData extends StatelessWidget {
   final double height;
   final String text;
+  final String? textRefresh;
   final void Function()? onPressed;
 
   const CustomEmptyData({
     super.key,
     required this.height,
     required this.text,
+    this.textRefresh,
     this.onPressed,
   });
 
@@ -130,7 +132,7 @@ class CustomEmptyData extends StatelessWidget {
           ),
           SizedBox(height: 8),
           button(
-            'Refresh',
+            textRefresh ?? 'Refresh',
             color: Colors.grey,
             onPressed: onPressed,
           ),

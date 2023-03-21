@@ -9,7 +9,7 @@ import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/ui/cart/index.dart';
 import 'package:kasir_app/src/ui/home/index.dart';
-import 'package:kasir_app/src/ui/home/index_2.dart';
+import 'package:kasir_app/src/ui/home/home.dart';
 import 'package:kasir_app/src/ui/income/index.dart';
 import 'package:kasir_app/src/ui/profile/index.dart';
 import 'package:kasir_app/src/ui/transaksi/index.dart';
@@ -69,7 +69,7 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
           controller: _tabController,
           children: [
             // HomeUI(),
-            HomeUI2(),
+            HomeProductUI(),
             TransaksiUI(),
             IncomeUI(),
             ProfileUI(),
@@ -96,47 +96,6 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
           });
         },
       ),
-      floatingActionButton: indexNav == 0
-          ? Obx(() => conCart.totalCart != 0
-              ? FloatingActionButton(
-                  onPressed: () {
-                    Get.toNamed(CartUI.routeName);
-                  },
-                  backgroundColor: primaryColor,
-                  child: Stack(
-                    children: [
-                      Icon(
-                        Icons.shopping_cart,
-                        color: Colors.white,
-                      ),
-                      if (conCart.totalCart > 0)
-                        Positioned(
-                          right: 0,
-                          child: Container(
-                            padding: EdgeInsets.all(1),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            constraints: BoxConstraints(
-                              minWidth: 12,
-                              minHeight: 12,
-                            ),
-                            child: Text(
-                              '${conCart.totalCart}',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 8,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                )
-              : Container())
-          : null,
     );
   }
 

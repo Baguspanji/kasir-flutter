@@ -18,7 +18,7 @@ class CartUI extends StatefulWidget {
 
 class _CartUIState extends State<CartUI> {
   final conCart = Get.find<CartController>();
-  CartModel cartEdit = CartModel(0, 0, 0, null);
+  CartModel cartEdit = CartModel(0, 0, 0, null, null);
   final _formName = TextEditingController();
   final _formPrice = TextEditingController();
   final _formQty = TextEditingController();
