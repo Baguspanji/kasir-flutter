@@ -28,14 +28,16 @@ class CartController extends GetxController {
 
       var cardDetailList = await dbHelper.getCartDetailList(cart.id!);
 
+      print(cardDetailList.length);
+
       listCart.value = cardDetailList
           .map(
             (e) => CartModel(
-              e.cartId!,
+              e.productId!,
               e.quantity!,
               e.price!,
               ProductModel(
-                id: e.id,
+                id: e.productId,
                 name: e.productName!,
                 unit: e.productUnit!,
               ),
@@ -48,45 +50,40 @@ class CartController extends GetxController {
 
   void addCart(CartModel cart) async {
     var allCart = listCart.value;
-    if (allCart.isEmpty) {
-      listCart.add(cart);
-      print(status.value);
-      return;
-    }
 
     var findCart = allCart.firstWhere((element) => element.id == cart.id,
         orElse: () => CartModel(0, 0, 0, null, null));
 
     if (findCart.id == 0) {
-      listCart.add(cart);
-
-      int dbId = await dbHelper.insertCartDetail(CartDetailDBModel.fromMap({
+      await dbHelper.insertCartDetail(CartDetailDBModel.fromMap({
         'cart_id': cartDb.value.id,
-        'product_id': cart.id,
         'quantity': cart.qty,
         'price': cart.price,
+        'product_id': cart.product!.id,
         'product_name': cart.product!.name,
         'product_unit': cart.product!.unit,
       }));
-
-      print(dbId);
     } else {
       findCart.qty += cart.qty;
-      updateCart(findCart);
+      await updateCart(findCart);
     }
+
+    await initCartDb(cartDb.value);
   }
 
-  void updateCart(CartModel cart) {
+  Future<void> updateCart(CartModel cart) async {
     var allCart = listCart.value;
 
     allCart[allCart.indexWhere((element) => element.id == cart.id)] = cart;
 
     dbHelper.updateCartDetail(CartDetailDBModel.fromMap({
-      'id': cart.id,
+      'id': cart.dbId,
       'cart_id': cartDb.value.id,
-      'product_id': cart.id,
       'quantity': cart.qty,
       'price': cart.price,
+      'product_id': cart.product!.id,
+      'product_name': cart.product!.name,
+      'product_unit': cart.product!.unit,
     }));
     listCart.value = allCart;
   }
@@ -97,6 +94,8 @@ class CartController extends GetxController {
     listCart.value = allCart
         .where((element) => element.id != cart.id)
         .toList(growable: false);
+
+    dbHelper.deleteCartDetail(cart.dbId!);
 
     var newCart = [];
 
@@ -113,6 +112,7 @@ class CartController extends GetxController {
 
   void clearCart() {
     listCart.value = [];
+    dbHelper.deleteCartDetailByCartId(cartDb.value.id!);
   }
 
   int get totalCart => listCart.value.length;

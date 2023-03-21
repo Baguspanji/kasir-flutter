@@ -137,6 +137,14 @@ class DbHelper {
     return count;
   }
 
+  // delete cart detail by cart id
+  Future<int> deleteCartDetailByCartId(int cart_id) async {
+    Database db = await this.database;
+    int count = await db
+        .delete('cart_details', where: 'cart_id=?', whereArgs: [cart_id]);
+    return count;
+  }
+
   Future<List<CartDetailDBModel>> getCartDetailList(int cart_id) async {
     var cartMapList = await selectCartDetail(cart_id);
     int count = cartMapList.length;
