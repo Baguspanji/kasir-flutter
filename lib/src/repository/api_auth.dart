@@ -33,18 +33,17 @@ class ApiAuth extends GetConnect {
     return getRes(res);
   }
 
-  // Future<Response> changePassword({dynamic data}) async {
-  //   String token = await getToken();
+  Future<Response> changePassword({dynamic data}) async {
+    String token = await getToken();
 
-  //   var res =
-  //       await post('$url/v1/user/change-password', jsonEncode(data), headers: {
-  //     'Content-Type': 'application/json',
-  //     'Accept': 'application/json',
-  //     'Authorization': 'Bearer $token'
-  //   });
+    var res = await post('$url/change-password', jsonEncode(data), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    });
 
-  //   return getRes(res);
-  // }
+    return getRes(res);
+  }
 
   // Future<http.Response> changeProfile({required XFile data}) async {
   //   String token = await getToken();

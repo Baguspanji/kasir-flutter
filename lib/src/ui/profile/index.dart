@@ -5,6 +5,7 @@ import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/auth_controller.dart';
 import 'package:kasir_app/src/ui/profile/barang/index.dart';
+import 'package:kasir_app/src/ui/profile/change_password.dart';
 import 'package:kasir_app/src/ui/profile/print_setting.dart';
 
 class ProfileUI extends StatefulWidget {
@@ -103,19 +104,19 @@ class _ProfileUIState extends State<ProfileUI> {
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             children: [
-              _itemProfile(
-                icon: Icons.person,
-                title: 'Profil',
-                onTap: () {},
-              ),
+              // _itemProfile(
+              //   icon: Icons.person,
+              //   title: 'Profil',
+              //   onTap: () {},
+              // ),
               _itemProfile(
                 icon: Icons.lock,
                 title: 'Ganti Password',
-                onTap: () {},
+                onTap: () => Get.toNamed(ChangePasswordUI.routeName),
               ),
               _itemProfile(
                 icon: Icons.add_business,
-                title: 'Produk',
+                title: 'Produk Toko',
                 onTap: () => Get.toNamed(ListBarang.routeName),
               ),
               _itemProfile(

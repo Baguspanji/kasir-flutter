@@ -27,6 +27,30 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<bool> changePassword(
+    String oldPassword,
+    String newPassword,
+    String newPasswordType,
+  ) async {
+    try {
+      final res = await api.changePassword(
+        data: {
+          "old_password": oldPassword,
+          "new_password": newPassword,
+          "confirm_password": newPasswordType,
+        },
+      );
+      if (res.body != null) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
   Future<void> logout() async {
     await rmvToken();
     await rmvRole();
