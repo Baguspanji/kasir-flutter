@@ -222,7 +222,7 @@ class _HomeUIState extends State<HomeUI> {
         width: width(context),
         padding: EdgeInsets.symmetric(
           horizontal: 20,
-          vertical: 10,
+          vertical: 12,
         ),
         margin: EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
@@ -239,15 +239,24 @@ class _HomeUIState extends State<HomeUI> {
         ),
         child: Row(
           children: [
-            Text(cart.name != '' ? cart.name! : 'Keranjang ${cart.id}'),
+            Text(
+              cart.name != '' ? cart.name! : 'Keranjang ${cart.id}',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.black,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
             Spacer(),
             GestureDetector(
               onTap: () {
                 editCart(cart);
               },
               child: Container(
-                width: 20,
-                height: 20,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.grey.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(10),
@@ -255,7 +264,7 @@ class _HomeUIState extends State<HomeUI> {
                 child: Icon(
                   Icons.edit,
                   color: Colors.orange,
-                  size: 15,
+                  size: 22,
                 ),
               ),
             ),
@@ -266,8 +275,10 @@ class _HomeUIState extends State<HomeUI> {
                 getCart();
               },
               child: Container(
-                width: 20,
-                height: 20,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.grey.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(10),
@@ -275,7 +286,7 @@ class _HomeUIState extends State<HomeUI> {
                 child: Icon(
                   Icons.delete,
                   color: Colors.red,
-                  size: 15,
+                  size: 22,
                 ),
               ),
             ),
