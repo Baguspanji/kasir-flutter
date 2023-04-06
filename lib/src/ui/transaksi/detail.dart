@@ -202,7 +202,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
             SizedBox(height: height(context) * 0.02),
             Container(
               width: width(context),
-              height: height(context) * 0.05,
+              height: height(context) * 0.04,
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -241,12 +241,10 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                 child: Text("Cetak", style: TextStyle(fontSize: 18)),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 10),
             Container(
               width: width(context),
-              height: height(context) * 0.05,
+              height: height(context) * 0.04,
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -258,6 +256,8 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                 onPressed: () async {
                   conCart.status.value = "edit";
                   conCart.idEdit.value = args.id!;
+
+                  conCart.listCart.clear();
                   // print(conCart.status.value);
                   args.object!.details!
                       .map((e) => conCart.addCart(CartModel(
@@ -273,7 +273,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                 child: Text("Edit", style: TextStyle(fontSize: 18)),
               ),
             ),
-            SizedBox(height: height(context) * 0.01),
+            SizedBox(height: height(context) * 0.02),
           ],
         ),
       ),

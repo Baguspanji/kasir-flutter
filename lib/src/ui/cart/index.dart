@@ -140,7 +140,9 @@ class _CartUIState extends State<CartUI> {
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
+                        backgroundColor: conCart.status.value == 'edit'
+                            ? Colors.amber
+                            : primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

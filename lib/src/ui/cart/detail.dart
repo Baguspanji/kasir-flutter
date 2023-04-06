@@ -161,11 +161,13 @@ class _CartDetailUIState extends State<CartDetailUI> {
               SizedBox(height: height(context) * 0.02),
               Container(
                 width: width(context),
-                height: height(context) * 0.05,
+                height: height(context) * 0.04,
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryColor,
+                    backgroundColor: conCart.status.value == 'edit'
+                        ? Colors.amber
+                        : primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -176,10 +178,18 @@ class _CartDetailUIState extends State<CartDetailUI> {
                     var data =
                         AppModel.fromJson(jsonDecode(app)['data']['app']);
 
-                    var res = await conCart.addTransaction(
-                      name: _formName.text,
-                      amount: _formAmount.text,
-                    );
+                    Response<dynamic> res;
+                    if (conCart.status.value == 'edit') {
+                      res = await conCart.editTransaction(
+                        name: _formName.text,
+                        amount: _formAmount.text,
+                      );
+                    } else {
+                      res = await conCart.addTransaction(
+                        name: _formName.text,
+                        amount: _formAmount.text,
+                      );
+                    }
 
                     if (res.statusCode == 201) {
                       print.sample(
@@ -195,8 +205,16 @@ class _CartDetailUIState extends State<CartDetailUI> {
                       );
 
                       conCart.clearCart();
-                      getToast('Berhasil menambahkan transaksi');
+                      if (conCart.status.value == 'edit') {
+                        getToast('Berhasil mengubah transaksi');
+                        conCart.status.value = 'new';
+                        conCart.idEdit.value = 0;
+                      } else {
+                        getToast('Berhasil menambahkan transaksi');
+                      }
+
                       Future.delayed(Duration(seconds: 2), () {
+                        Navigator.pop(context);
                         Navigator.pop(context);
                       });
                     } else {
@@ -206,7 +224,7 @@ class _CartDetailUIState extends State<CartDetailUI> {
                   child: Text("Proses", style: TextStyle(fontSize: 18)),
                 ),
               ),
-              SizedBox(height: height(context) * 0.01),
+              SizedBox(height: height(context) * 0.02),
             ],
           );
         }),
