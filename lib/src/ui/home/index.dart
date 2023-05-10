@@ -495,7 +495,7 @@ class _HomeUIState extends State<HomeUI> {
                     CartModel(
                       _formId,
                       int.parse(_formPrice.text),
-                      1,
+                      int.parse(_formQty.text),
                       _productFrom,
                     ),
                   );
