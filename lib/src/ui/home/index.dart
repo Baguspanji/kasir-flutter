@@ -28,7 +28,6 @@ class _HomeUIState extends State<HomeUI> {
   bool _isSearch = false;
   bool _isQR = false;
 
-  int _formId = 0;
   ProductModel? _productFrom;
   final _formName = TextEditingController();
   final _formPrice = TextEditingController();
@@ -429,7 +428,6 @@ class _HomeUIState extends State<HomeUI> {
                     ),
                     onPressed: () {
                       setState(() {
-                        _formId = item.id!;
                         _formName.text = item.name ?? '';
                         _formPrice.text = item.price ?? '';
                         _formQty.text = 1.toString();
@@ -493,7 +491,7 @@ class _HomeUIState extends State<HomeUI> {
                 onPressed: () {
                   conCart.addCart(
                     CartModel(
-                      _formId,
+                      _productFrom!.id!,
                       int.parse(_formPrice.text),
                       int.parse(_formQty.text),
                       _productFrom,
