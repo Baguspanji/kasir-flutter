@@ -9,6 +9,7 @@ import 'package:kasir_app/src/controller/product_controller.dart';
 import 'package:kasir_app/src/model/product_model.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/ui/components/custom_components.dart';
+import 'package:kasir_app/src/ui/components/modal.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomeUI extends StatefulWidget {
@@ -26,6 +27,12 @@ class _HomeUIState extends State<HomeUI> {
   final _formSearch = TextEditingController();
   bool _isSearch = false;
   bool _isQR = false;
+
+  int _formId = 0;
+  ProductModel? _productFrom;
+  final _formName = TextEditingController();
+  final _formPrice = TextEditingController();
+  final _formQty = TextEditingController();
 
   static final _possibleFormats = BarcodeFormat.values.toList()
     ..removeWhere((e) => e == BarcodeFormat.unknown);
@@ -230,106 +237,106 @@ class _HomeUIState extends State<HomeUI> {
     );
   }
 
-  Widget _itemProductGrid(BuildContext context, ProductModel item) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 6),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            offset: Offset(0, 3),
-            blurRadius: 6,
-          ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomImageNetwork(
-                item.image ?? '',
-                width: double.infinity,
-                height: width(context) * 0.4,
-              ),
-              SizedBox(height: 6),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.name ?? '-',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black45,
-                        fontWeight: FontWeight.w600,
-                        height: 1.2,
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      item.unit ?? '-',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.black45,
-                        fontWeight: FontWeight.w400,
-                        height: 1.2,
-                      ),
-                    ),
-                    SizedBox(height: 6),
-                    Text(
-                      toRupiah(double.parse(item.price ?? "0")),
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black45,
-                        fontWeight: FontWeight.w600,
-                        height: 1.2,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.black12),
-              ),
-              child: IconButton(
-                  padding: EdgeInsets.zero,
-                  icon: Icon(
-                    Icons.add,
-                    size: 30,
-                    color: Colors.black45,
-                  ),
-                  onPressed: () {
-                    // conCart.status.value = "new";
-                    conCart.addCart(CartModel(
-                      item.id!,
-                      int.parse(item.price!),
-                      1,
-                      item,
-                    ));
-                  }),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _itemProductGrid(BuildContext context, ProductModel item) {
+  //   return Container(
+  //     width: double.infinity,
+  //     margin: EdgeInsets.symmetric(horizontal: 6),
+  //     decoration: BoxDecoration(
+  //       color: Colors.white,
+  //       borderRadius: BorderRadius.circular(10),
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: Colors.black12,
+  //           offset: Offset(0, 3),
+  //           blurRadius: 6,
+  //         ),
+  //       ],
+  //     ),
+  //     child: Stack(
+  //       children: [
+  //         Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             CustomImageNetwork(
+  //               item.image ?? '',
+  //               width: double.infinity,
+  //               height: width(context) * 0.4,
+  //             ),
+  //             SizedBox(height: 6),
+  //             Padding(
+  //               padding: const EdgeInsets.symmetric(horizontal: 10),
+  //               child: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Text(
+  //                     item.name ?? '-',
+  //                     maxLines: 2,
+  //                     overflow: TextOverflow.ellipsis,
+  //                     style: TextStyle(
+  //                       fontSize: 16,
+  //                       color: Colors.black45,
+  //                       fontWeight: FontWeight.w600,
+  //                       height: 1.2,
+  //                     ),
+  //                   ),
+  //                   SizedBox(height: 4),
+  //                   Text(
+  //                     item.unit ?? '-',
+  //                     style: TextStyle(
+  //                       fontSize: 10,
+  //                       color: Colors.black45,
+  //                       fontWeight: FontWeight.w400,
+  //                       height: 1.2,
+  //                     ),
+  //                   ),
+  //                   SizedBox(height: 6),
+  //                   Text(
+  //                     toRupiah(double.parse(item.price ?? "0")),
+  //                     style: TextStyle(
+  //                       fontSize: 12,
+  //                       color: Colors.black45,
+  //                       fontWeight: FontWeight.w600,
+  //                       height: 1.2,
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //         Positioned(
+  //           bottom: 10,
+  //           right: 10,
+  //           child: Container(
+  //             width: 40,
+  //             height: 40,
+  //             decoration: BoxDecoration(
+  //               color: Colors.grey[100],
+  //               borderRadius: BorderRadius.circular(10),
+  //               border: Border.all(color: Colors.black12),
+  //             ),
+  //             child: IconButton(
+  //                 padding: EdgeInsets.zero,
+  //                 icon: Icon(
+  //                   Icons.add,
+  //                   size: 30,
+  //                   color: Colors.black45,
+  //                 ),
+  //                 onPressed: () {
+  //                   // conCart.status.value = "new";
+  //                   conCart.addCart(CartModel(
+  //                     item.id!,
+  //                     int.parse(item.price!),
+  //                     1,
+  //                     item,
+  //                   ));
+  //                 }),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _itemProductList(BuildContext context, ProductModel item) {
     final cart = conCart.listCart.firstWhere(
@@ -354,12 +361,6 @@ class _HomeUIState extends State<HomeUI> {
       ),
       child: Row(
         children: [
-          // CustomImageNetwork(
-          //   item.image ?? '',
-          //   width: width(context) * 0.2,
-          //   height: width(context) * 0.2,
-          // ),
-          // SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -410,7 +411,6 @@ class _HomeUIState extends State<HomeUI> {
             ),
           ),
           SizedBox(width: 10),
-
           cart.id == 0
               ? Container(
                   width: 40,
@@ -428,23 +428,90 @@ class _HomeUIState extends State<HomeUI> {
                       color: Colors.black45,
                     ),
                     onPressed: () {
-                      // conCart.status.value = "new";
-                      conCart.addCart(
-                        CartModel(
-                          item.id!,
-                          int.parse(item.price!),
-                          1,
-                          item,
-                        ),
-                      );
+                      setState(() {
+                        _formId = item.id!;
+                        _formName.text = item.name ?? '';
+                        _formPrice.text = item.price ?? '';
+                        _formQty.text = 1.toString();
 
-                      setState(() {});
+                        _productFrom = item;
+                      });
+
+                      _openModal(context);
                     },
                   ),
                 )
               : Spacer(),
           SizedBox(width: 10),
         ],
+      ),
+    );
+  }
+
+  _openModal(BuildContext context) {
+    Modals.showModal(
+      title: 'Keranjang',
+      subTitle: '',
+      subTitleWidget: Container(
+        width: width(context) * 0.8,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            SizedBox(height: height(context) * 0.01),
+            CustomTextField(
+              controller: _formName,
+              hintText: "Nama Barang",
+              prefixIcon: Icon(Icons.add_box),
+              readOnly: true,
+            ),
+            SizedBox(height: height(context) * 0.01),
+            CustomTextField(
+              controller: _formPrice,
+              hintText: "Uang Harga",
+              prefixIcon: Icon(Icons.money),
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: height(context) * 0.01),
+            CustomTextField(
+              controller: _formQty,
+              hintText: "Banyak",
+              prefixIcon: Icon(Icons.numbers),
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: height(context) * 0.02),
+            // button ok
+            Container(
+              width: width(context),
+              height: height(context) * 0.04,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () {
+                  conCart.addCart(
+                    CartModel(
+                      _formId,
+                      int.parse(_formPrice.text),
+                      1,
+                      _productFrom,
+                    ),
+                  );
+
+                  setState(() {
+                    _formName.clear();
+                    _formPrice.clear();
+                    _formQty.clear();
+                  });
+                  Navigator.pop(context);
+                },
+                child: Text("OK", style: TextStyle(fontSize: 18)),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
