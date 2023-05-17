@@ -210,6 +210,33 @@ class CustomRefresh extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
+      footer: CustomFooter(
+        builder: (BuildContext context, LoadStatus? mode) {
+          Widget body;
+          if (mode == LoadStatus.idle) {
+            body = Text("Load Data baru");
+          } else if (mode == LoadStatus.loading) {
+            body = Container(
+              height: 30,
+              width: 30,
+              child: CircularProgressIndicator(
+                strokeWidth: 1,
+                color: primaryColor,
+              ),
+            );
+          } else if (mode == LoadStatus.failed) {
+            body = Text("Load Data Gagal, Silahkan Coba Lagi");
+          } else if (mode == LoadStatus.canLoading) {
+            body = Text("Tarik ke atas untuk load data");
+          } else {
+            body = Text("Tidak Ada Data Lagi");
+          }
+          return Container(
+            height: 55.0,
+            child: Center(child: body),
+          );
+        },
+      ),
       controller: controller,
       enablePullDown: true,
       enablePullUp: true,

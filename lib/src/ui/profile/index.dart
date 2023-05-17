@@ -48,54 +48,78 @@ class _ProfileUIState extends State<ProfileUI> {
             }
 
             if (user.name == null) {
-              return ListTile(
-                leading: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        'https://www.gstatic.com/webp/gallery/1.sm.jpg',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      )
-                    ],
-                  ),
+              return Container(
+                width: width(context),
+                height: height(context) * 0.1,
+                margin: EdgeInsets.symmetric(horizontal: 30),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 5,
+                      offset: Offset(0, 5),
+                    )
+                  ],
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                title: Text('kasir demo'),
-                subtitle: Text('kasir demo'),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Nama Pengguna',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      'Toko',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
               );
             } else {
-              return ListTile(
-                leading: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        'https://www.gstatic.com/webp/gallery/1.sm.jpg',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      )
-                    ],
-                  ),
+              return Container(
+                width: width(context),
+                height: height(context) * 0.1,
+                margin: EdgeInsets.symmetric(horizontal: 30),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 5,
+                      offset: Offset(0, 5),
+                    )
+                  ],
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                title: Text(user.name ?? ''),
-                subtitle: Text(user.app != null ? user.app!.name! : ''),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      user.name ?? '',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      user.app != null ? user.app!.name! : '',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
               );
             }
           }),
