@@ -44,11 +44,8 @@ class _ListBarangState extends State<ListBarang> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    conProduct.getProduct(1);
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      conProduct.getProduct(1);
-    });
   }
 
   @override
@@ -113,6 +110,8 @@ class _ListBarangState extends State<ListBarang> {
                               setState(() {
                                 _isSearch = !_isSearch;
                               });
+                              _formSearch.clear();
+                              conProduct.getProduct(1);
                             },
                             child: Icon(
                               Icons.search,
@@ -182,30 +181,22 @@ class _ListBarangState extends State<ListBarang> {
               ],
             ),
             SizedBox(height: height(context) * 0.02),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: InkWell(
-                onTap: () => Get.toNamed(TambahBarang.routeName),
-                child: Container(
-                  width: width(context),
-                  height: height(context) * 0.05,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(17),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Tambah',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        // fontWeight: FontWeight.w600,
-                      ),
-                    ),
+            Container(
+              width: width(context),
+              height: height(context) * 0.04,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
+                onPressed: () => Get.toNamed(TambahBarang.routeName),
+                child: Text("Tambah", style: TextStyle(fontSize: 18)),
               ),
-            )
+            ),
+            SizedBox(height: height(context) * 0.01),
           ],
         ),
       ),

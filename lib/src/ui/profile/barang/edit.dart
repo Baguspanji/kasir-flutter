@@ -374,10 +374,18 @@ class _EditBarangState extends State<EditBarang> {
               ),
             ),
             SizedBox(height: height(context) * 0.02),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
-              child: InkWell(
-                onTap: () async {
+            Container(
+              width: width(context),
+              height: height(context) * 0.04,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.amber,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () async {
                   bool res = await productCon.editItem(
                     id,
                     code1.text,
@@ -411,28 +419,19 @@ class _EditBarangState extends State<EditBarang> {
                     getToast('Gagal mengubah barang');
                   }
                 },
-                child: Container(
-                  width: width(context),
-                  height: height(context) * 0.050,
-                  decoration: BoxDecoration(
-                    color: Colors.amber.shade300,
-                    borderRadius: BorderRadius.circular(17),
-                  ),
-                  child: Center(
-                    child: productCon.isLoading.value == true
-                        ? const CircularProgressIndicator()
-                        : const Text(
-                            'Edit',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                              // fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                  ),
-                ),
+                child: productCon.isLoading.value == true
+                    ? const CircularProgressIndicator()
+                    : const Text(
+                        'Edit',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          // fontWeight: FontWeight.w600,
+                        ),
+                      ),
               ),
             ),
+            SizedBox(height: height(context) * 0.02),
           ],
         ),
       ),

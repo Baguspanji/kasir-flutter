@@ -124,6 +124,7 @@ class _HomeUIState extends State<HomeUI> {
                         });
 
                         conProduct.search.value = '';
+                        _formSearch.clear();
                         conProduct.getProduct(1);
                       },
                       child: Icon(
