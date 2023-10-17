@@ -9,7 +9,7 @@ ThemeData theme() {
     textTheme: textTheme(),
     inputDecorationTheme: inputDecorationTheme(),
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    accentColor: primaryColor,
+    hintColor: primaryColor,
   );
 }
 
