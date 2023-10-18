@@ -88,7 +88,7 @@ class _CartUIState extends State<CartUI> {
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 itemCount: conCart.listCart.length,
                 itemBuilder: (context, index) {
-                  final item = conCart.listCart.reversed.toList()[index];
+                  final item = conCart.listCart.toList()[index];
                   return _itemProductList(context, item);
                 },
               ),
@@ -350,7 +350,7 @@ class _CartUIState extends State<CartUI> {
               height: height(context) * 0.04,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: primaryColor,
+                  backgroundColor: primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
