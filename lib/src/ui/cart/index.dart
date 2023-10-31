@@ -350,7 +350,7 @@ class _CartUIState extends State<CartUI> {
               height: height(context) * 0.04,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: primaryColor,
+                  backgroundColor: primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
