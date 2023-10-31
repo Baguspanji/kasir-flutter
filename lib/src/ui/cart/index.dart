@@ -88,7 +88,7 @@ class _CartUIState extends State<CartUI> {
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 itemCount: conCart.listCart.length,
                 itemBuilder: (context, index) {
-                  final item = conCart.listCart.reversed.toList()[index];
+                  final item = conCart.listCart.toList()[index];
                   return _itemProductList(context, item);
                 },
               ),
