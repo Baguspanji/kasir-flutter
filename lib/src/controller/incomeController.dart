@@ -136,15 +136,15 @@ class IncomeController extends GetxController {
     print('file: ${file.path}');
 
     Get.showSnackbar(
-      GetBar(
-        duration: Duration(seconds: 3),
+      GetSnackBar(
+        duration: const Duration(seconds: 3),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.black87,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         messageText: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Laporan berhasil diunduh',
               style: TextStyle(
                 fontSize: 12,
