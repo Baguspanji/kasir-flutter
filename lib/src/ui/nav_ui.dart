@@ -95,7 +95,7 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
         },
       ),
       floatingActionButton: indexNav == 0
-          ? Obx(() => conCart.totalCart != 0
+          ? Obx(() => conCart.totalCountCart != 0
               ? FloatingActionButton(
                   onPressed: () {
                     Get.toNamed(CartUI.routeName);
@@ -107,7 +107,7 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
                         Icons.shopping_cart,
                         color: Colors.white,
                       ),
-                      if (conCart.totalCart > 0)
+                      if (conCart.totalCountCart > 0)
                         Positioned(
                           right: 0,
                           child: Container(
@@ -121,7 +121,7 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
                               minHeight: 12,
                             ),
                             child: Text(
-                              '${conCart.totalCart}',
+                              '${conCart.totalCountCart}',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 8,

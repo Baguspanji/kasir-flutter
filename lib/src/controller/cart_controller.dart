@@ -1,92 +1,59 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
-import 'package:kasir_app/src/model/create_transaksi_model.dart';
-import 'package:kasir_app/src/model/transaksi_model.dart';
-import 'package:kasir_app/src/model/user_model.dart';
-import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/repository/api_transaksi.dart';
-import 'package:kasir_app/src/repository/s_preference.dart';
+import 'package:kasir_app/src/repository/sqlite_cart.dart';
 
 class CartController extends GetxController {
   final api = ApiTransaksi();
+  final db = CartDB();
+
+  final listCart = <CartDBModel>[].obs;
   RxString status = "new".obs;
   RxInt idEdit = 0.obs;
-  final listCart = <CartModel>[].obs;
+  RxInt countCart = 0.obs;
 
-  void addCart(CartModel cart) {
-    var allCart = listCart.value;
-    if (allCart.isEmpty) {
-      listCart.add(cart);
-      print(status.value);
-      return;
-    }
+  void getCart() async {
+    await db.open();
+    final raw = await db.getCartAll();
 
-    var findCart = allCart.firstWhere((element) => element.id == cart.id,
-        orElse: () => CartModel(0, 0, 0, null));
-
-    if (findCart.id == 0) {
-      listCart.add(cart);
-    } else {
-      findCart.qty += cart.qty;
-      updateCart(findCart);
-    }
+    listCart.value = raw != [] ? [...raw.map((e) => e)] : [];
+    countCart.value = raw.length;
+    await db.close();
   }
 
-  // void decrementQty(CartModel cart) {
-  //   var allCart = listCart.value;
-  //   var findCart = allCart.firstWhere((element) => element.id == cart.id,
-  //       orElse: () => CartModel(0, 0, 0, null));
-
-  //   if (findCart.id != 0) {
-  //     if (findCart.qty != 1) {
-  //       findCart.qty -= 1;
-  //       updateCart(findCart);
-  //     }
-  //   }
-  // }
-
-  // void incrementQty(CartModel cart) {
-  //   var allCart = listCart.value;
-  //   var findCart = allCart.firstWhere((element) => element.id == cart.id,
-  //       orElse: () => CartModel(0, 0, 0, null));
-
-  //   if (findCart.id != 0) {
-  //     findCart.qty += 1;
-  //     updateCart(findCart);
-  //   }
-  // }
-
-  void updateCart(CartModel cart) {
-    var allCart = listCart.value;
-
-    allCart[allCart.indexWhere((element) => element.id == cart.id)] = cart;
-    listCart.value = allCart;
+  void addCart(CartDBModel cart) async {
+    await db.open();
+    await db.insert(cart);
+    await db.close();
+    getCart();
   }
 
-  void removeCart(CartModel cart) {
-    var allCart = listCart.value;
-
-    listCart.value = allCart
-        .where((element) => element.id != cart.id)
-        .toList(growable: false);
-
-    var newCart = [];
-
-    listCart.forEach((e) {
-      if (e.id != 0) {
-        newCart.add(e);
-      }
-    });
-
-    listCart.value = [...newCart];
+  void updateCart(CartDBModel cart) async {
+    await db.open();
+    await db.update(cart);
+    await db.close();
+    getCart();
   }
 
-  void clearCart() {
-    listCart.value = [];
+  void removeCart(int id) async {
+    await db.open();
+    await db.delete(id);
+    await db.close();
+    getCart();
   }
 
-  int get totalCart => listCart.value.length;
+  void clearCart() async {
+    await db.open();
+    await db.deleteAll();
+    await db.close();
+    getCart();
+  }
+
+  int get totalCountCart => countCart.value;
+  int get totalAmountCart => listCart.value.fold(
+        0,
+        (previousValue, element) =>
+            previousValue + (element.price! * element.qty!),
+      );
 
   // addTransaction
   Future<Response<dynamic>> addTransaction({

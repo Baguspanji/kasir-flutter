@@ -6,11 +6,10 @@ import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/route_config.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
-import 'package:kasir_app/src/model/product_model.dart';
 import 'package:kasir_app/src/model/transaksi_model.dart';
 import 'package:kasir_app/src/model/user_model.dart';
-import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
+import 'package:kasir_app/src/repository/sqlite_cart.dart';
 import 'package:kasir_app/src/ui/components/struk_print.dart';
 import 'package:kasir_app/src/ui/nav_ui.dart';
 import 'package:kasir_app/src/ui/transaksi/share_struk.dart';
@@ -216,13 +215,14 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
 
                   var data = AppModel.fromJson(jsonDecode(app)['data']['app']);
 
-                  final List<CartModel> cart = [
-                    ...args.object!.details!.map((e) => CartModel(
-                          int.parse(e.itemId ?? '0'),
-                          int.parse(e.price ?? '0'),
-                          int.parse(e.quantity ?? '0'),
-                          e.item,
-                        ))
+                  final List<CartDBModel> cart = [
+                    ...args.object!.details!.map((e) => CartDBModel.fromMap({
+                          '_id': int.parse(e.itemId!),
+                          'name': e.item!.name,
+                          'unit': e.item!.unit,
+                          'price': int.parse(e.price!),
+                          'qty': int.parse(e.quantity!),
+                        }))
                   ];
 
                   print1.sample(
@@ -260,11 +260,13 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                   conCart.listCart.clear();
                   // print(conCart.status.value);
                   args.object!.details!
-                      .map((e) => conCart.addCart(CartModel(
-                          int.parse(e.itemId!),
-                          int.parse(e.price!),
-                          int.parse(e.quantity!),
-                          e.item)))
+                      .map((e) => conCart.addCart(CartDBModel.fromMap({
+                            '_id': int.parse(e.itemId!),
+                            'name': e.item!.name,
+                            'unit': e.item!.unit,
+                            'price': int.parse(e.price!),
+                            'qty': int.parse(e.quantity!),
+                          })))
                       .toList();
 
                   Get.offAndToNamed(NavUI.routeName);

@@ -129,11 +129,12 @@ class CustomEmptyData extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8),
-          button(
-            'Refresh',
-            color: Colors.grey,
-            onPressed: onPressed,
-          ),
+          if (onPressed != null)
+            button(
+              'Refresh',
+              color: Colors.grey,
+              onPressed: onPressed,
+            ),
         ],
       ),
     );

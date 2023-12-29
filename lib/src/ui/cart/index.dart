@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
-import 'package:kasir_app/src/model/widget_model.dart';
+import 'package:kasir_app/src/repository/sqlite_cart.dart';
 import 'package:kasir_app/src/ui/cart/detail.dart';
 import 'package:kasir_app/src/ui/components/custom_components.dart';
 import 'package:kasir_app/src/ui/components/modal.dart';
@@ -18,10 +18,12 @@ class CartUI extends StatefulWidget {
 
 class _CartUIState extends State<CartUI> {
   final conCart = Get.find<CartController>();
-  CartModel cartEdit = CartModel(0, 0, 0, null);
+  CartDBModel _cartEdit = CartDBModel();
+
   final _formName = TextEditingController();
   final _formPrice = TextEditingController();
   final _formQty = TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -63,7 +65,6 @@ class _CartUIState extends State<CartUI> {
                   InkWell(
                     onTap: () {
                       conCart.clearCart();
-                      setState(() {});
                     },
                     child: Container(
                       padding: EdgeInsets.all(6),
@@ -84,14 +85,26 @@ class _CartUIState extends State<CartUI> {
             ),
             SizedBox(height: height(context) * 0.02),
             Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                itemCount: conCart.listCart.length,
-                itemBuilder: (context, index) {
-                  final item = conCart.listCart.toList()[index];
-                  return _itemProductList(context, item);
-                },
-              ),
+              child: Obx(() {
+                final cartList = conCart.listCart.value;
+
+                if (cartList.isEmpty) {
+                  return Container(
+                    height: height(context) * 0.8,
+                    child: CustomEmptyData(
+                      height: height(context) * 0.9,
+                      text: 'Keranjang masih kosong',
+                    ),
+                  );
+                }
+
+                return ListView(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  children: [
+                    ...cartList.map((e) => _itemProductList(context, e))
+                  ],
+                );
+              }),
             ),
             Container(
               width: width(context),
@@ -121,15 +134,11 @@ class _CartUIState extends State<CartUI> {
                     child: Column(
                       children: [
                         Obx(() {
-                          final cart = conCart.listCart.value;
-                          final total = cart.fold(
-                              0,
-                              (previousValue, element) =>
-                                  previousValue +
-                                  (element.price * element.qty));
-
-                          return _tableField(
-                              "Total", toRupiah(double.parse('$total')));
+                          return _tableFieldTotal(
+                            "Total",
+                            toRupiah(
+                                double.parse('${conCart.totalAmountCart}')),
+                          );
                         }),
                       ],
                     ),
@@ -161,7 +170,7 @@ class _CartUIState extends State<CartUI> {
     );
   }
 
-  Widget _tableField(String title, String value) {
+  Widget _tableFieldTotal(String title, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -177,9 +186,7 @@ class _CartUIState extends State<CartUI> {
     );
   }
 
-  Widget _itemProductList(BuildContext context, CartModel cart) {
-    final item = cart.product!;
-
+  Widget _itemProductList(BuildContext context, CartDBModel cart) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
@@ -206,8 +213,7 @@ class _CartUIState extends State<CartUI> {
                 bottomRight: Radius.circular(10),
               ),
               onPressed: (contex) {
-                conCart.removeCart(cart);
-                setState(() {});
+                conCart.removeCart(cart.id!);
               },
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
@@ -224,7 +230,7 @@ class _CartUIState extends State<CartUI> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item.name ?? '-',
+                      cart.name ?? '-',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.black45,
@@ -253,7 +259,7 @@ class _CartUIState extends State<CartUI> {
                             ),
                           ),
                           TextSpan(
-                            text: item.unit ?? '-',
+                            text: cart.unit ?? '-',
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.black45,
@@ -265,7 +271,7 @@ class _CartUIState extends State<CartUI> {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      toRupiah(double.parse(cart.price.toString()) * cart.qty),
+                      toRupiah(double.parse(cart.price.toString()) * cart.qty!),
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.black45,
@@ -295,9 +301,9 @@ class _CartUIState extends State<CartUI> {
                 ),
                 onPressed: () {
                   setState(() {
-                    cartEdit = cart;
+                    _cartEdit = cart;
 
-                    _formName.text = item.name ?? '';
+                    _formName.text = cart.name ?? '';
                     _formPrice.text = cart.price.toString();
                     _formQty.text = cart.qty.toString();
                   });
@@ -356,10 +362,10 @@ class _CartUIState extends State<CartUI> {
                   ),
                 ),
                 onPressed: () {
-                  cartEdit.price = int.parse(_formPrice.text);
-                  cartEdit.qty = int.parse(_formQty.text);
+                  _cartEdit.price = int.parse(_formPrice.text);
+                  _cartEdit.qty = int.parse(_formQty.text);
 
-                  conCart.updateCart(cartEdit);
+                  conCart.updateCart(_cartEdit);
 
                   setState(() {
                     _formName.clear();

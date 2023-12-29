@@ -15,12 +15,3 @@ class NavModel {
 
   NavModel(this.svgVisible, this.svgInvisible, this.title);
 }
-
-class CartModel {
-  int id;
-  int price;
-  int qty;
-  ProductModel? product;
-
-  CartModel(this.id, this.price, this.qty, this.product);
-}

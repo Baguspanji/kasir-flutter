@@ -36,12 +36,7 @@ class _CartDetailUIState extends State<CartDetailUI> {
       child: Scaffold(
         body: Obx(() {
           final cartData = conCart.listCart.value;
-
-          final cart = conCart.listCart.value;
-          final total = cart.fold(
-              0,
-              (previousValue, element) =>
-                  previousValue + (element.price * element.qty));
+          final total = conCart.totalAmountCart;
 
           return Column(
             children: [
@@ -109,16 +104,16 @@ class _CartDetailUIState extends State<CartDetailUI> {
                         children: [
                           _itemDetailTransaksi(
                             context,
-                            e.product!.name ?? '-',
+                            e.name ?? '-',
                             '',
-                            desc: e.product!.unit ?? '-',
+                            desc: e.unit ?? '-',
                           ),
                           _itemDetailTransaksi(
                             context,
                             '${e.qty} x ${toRupiah(double.parse(e.price.toString()))}',
                             toRupiah(
                               double.parse(
-                                (e.price * e.qty).toString(),
+                                (e.price! * e.qty!).toString(),
                               ),
                             ),
                             titleBold: false,

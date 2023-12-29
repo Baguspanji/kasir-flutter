@@ -7,7 +7,7 @@ import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/controller/product_controller.dart';
 import 'package:kasir_app/src/model/product_model.dart';
-import 'package:kasir_app/src/model/widget_model.dart';
+import 'package:kasir_app/src/repository/sqlite_cart.dart';
 import 'package:kasir_app/src/ui/components/custom_components.dart';
 import 'package:kasir_app/src/ui/components/modal.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -58,6 +58,7 @@ class _HomeUIState extends State<HomeUI> {
   @override
   void initState() {
     conProduct.getProduct(1);
+    conCart.getCart();
     super.initState();
   }
 
@@ -342,7 +343,7 @@ class _HomeUIState extends State<HomeUI> {
   Widget _itemProductList(BuildContext context, ProductModel item) {
     final cart = conCart.listCart.firstWhere(
       (element) => element.id == item.id,
-      orElse: () => CartModel(0, 0, 0, ProductModel()),
+      orElse: () => CartDBModel.fromMap({'_id': 0}),
     );
 
     return Container(
@@ -492,12 +493,13 @@ class _HomeUIState extends State<HomeUI> {
                 ),
                 onPressed: () {
                   conCart.addCart(
-                    CartModel(
-                      _productFrom!.id!,
-                      int.parse(_formPrice.text),
-                      int.parse(_formQty.text),
-                      _productFrom,
-                    ),
+                    CartDBModel.fromMap({
+                      '_id': _productFrom!.id,
+                      'name': _productFrom!.name,
+                      'unit': _productFrom!.unit,
+                      'price': int.parse(_formPrice.text),
+                      'qty': int.parse(_formQty.text),
+                    }),
                   );
 
                   setState(() {

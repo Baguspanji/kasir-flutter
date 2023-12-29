@@ -1,5 +1,6 @@
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
+import 'package:kasir_app/src/repository/sqlite_cart.dart';
 import 'package:kasir_app/src/ui/components/printer_enum.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'dart:io';
@@ -10,7 +11,7 @@ class StrukPrintCart {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
 
   sample(
-    List<CartModel> cart, {
+    List<CartDBModel> cart, {
     String? appName,
     String? appAddress,
     String? appPhone,
@@ -82,14 +83,14 @@ class StrukPrintCart {
         bluetooth.printNewLine();
 
         cart.forEach((e) {
-          String s = e.product!.unit ?? "-";
+          String s = e.unit ?? "-";
           final idx = s.split("/");
 
-          int qty = int.parse(idx[0]) * e.qty;
+          int qty = int.parse(idx[0]) * e.qty!;
           String unit = '$qty ${idx[1]}';
 
           bluetooth.printCustom(
-            (e.product!.name ?? "-"),
+            (e.name ?? "-"),
             Size.bold.val,
             Align.left.val,
             charset: "windows-1250",
@@ -97,7 +98,8 @@ class StrukPrintCart {
 
           String desc =
               "$unit x ${toCurrency(double.parse(e.price.toString()))}";
-          String price = toCurrency(double.parse((e.price * e.qty).toString()));
+          String price =
+              toCurrency(double.parse((e.price! * e.qty!).toString()));
 
           bluetooth.printCustom(
             '${desc.padRight(20)}${price.padLeft(10)}',
