@@ -28,9 +28,9 @@ class _SplashUIState extends State<SplashUI> {
 
   _init() async {
     await Future.delayed(Duration(seconds: 2));
-    getToken().then((value) {
+    getToken().then((value) async {
       if (value != null) {
-        conAuth.getUser();
+        await conAuth.getUser();
         Get.offAllNamed(NavUI.routeName);
       } else {
         Get.offAllNamed(AuthUI.routeName);

@@ -55,6 +55,7 @@ class AuthController extends GetxController {
     await rmvToken();
     await rmvRole();
     await rmvStyleHome();
+    await rmvUser();
     Get.offAndToNamed(SplashUI.routeName);
   }
 
