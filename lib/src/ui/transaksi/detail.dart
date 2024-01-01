@@ -266,16 +266,18 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                   conCart.idEdit.value = args.id!;
 
                   conCart.listCart.clear();
+                  await conCart.clearCart();
                   // print(conCart.status.value);
-                  args.object!.details!
-                      .map((e) => conCart.addCart(CartDBModel.fromMap({
-                            '_id': int.parse(e.itemId!),
-                            'name': e.item!.name,
-                            'unit': e.item!.unit,
-                            'price': int.parse(e.price!),
-                            'qty': int.parse(e.quantity!),
-                          })))
-                      .toList();
+                  for (var i = 0; i < args.object!.details!.length; i++) {
+                    final e = args.object!.details![i];
+                    await conCart.addCart(CartDBModel.fromMap({
+                      '_id': int.parse(e.itemId!),
+                      'name': e.item!.name,
+                      'unit': e.item!.unit,
+                      'price': int.parse(e.price!),
+                      'qty': int.parse(e.quantity!),
+                    }));
+                  }
 
                   Get.offAndToNamed(NavUI.routeName);
                   // print(item);

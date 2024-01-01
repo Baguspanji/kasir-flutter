@@ -11,7 +11,7 @@ class CartController extends GetxController {
   RxInt idEdit = 0.obs;
   RxInt countCart = 0.obs;
 
-  void getCart() async {
+  Future<void> getCart() async {
     await db.open();
     final raw = await db.getCartAll();
 
@@ -20,28 +20,28 @@ class CartController extends GetxController {
     await db.close();
   }
 
-  void addCart(CartDBModel cart) async {
+  Future<void> addCart(CartDBModel cart) async {
     await db.open();
     await db.insert(cart);
     await db.close();
     getCart();
   }
 
-  void updateCart(CartDBModel cart) async {
+  Future<void> updateCart(CartDBModel cart) async {
     await db.open();
     await db.update(cart);
     await db.close();
     getCart();
   }
 
-  void removeCart(int id) async {
+  Future<void> removeCart(int id) async {
     await db.open();
     await db.delete(id);
     await db.close();
     getCart();
   }
 
-  void clearCart() async {
+  Future<void> clearCart() async {
     await db.open();
     await db.deleteAll();
     await db.close();
