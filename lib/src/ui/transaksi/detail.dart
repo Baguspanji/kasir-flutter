@@ -3,17 +3,19 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// import 'package:image_downloader/image_downloader.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/route_config.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
+import 'package:kasir_app/src/controller/incomeController.dart';
 import 'package:kasir_app/src/model/transaksi_model.dart';
 import 'package:kasir_app/src/model/user_model.dart';
 import 'package:kasir_app/src/repository/s_preference.dart';
 import 'package:kasir_app/src/repository/sqlite_cart.dart';
+import 'package:kasir_app/src/ui/components/modal.dart';
 import 'package:kasir_app/src/ui/components/struk_print.dart';
 import 'package:kasir_app/src/ui/nav_ui.dart';
-import 'package:kasir_app/src/ui/transaksi/share_struk.dart';
-import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../config/size_config.dart';
 
@@ -27,56 +29,63 @@ class TransaksiDetailUI extends StatefulWidget {
 class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
   final args = Get.arguments as CommonArgument<TransaksiModel>;
 
-  final CartController conCart = Get.put(CartController());
+  final conCart = Get.put(CartController());
+  final conIncome = Get.put(IncomeController());
   final print1 = StrukPrintCart();
 
   int _counter = 0;
   Uint8List? _imageFile;
 
   //Create an instance of ScreenshotController
-  ScreenshotController screenshotController = ScreenshotController();
 
   @override
   void initState() {
+    conIncome.init();
+
     super.initState();
   }
 
   void scren(TransaksiModel transaksi) async {
-    var container = ShareStruk.struk(transaksi);
-
-    screenshotController
-        .captureFromWidget(
-      InheritedTheme.captureAll(context, Material(child: container)),
-      delay: Duration(seconds: 1),
-      pixelRatio: 1,
-    )
-        .then((capturedImage) {
-      ShowCapturedWidget(
-        context,
-        capturedImage,
-      );
-    });
-  }
-
-  Future<dynamic> ShowCapturedWidget(
-      BuildContext context, Uint8List capturedImage) {
-    return showDialog(
-      useSafeArea: false,
-      context: context,
-      builder: (context) => Scaffold(
-        appBar: AppBar(
-          title: Text("Captured widget screenshot"),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Center(
-                child: capturedImage != null
-                    ? Image.memory(capturedImage)
-                    : Container(),
+    // var container = ShareStruk.struk(transaksi);
+    final urlImage = await conIncome.apiGenerateImage(transaksi.id!);
+    Modals.showModal(
+      title: 'Share Struk Transaksi',
+      subTitle: '',
+      subTitleWidget: Container(
+        width: width(context) * 0.8,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            SizedBox(height: height(context) * 0.01),
+            Container(
+              width: 300,
+              height: 300,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                image: DecorationImage(image: NetworkImage(urlImage!)),
               ),
-            ],
-          ),
+            ),
+            SizedBox(height: height(context) * 0.02),
+            // button ok
+            Container(
+              width: width(context),
+              height: height(context) * 0.04,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () async {
+                  String path = await conIncome.apiDownloadImage(urlImage!);
+                  Share.shareXFiles([XFile(path)]);
+                  Navigator.pop(context);
+                },
+                child: Text("Share", style: TextStyle(fontSize: 18)),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -110,8 +119,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                   ),
                   Spacer(),
                   IconButton(
-                    // onPressed: () => scren(args.object!),
-                    onPressed: () => getToast('Fitur belum tersedia'),
+                    onPressed: () => scren(args.object!),
                     icon: Icon(Icons.share),
                   ),
                 ],

@@ -175,6 +175,64 @@ class IncomeController extends GetxController {
     );
   }
 
+  Future<String> apiDownloadImage(String url) async {
+    _permissionReady = await _checkPermission();
+    if (_permissionReady) {
+      await _prepareSaveDir();
+      print("Downloading");
+    } else {
+      getToast('Gagal melakukan share');
+      return '';
+    }
+
+    String token = await getToken();
+
+    var res = await dio.Dio().get(url,
+        options: dio.Options(
+          responseType: dio.ResponseType.bytes,
+          headers: {
+            'Authorization': token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        ));
+
+    print('status: ${res.statusCode}');
+
+    var bytes = res.data;
+    var directory = await getTemporaryDirectory();
+
+    var file = File('${directory.path}/transaksi-struk.jpg');
+
+    if (file.existsSync()) {
+      await file.delete();
+      print('file deleted');
+    }
+
+    await file.writeAsBytes(bytes);
+
+    print('file: ${file.path}');
+    return file.path;
+  }
+
+  Future<String?> apiGenerateImage(int id) async {
+    String token = await getToken();
+
+    var res = await dio.Dio().get('$globalApi/api/transaction/$id/share',
+        options: dio.Options(
+          headers: {
+            'Authorization': token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        ));
+
+    print('status: ${res.statusCode}');
+    var response = res.data as Map<String, dynamic>;
+    print(response['data']);
+    return response['data'];
+  }
+
   Future<void> _prepareSaveDir() async {
     _localPath = (await _findLocalPath())!;
 
@@ -190,8 +248,8 @@ class IncomeController extends GetxController {
     if (platform == TargetPlatform.android) {
       return "/storage/emulated/0/Download";
     } else {
-      var directory = await getApplicationDocumentsDirectory();
-      return directory.path + Platform.pathSeparator + 'Download';
+      var directory = await getDownloadsDirectory();
+      return directory!.path;
     }
   }
 }
