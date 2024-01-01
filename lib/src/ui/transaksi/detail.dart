@@ -78,7 +78,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
                   ),
                 ),
                 onPressed: () async {
-                  String path = await conIncome.apiDownloadImage(urlImage!);
+                  String path = await conIncome.apiDownloadImage(urlImage);
                   Share.shareXFiles([XFile(path)]);
                   Navigator.pop(context);
                 },
