@@ -48,6 +48,12 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
   void scren(TransaksiModel transaksi) async {
     // var container = ShareStruk.struk(transaksi);
     final urlImage = await conIncome.apiGenerateImage(transaksi.id!);
+    if (urlImage == null) {
+      getToast('Gagal membuat struk transaksi');
+      return;
+    }
+
+    imageCache.clear();
     Modals.showModal(
       title: 'Share Struk Transaksi',
       subTitle: '',
@@ -62,7 +68,7 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
               height: 300,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                image: DecorationImage(image: NetworkImage(urlImage!)),
+                image: DecorationImage(image: NetworkImage(urlImage)),
               ),
             ),
             SizedBox(height: height(context) * 0.02),

@@ -217,7 +217,7 @@ class IncomeController extends GetxController {
 
   Future<String?> apiGenerateImage(int id) async {
     String token = await getToken();
-
+    print('$globalApi/api/transaction/$id/share');
     var res = await dio.Dio().get('$globalApi/api/transaction/$id/share',
         options: dio.Options(
           headers: {
