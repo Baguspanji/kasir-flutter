@@ -91,7 +91,7 @@ class _SplashUIState extends State<SplashUI> {
               alignment: Alignment.center,
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.orangeAccent.shade200,
+                color: secondaryColor,
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Image(

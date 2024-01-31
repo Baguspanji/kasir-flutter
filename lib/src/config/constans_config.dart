@@ -10,7 +10,7 @@ const globalApi = 'https://kasirjj.com';
 
 const cardColor = Color(0xFFFAFBFB);
 const primaryColor = Color(0xFF63fbcb);
-const secondaryColor = Color(0xFF1b711b);
+const secondaryColor = Color(0xFFFF8833);
 const redColor = Color(0xFFCB3A31);
 const yellowColor = Color(0xFFFFD500);
 const yellowOrangeColor = Color(0xFFFDC500);
@@ -20,6 +20,21 @@ const darkBlueColor = Color(0xFF00296B);
 const baghroundColor = Color(0xFFF5F5F5);
 const textColor = Color(0xFF404040);
 const textGrayColor = Color(0xFFC2C2C2);
+const bgGradient = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment(0.8, 1),
+  colors: <Color>[
+    Color(0xFFF4864F),
+    Color(0xfff69051),
+    Color(0xfff99a53),
+    Color(0xfffaa456),
+    Color(0xfffcae5a),
+    Color(0xfffdb85f),
+    Color(0xfffec165),
+    Color(0xFFFFCB6B),
+  ],
+  tileMode: TileMode.mirror,
+);
 
 const kAnimationDuration = Duration(milliseconds: 200);
 

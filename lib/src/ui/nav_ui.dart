@@ -3,13 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_assets.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
-import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/auth_controller.dart';
 import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
 import 'package:kasir_app/src/ui/cart/index.dart';
 import 'package:kasir_app/src/ui/home/index.dart';
-import 'package:kasir_app/src/ui/income/index.dart';
+import 'package:kasir_app/src/ui/product/index.dart';
 import 'package:kasir_app/src/ui/profile/index.dart';
 import 'package:kasir_app/src/ui/transaksi/index.dart';
 
@@ -28,10 +27,10 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   List<NavModel> listNav = [
-    NavModel(iconHomeOutline, iconHome, "Produk"),
-    NavModel(iconCategory, iconCategory, "Transaksi"),
-    NavModel(iconArchive, iconArchive, "Pendapatan"),
-    NavModel(iconProfileOutline, iconProfile, "Profile"),
+    NavModel(iconHomeOutline, iconHome, "Beranda"),
+    NavModel(iconCategory, iconCategory, "Kasir"),
+    NavModel(iconArchive, iconArchive, "Transaksi"),
+    NavModel(iconProfileOutline, iconProfile, "Profil"),
   ];
 
   @override
@@ -68,8 +67,9 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
           controller: _tabController,
           children: [
             HomeUI(),
+            ProductUI(),
             TransaksiUI(),
-            IncomeUI(),
+            // IncomeUI(),
             ProfileUI(),
           ],
         ),
@@ -84,8 +84,8 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
             ),
         ],
         currentIndex: indexNav,
-        selectedItemColor: Colors.grey[800],
-        unselectedItemColor: Colors.grey[400],
+        selectedItemColor: secondaryColor,
+        unselectedItemColor: Colors.black,
         showUnselectedLabels: true,
         onTap: (index) {
           setState(() {
@@ -145,8 +145,14 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
         margin: EdgeInsets.only(top: 4),
         child: Visibility(
           visible: isActive,
-          replacement: SvgPicture.asset(svg.svgVisible, color: Colors.black45),
-          child: SvgPicture.asset(svg.svgInvisible, color: Colors.black87),
+          replacement: SvgPicture.asset(
+            svg.svgVisible,
+            color: Colors.black,
+          ),
+          child: SvgPicture.asset(
+            svg.svgInvisible,
+            color: secondaryColor,
+          ),
         ),
       ),
       label: svg.title,

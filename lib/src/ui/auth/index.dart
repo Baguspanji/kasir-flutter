@@ -39,83 +39,90 @@ class _AuthUIState extends State<AuthUI> {
   Widget build(BuildContext context) {
     return Scaffold(
       // resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.orangeAccent.shade200,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: height(context) * 0.17),
-              Container(
-                width: 200,
-                height: 200,
-                alignment: Alignment.center,
-                child: Image(
-                  image: AssetImage(logo),
-                ),
-              ),
-              SizedBox(height: height(context) * 0.07),
-              _input(
-                context,
-                "Username",
-                Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                emailText,
-              ),
-              SizedBox(height: 20),
-              _input(
-                context,
-                "Password",
-                Icon(
-                  Icons.key,
-                  color: Colors.white,
-                ),
-                passwordText,
-                isPassword: isPassword,
-                suffixIcon: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isPassword = !isPassword;
-                    });
-                  },
-                  child: Icon(
-                    isPassword ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.white,
+      backgroundColor: Colors.transparent,
+      body: Container(
+        height: height(context),
+        width: width(context),
+        decoration: BoxDecoration(
+          gradient: bgGradient,
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: height(context) * 0.17),
+                Container(
+                  width: 200,
+                  height: 200,
+                  alignment: Alignment.center,
+                  child: Image(
+                    image: AssetImage(logo),
                   ),
                 ),
-              ),
-              SizedBox(height: 40),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 60),
-                width: width(context),
-                child: button("Log In",
-                    onPressed: onLogin,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 10,
+                SizedBox(height: height(context) * 0.07),
+                _input(
+                  context,
+                  "Username",
+                  Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                  emailText,
+                ),
+                SizedBox(height: 20),
+                _input(
+                  context,
+                  "Password",
+                  Icon(
+                    Icons.key,
+                    color: Colors.white,
+                  ),
+                  passwordText,
+                  isPassword: isPassword,
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isPassword = !isPassword;
+                      });
+                    },
+                    child: Icon(
+                      isPassword ? Icons.visibility : Icons.visibility_off,
+                      color: Colors.white,
                     ),
-                    color: Colors.white,
-                    colorText: Colors.orangeAccent.shade200,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600),
-              ),
-              SizedBox(height: height(context) * 0.1),
-              GestureDetector(
-                onTap: () {},
-                child: Text(
-                  'Syarat dan ketentuan berlaku',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    fontSize: 14,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
                   ),
                 ),
-              ),
-            ],
+                SizedBox(height: 40),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 60),
+                  width: width(context),
+                  child: button("Log In",
+                      onPressed: onLogin,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      color: Colors.white,
+                      colorText: secondaryColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(height: height(context) * 0.1),
+                GestureDetector(
+                  onTap: () {},
+                  child: Text(
+                    'Syarat dan ketentuan berlaku',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 14,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
