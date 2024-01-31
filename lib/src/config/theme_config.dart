@@ -3,14 +3,18 @@ import 'constans_config.dart';
 
 ThemeData theme() {
   return ThemeData(
-    scaffoldBackgroundColor: baghroundColor,
-    fontFamily: "Poppins",
-    appBarTheme: appBarTheme(),
-    textTheme: textTheme(),
-    inputDecorationTheme: inputDecorationTheme(),
-    visualDensity: VisualDensity.adaptivePlatformDensity,
-    hintColor: primaryColor,
-  );
+      scaffoldBackgroundColor: baghroundColor,
+      fontFamily: "Poppins",
+      appBarTheme: appBarTheme(),
+      textTheme: textTheme(),
+      inputDecorationTheme: inputDecorationTheme(),
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      hintColor: primaryColor,
+      pageTransitionsTheme: PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+        },
+      ));
 }
 
 InputDecorationTheme inputDecorationTheme() {

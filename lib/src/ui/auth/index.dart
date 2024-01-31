@@ -39,6 +39,7 @@ class _AuthUIState extends State<AuthUI> {
   Widget build(BuildContext context) {
     return Scaffold(
       // resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.orangeAccent.shade200,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -50,26 +51,8 @@ class _AuthUIState extends State<AuthUI> {
                 width: 200,
                 height: 200,
                 alignment: Alignment.center,
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.orangeAccent.shade200,
-                  borderRadius: BorderRadius.circular(100),
-                ),
                 child: Image(
                   image: AssetImage(logo),
-                ),
-              ),
-              SizedBox(height: 20),
-              Container(
-                alignment: Alignment.center,
-                child: Text(
-                  'Kasir JJ',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
                 ),
               ),
               SizedBox(height: height(context) * 0.07),
@@ -78,7 +61,7 @@ class _AuthUIState extends State<AuthUI> {
                 "Username",
                 Icon(
                   Icons.person,
-                  color: Colors.grey,
+                  color: Colors.white,
                 ),
                 emailText,
               ),
@@ -88,7 +71,7 @@ class _AuthUIState extends State<AuthUI> {
                 "Password",
                 Icon(
                   Icons.key,
-                  color: Colors.grey,
+                  color: Colors.white,
                 ),
                 passwordText,
                 isPassword: isPassword,
@@ -100,19 +83,24 @@ class _AuthUIState extends State<AuthUI> {
                   },
                   child: Icon(
                     isPassword ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.grey,
+                    color: Colors.white,
                   ),
                 ),
               ),
               SizedBox(height: 40),
-              SizedBox(
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 60),
                 width: width(context),
-                child: button(
-                  "Login",
-                  onPressed: onLogin,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
-                ),
+                child: button("Log In",
+                    onPressed: onLogin,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    color: Colors.white,
+                    colorText: Colors.orangeAccent.shade200,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600),
               ),
               SizedBox(height: height(context) * 0.1),
               GestureDetector(
@@ -122,7 +110,7 @@ class _AuthUIState extends State<AuthUI> {
                   style: TextStyle(
                     decoration: TextDecoration.underline,
                     fontSize: 14,
-                    color: Colors.black54,
+                    color: Colors.white,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
@@ -144,26 +132,23 @@ class _AuthUIState extends State<AuthUI> {
   }) {
     return Container(
       width: width(context),
+      margin: EdgeInsets.symmetric(horizontal: 30),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
-        color: Colors.white,
-        border: Border.all(
-          color: Colors.grey,
-          width: 2,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: Offset(0, 2),
+        border: Border(
+          bottom: BorderSide(
+            width: 1,
+            color: Colors.white,
           ),
-        ],
+        ),
       ),
       child: TextField(
         controller: controller,
         obscureText: isPassword,
+        style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
+          fillColor: Colors.white,
           hintText: hint,
+          hintStyle: TextStyle(color: Colors.white),
           prefixIcon: icon,
           suffixIcon: suffixIcon,
           border: OutlineInputBorder(

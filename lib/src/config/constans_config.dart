@@ -181,7 +181,10 @@ Widget button(
   String text, {
   required void Function()? onPressed,
   Color color = primaryColor,
+  Color colorText = Colors.orangeAccent,
   double radius = 18,
+  double fontSize = 12,
+  FontWeight fontWeight = FontWeight.normal,
   EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 10),
 }) {
   return ElevatedButton(
@@ -192,11 +195,19 @@ Widget button(
           borderRadius: BorderRadius.circular(radius),
         ),
       ),
+      shadowColor: MaterialStateProperty.all(Colors.transparent),
     ),
     onPressed: onPressed,
     child: Padding(
       padding: padding,
-      child: Text(text),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: colorText,
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+        ),
+      ),
     ),
   );
 }
