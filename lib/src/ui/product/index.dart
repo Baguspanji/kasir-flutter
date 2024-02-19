@@ -20,7 +20,7 @@ class ProductUI extends StatefulWidget {
 
 class _ProductUIState extends State<ProductUI> {
   final conProduct = Get.put(ProductController());
-  final conCart = Get.find<CartController>();
+  final conCart = Get.put(CartController());
 
   ScanResult? scanResult;
 
@@ -304,60 +304,58 @@ class _ProductUIState extends State<ProductUI> {
         ),
         child: Stack(
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.name ?? '-',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black45,
+                    fontWeight: FontWeight.w400,
+                    height: 1,
+                  ),
+                ),
+                if (item.description != null) SizedBox(height: 4),
+                if (item.description != null)
                   Text(
-                    item.name ?? '-',
+                    item.description ?? '-',
+                    overflow: TextOverflow.clip,
+                    maxLines: 2,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 12,
                       color: Colors.black45,
                       fontWeight: FontWeight.w400,
                       height: 1,
                     ),
                   ),
-                  if (item.description != null) SizedBox(height: 4),
-                  if (item.description != null)
-                    Text(
-                      item.description ?? '-',
-                      overflow: TextOverflow.clip,
-                      maxLines: 2,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black45,
-                        fontWeight: FontWeight.w400,
-                        height: 1,
+                SizedBox(height: 8),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        toRupiah(double.parse(item.price ?? "0")),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          height: 1.2,
+                        ),
                       ),
-                    ),
-                  SizedBox(height: 8),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          toRupiah(double.parse(item.price ?? "0")),
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            height: 1.2,
-                          ),
+                      Text(
+                        item.unit ?? '-',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black45,
+                          fontWeight: FontWeight.w400,
+                          height: 1.2,
                         ),
-                        Text(
-                          item.unit ?? '-',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black45,
-                            fontWeight: FontWeight.w400,
-                            height: 1.2,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             Positioned(
               right: 0,
