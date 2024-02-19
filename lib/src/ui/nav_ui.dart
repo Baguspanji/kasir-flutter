@@ -4,9 +4,7 @@ import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_assets.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/controller/auth_controller.dart';
-import 'package:kasir_app/src/controller/cart_controller.dart';
 import 'package:kasir_app/src/model/widget_model.dart';
-import 'package:kasir_app/src/ui/cart/index.dart';
 import 'package:kasir_app/src/ui/home/index.dart';
 import 'package:kasir_app/src/ui/product/index.dart';
 import 'package:kasir_app/src/ui/profile/index.dart';
@@ -21,7 +19,6 @@ class NavUI extends StatefulWidget {
 
 class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
   final conAuth = Get.put(AuthController());
-  final conCart = Get.put(CartController());
 
   int indexNav = 0;
   late TabController _tabController;
@@ -94,47 +91,6 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
           });
         },
       ),
-      floatingActionButton: indexNav == 0
-          ? Obx(() => conCart.totalCountCart != 0
-              ? FloatingActionButton(
-                  onPressed: () {
-                    Get.toNamed(CartUI.routeName);
-                  },
-                  backgroundColor: primaryColor,
-                  child: Stack(
-                    children: [
-                      Icon(
-                        Icons.shopping_cart,
-                        color: Colors.white,
-                      ),
-                      if (conCart.totalCountCart > 0)
-                        Positioned(
-                          right: 0,
-                          child: Container(
-                            padding: EdgeInsets.all(1),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            constraints: BoxConstraints(
-                              minWidth: 12,
-                              minHeight: 12,
-                            ),
-                            child: Text(
-                              '${conCart.totalCountCart}',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 8,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                )
-              : Container())
-          : null,
     );
   }
 

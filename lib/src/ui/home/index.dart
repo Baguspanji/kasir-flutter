@@ -285,7 +285,6 @@ class _HomeUIState extends State<HomeUI> {
           Text(
             'Rp. 50.000',
             style: TextStyle(
-              height: 1,
               fontSize: 12,
               color: Colors.black,
               fontWeight: FontWeight.w600,

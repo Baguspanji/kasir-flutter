@@ -9,7 +9,7 @@ import 'dart:ui' as ui;
 const globalApi = 'https://kasirjj.com';
 
 const cardColor = Color(0xFFFAFBFB);
-const primaryColor = Color(0xFF63fbcb);
+const primaryColor = Color(0xFF5CB65F);
 const secondaryColor = Color(0xFFFF8833);
 const redColor = Color(0xFFCB3A31);
 const yellowColor = Color(0xFFFFD500);

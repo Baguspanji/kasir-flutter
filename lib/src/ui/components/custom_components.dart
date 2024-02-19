@@ -82,7 +82,8 @@ class CustomShimmer extends StatelessWidget {
       ),
       child: Shimmer.fromColors(
         baseColor: Colors.grey.shade300,
-        highlightColor: Colors.grey.shade100,
+        highlightColor: Color(0xFFFCDDAF),
+        period: Duration(milliseconds: 2000),
         child: Container(
           width: width,
           height: height,
@@ -116,15 +117,14 @@ class CustomEmptyData extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            Icons.search,
-            size: 50,
-            color: Colors.grey,
+            Icons.local_fire_department_sharp,
+            size: 100,
+            color: secondaryColor,
           ),
-          SizedBox(height: 16),
           Text(
             text,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 19,
               color: Colors.grey,
             ),
           ),
@@ -132,8 +132,11 @@ class CustomEmptyData extends StatelessWidget {
           if (onPressed != null)
             button(
               'Refresh',
-              color: Colors.grey,
+              color: secondaryColor,
+              colorText: Colors.white,
               onPressed: onPressed,
+              radius: 10,
+              fontSize: 17,
             ),
         ],
       ),
@@ -147,6 +150,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final bool? readOnly;
+  final EdgeInsets? padding;
   final TextInputType? keyboardType;
   final void Function(String)? onChanged;
   const CustomTextField({
@@ -158,12 +162,13 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
     this.onChanged,
     this.readOnly,
+    this.padding,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: padding ?? EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -221,8 +226,8 @@ class CustomRefresh extends StatelessWidget {
               height: 30,
               width: 30,
               child: CircularProgressIndicator(
-                strokeWidth: 1,
-                color: primaryColor,
+                strokeWidth: 3,
+                color: secondaryColor,
               ),
             );
           } else if (mode == LoadStatus.failed) {
@@ -248,13 +253,13 @@ class CustomRefresh extends StatelessWidget {
           Icons.check,
           color: Colors.white,
         ),
-        waterDropColor: primaryColor,
+        waterDropColor: secondaryColor,
         refresh: Container(
           height: 30,
           width: 30,
           child: CircularProgressIndicator(
-            strokeWidth: 1,
-            color: primaryColor,
+            strokeWidth: 3,
+            color: secondaryColor,
           ),
         ),
       ),
