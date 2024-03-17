@@ -45,90 +45,77 @@ class _TransaksiUIState extends State<TransaksiUI> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          width: width(context),
-          height: height(context),
-          color: Colors.white,
-        ),
-        Container(
-          width: width(context),
-          height: height(context) * 0.11,
-          decoration: BoxDecoration(
-            gradient: bgGradient,
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+    return SafeArea(
+      child: Column(
+        children: [
+          SizedBox(height: height(context) * 0.01),
+          Container(
+            width: width(context),
+            height: height(context) * 0.04,
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Riwayat Transaksi',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        Column(
-          children: [
-            SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Riwayat Transaksi',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 30),
-            Container(
-              height: height(context) * 0.8,
-              child: Obx(() {
-                final transaksi = conTransaksi.listTransaksi.value;
+          SizedBox(height: height(context) * 0.02),
+          Container(
+            height: height(context) * 0.8,
+            child: Obx(() {
+              final transaksi = conTransaksi.listTransaksi.value;
 
-                if (conTransaksi.isLoading.value) {
-                  return ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    children: [
-                      for (var i = 0; i < 8; i++)
-                        Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          child: CustomShimmer(
-                            width: width(context),
-                            height: width(context) * 0.2,
-                            radius: 10,
-                          ),
-                        )
-                    ],
-                  );
-                }
-
-                if (transaksi.isEmpty) {
-                  return CustomEmptyData(
-                    height: height(context) * 0.9,
-                    text: 'Data tidak ditemukan',
-                    onPressed: () async {
-                      conTransaksi.isLoading.value = true;
-                      conTransaksi.getTransaksi(1);
-                    },
-                  );
-                }
-
-                return CustomRefresh(
-                  controller: _refreshController,
-                  onRefresh: () => _onRefresh(),
-                  onLoading: () => _onLoading(),
-                  child: ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    children: [
-                      ...transaksi.map((e) => _itemProductList(context, e)),
-                    ],
-                  ),
+              if (conTransaksi.isLoading.value) {
+                return ListView(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  children: [
+                    for (var i = 0; i < 8; i++)
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        child: CustomShimmer(
+                          width: width(context),
+                          height: width(context) * 0.2,
+                          radius: 10,
+                        ),
+                      )
+                  ],
                 );
-              }),
-            ),
-          ],
-        ),
-      ],
+              }
+
+              if (transaksi.isEmpty) {
+                return CustomEmptyData(
+                  height: height(context) * 0.9,
+                  text: 'Data tidak ditemukan',
+                  onPressed: () async {
+                    conTransaksi.isLoading.value = true;
+                    conTransaksi.getTransaksi(1);
+                  },
+                );
+              }
+
+              return CustomRefresh(
+                controller: _refreshController,
+                onRefresh: () => _onRefresh(),
+                onLoading: () => _onLoading(),
+                child: ListView(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  children: [
+                    ...transaksi.map((e) => _itemProductList(context, e)),
+                  ],
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
     );
   }
 
@@ -146,9 +133,15 @@ class _TransaksiUIState extends State<TransaksiUI> {
         margin: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          border: Border.all(color: Colors.grey.shade300, width: 2),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              offset: Offset(0, 3),
+              blurRadius: 6,
+            ),
+          ],
         ),
         child: Row(
           children: [

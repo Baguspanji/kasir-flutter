@@ -35,134 +35,154 @@ class _CartUIState extends State<CartUI> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        body: Stack(
           children: [
-            SizedBox(height: height(context) * 0.01),
             Container(
               width: width(context),
-              height: height(context) * 0.04,
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      size: 20,
-                    ),
-                  ),
-                  SizedBox(width: width(context) * 0.02),
-                  Text(
-                    'Keranjang',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Spacer(),
-                  InkWell(
-                    onTap: () {
-                      conCart.clearCart();
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(6),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Icon(
-                        Icons.delete,
-                        size: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: height(context) * 0.02),
-            Expanded(
-              child: Obx(() {
-                final cartList = conCart.listCart.value;
-
-                if (cartList.isEmpty) {
-                  return Container(
-                    height: height(context) * 0.8,
-                    child: CustomEmptyData(
-                      height: height(context) * 0.9,
-                      text: 'Keranjang masih kosong',
-                    ),
-                  );
-                }
-
-                return ListView(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  children: [
-                    ...cartList.map((e) => _itemProductList(context, e))
-                  ],
-                );
-              }),
+              height: height(context),
+              color: Colors.white,
             ),
             Container(
               width: width(context),
-              padding: EdgeInsets.symmetric(vertical: 10),
+              height: height(context) * 0.11,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
-                ],
+                gradient: bgGradient,
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(30)),
               ),
-              child: Column(
-                children: [
-                  SizedBox(height: height(context) * 0.01),
-                  Container(
-                    width: width(context),
-                    height: height(context) * 0.04,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        Obx(() {
-                          return _tableFieldTotal(
-                            "Total",
-                            toRupiah(
-                                double.parse('${conCart.totalAmountCart}')),
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: width(context),
-                    height: height(context) * 0.04,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: conCart.status.value == 'edit'
-                            ? Colors.amber
-                            : primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+            ),
+            Column(
+              children: [
+                SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: (() => Get.back()),
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color(0xCEFFFFFF),
+                          ),
+                          child: Icon(
+                            Icons.arrow_back_ios_new,
+                            color: secondaryColor,
+                            size: 24,
+                          ),
                         ),
                       ),
-                      onPressed: () => Get.toNamed(CartDetailUI.routeName),
-                      child: Text("Proses", style: TextStyle(fontSize: 18)),
-                    ),
+                      Text(
+                        'Keranjang',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => conCart.clearCart(),
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color(0xCEFFFFFF),
+                          ),
+                          child: Icon(
+                            Icons.delete,
+                            color: secondaryColor,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: height(context) * 0.01),
-                ],
-              ),
+                ),
+                SizedBox(height: 30),
+                Expanded(
+                  child: Obx(() {
+                    final cartList = conCart.listCart.value;
+
+                    if (cartList.isEmpty) {
+                      return Container(
+                        height: height(context) * 0.8,
+                        child: CustomEmptyData(
+                          height: height(context) * 0.9,
+                          text: 'Keranjang masih kosong',
+                        ),
+                      );
+                    }
+
+                    return ListView(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      children: [
+                        ...cartList.map((e) => _itemProductList(context, e))
+                      ],
+                    );
+                  }),
+                ),
+                Container(
+                  width: width(context),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(height: height(context) * 0.01),
+                      Container(
+                        width: width(context),
+                        height: height(context) * 0.04,
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            Obx(() {
+                              return _tableFieldTotal(
+                                "Total",
+                                toRupiah(
+                                    double.parse('${conCart.totalAmountCart}')),
+                              );
+                            }),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        width: width(context),
+                        child: button(
+                          "Proses",
+                          onPressed: () => Get.toNamed(CartDetailUI.routeName),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 10,
+                          ),
+                          colorText: Colors.white,
+                          color: conCart.status.value == 'edit'
+                              ? Colors.amber
+                              : primaryColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: height(context) * 0.01),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -187,30 +207,33 @@ class _CartUIState extends State<CartUI> {
   }
 
   Widget _itemProductList(BuildContext context, CartDBModel cart) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            offset: Offset(0, 3),
-            blurRadius: 6,
-          ),
-        ],
-      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
       child: Slidable(
         key: ValueKey(0),
         endActionPane: ActionPane(
           motion: ScrollMotion(),
-          extentRatio: 0.15,
+          extentRatio: 0.35,
           children: [
             SlidableAction(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10),
-                bottomRight: Radius.circular(10),
+              onPressed: (contex) {
+                setState(() {
+                  _cartEdit = cart;
+
+                  _formName.text = cart.name ?? '';
+                  _formPrice.text = cart.price.toString();
+                  _formQty.text = cart.qty.toString();
+                });
+
+                _openModal(context);
+              },
+              backgroundColor: Colors.amber,
+              foregroundColor: Colors.white,
+              icon: Icons.edit,
+            ),
+            SlidableAction(
+              borderRadius: BorderRadius.horizontal(
+                right: Radius.circular(10),
               ),
               onPressed: (contex) {
                 conCart.removeCart(cart.id!);
@@ -221,24 +244,42 @@ class _CartUIState extends State<CartUI> {
             ),
           ],
         ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.horizontal(
+              left: Radius.circular(10),
+            ),
+            border: Border.all(color: Colors.grey.shade300, width: 2),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                cart.name ?? '-',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black45,
+                  fontWeight: FontWeight.w400,
+                  height: 1,
+                ),
+              ),
+              SizedBox(height: 8),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      cart.name ?? '-',
+                      toRupiah(double.parse(cart.price.toString()) * cart.qty!),
                       style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black45,
-                        fontWeight: FontWeight.w400,
-                        height: 1,
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        height: 1.2,
                       ),
                     ),
-                    SizedBox(height: 4),
                     RichText(
                       text: TextSpan(
                         children: [
@@ -261,7 +302,7 @@ class _CartUIState extends State<CartUI> {
                           TextSpan(
                             text: cart.unit ?? '-',
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 14,
                               color: Colors.black45,
                               fontWeight: FontWeight.w400,
                             ),
@@ -269,112 +310,114 @@ class _CartUIState extends State<CartUI> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 4),
-                    Text(
-                      toRupiah(double.parse(cart.price.toString()) * cart.qty!),
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black45,
-                        fontWeight: FontWeight.w600,
-                        height: 1.2,
-                      ),
-                    ),
                   ],
                 ),
               ),
-            ),
-            SizedBox(width: 10),
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.black12),
-              ),
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                icon: Icon(
-                  Icons.edit,
-                  size: 24,
-                  color: Colors.black45,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _cartEdit = cart;
-
-                    _formName.text = cart.name ?? '';
-                    _formPrice.text = cart.price.toString();
-                    _formQty.text = cart.qty.toString();
-                  });
-
-                  _openModal(context);
-                },
-              ),
-            ),
-            SizedBox(width: 10),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   _openModal(BuildContext context) {
-    Modals.showModal(
-      title: 'Keranjang',
-      subTitle: '',
-      subTitleWidget: Container(
-        width: width(context) * 0.8,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+    Modals.showCupertinoModal(
+      context: context,
+      isDraggable: true,
+      builder: Container(
+        width: width(context),
+        height: height(context) * 0.34,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(30),
+          ),
+        ),
         child: Column(
           children: [
-            SizedBox(height: height(context) * 0.01),
-            CustomTextField(
-              controller: _formName,
-              hintText: "Nama Barang",
-              prefixIcon: Icon(Icons.add_box),
-              readOnly: true,
-            ),
-            SizedBox(height: height(context) * 0.01),
-            CustomTextField(
-              controller: _formPrice,
-              hintText: "Uang Harga",
-              prefixIcon: Icon(Icons.money),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: height(context) * 0.01),
-            CustomTextField(
-              controller: _formQty,
-              hintText: "Banyak",
-              prefixIcon: Icon(Icons.numbers),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: height(context) * 0.02),
-            // button ok
+            SizedBox(height: 10),
             Container(
-              width: width(context),
-              height: height(context) * 0.04,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+              height: 4,
+              width: 120,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  SizedBox(height: height(context) * 0.01),
+                  CustomTextField(
+                    controller: _formName,
+                    hintText: "Nama Barang",
+                    padding: EdgeInsets.zero,
+                    prefixIcon: Icon(
+                      Icons.format_list_bulleted,
+                      color: Colors.blue,
+                      size: 22,
+                    ),
+                    readOnly: true,
                   ),
-                ),
-                onPressed: () {
-                  _cartEdit.price = int.parse(_formPrice.text);
-                  _cartEdit.qty = int.parse(_formQty.text);
+                  SizedBox(height: height(context) * 0.01),
+                  CustomTextField(
+                    controller: _formPrice,
+                    hintText: "Uang Harga",
+                    padding: EdgeInsets.zero,
+                    prefixIcon: Icon(
+                      Icons.attach_money_sharp,
+                      color: primaryColor,
+                      size: 22,
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  SizedBox(height: height(context) * 0.01),
+                  CustomTextField(
+                    controller: _formQty,
+                    hintText: "Banyak",
+                    padding: EdgeInsets.zero,
+                    prefixIcon: Icon(
+                      Icons.shopping_bag,
+                      color: secondaryColor,
+                      size: 22,
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  SizedBox(height: height(context) * 0.02),
+                  // button ok
+                  Container(
+                    width: width(context),
+                    height: height(context) * 0.05,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: secondaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () {
+                        _cartEdit.price = int.parse(_formPrice.text);
+                        _cartEdit.qty = int.parse(_formQty.text);
 
-                  conCart.updateCart(_cartEdit);
+                        conCart.updateCart(_cartEdit);
 
-                  setState(() {
-                    _formName.clear();
-                    _formPrice.clear();
-                    _formQty.clear();
-                  });
-                  Navigator.pop(context);
-                },
-                child: Text("OK", style: TextStyle(fontSize: 18)),
+                        setState(() {
+                          _formName.clear();
+                          _formPrice.clear();
+                          _formQty.clear();
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        "OK",
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

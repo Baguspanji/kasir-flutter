@@ -169,45 +169,47 @@ class _ProductUIState extends State<ProductUI> {
                     onTap: () {
                       Get.toNamed(CartUI.routeName);
                     },
-                    child: Stack(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color(0xCEFFFFFF),
-                          ),
-                          child: Icon(
-                            Icons.shopping_cart,
-                            color: secondaryColor,
-                            size: 24,
-                          ),
-                        ),
-                        if (conCart.totalCountCart > 0)
-                          Positioned(
-                            right: 0,
-                            child: Container(
-                              padding: EdgeInsets.all(1),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              constraints: BoxConstraints(
-                                minWidth: 16,
-                                minHeight: 16,
-                              ),
-                              child: Text(
-                                '${conCart.totalCountCart}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
+                    child: Obx(() {
+                      return Stack(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xCEFFFFFF),
+                            ),
+                            child: Icon(
+                              Icons.shopping_cart,
+                              color: secondaryColor,
+                              size: 24,
                             ),
                           ),
-                      ],
-                    ),
+                          if (conCart.totalCountCart > 0)
+                            Positioned(
+                              right: 0,
+                              child: Container(
+                                padding: EdgeInsets.all(1),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                constraints: BoxConstraints(
+                                  minWidth: 16,
+                                  minHeight: 16,
+                                ),
+                                child: Text(
+                                  '${conCart.totalCountCart}',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                        ],
+                      );
+                    }),
                   ),
                 ],
               ),

@@ -114,324 +114,341 @@ class _EditBarangState extends State<EditBarang> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        body: Stack(
           children: [
-            SizedBox(height: height(context) * 0.01),
             Container(
               width: width(context),
-              height: height(context) * 0.04,
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      size: 20,
-                    ),
-                  ),
-                  SizedBox(width: width(context) * 0.02),
-                  Text(
-                    'Edit Barang',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Spacer(),
-                ],
+              height: height(context),
+              color: Colors.white,
+            ),
+            Container(
+              width: width(context),
+              height: height(context) * 0.11,
+              decoration: BoxDecoration(
+                gradient: bgGradient,
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(30)),
               ),
             ),
-            SizedBox(height: height(context) * 0.02),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                children: [
-                  const SizedBox(height: 10),
-                  _input(
-                    context,
-                    'Kode 1',
-                    code1,
-                    suffixIcon: InkWell(
-                      onTap: () async {
-                        await _scanQr();
-
-                        setState(() {
-                          code1.text = scanResult!.rawContent;
-                          scanResult = null;
-                        });
-                      },
-                      child: Icon(
-                        Icons.qr_code,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  _input(
-                    context,
-                    'Kode 2',
-                    code2,
-                    suffixIcon: InkWell(
-                      onTap: () async {
-                        await _scanQr();
-
-                        setState(() {
-                          code2.text = scanResult!.rawContent;
-                          scanResult = null;
-                        });
-                      },
-                      child: Icon(
-                        Icons.qr_code,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  _input(
-                    context,
-                    'Kode 3',
-                    code3,
-                    suffixIcon: InkWell(
-                      onTap: () async {
-                        await _scanQr();
-
-                        setState(() {
-                          code3.text = scanResult!.rawContent;
-                          scanResult = null;
-                        });
-                      },
-                      child: Icon(
-                        Icons.qr_code,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  _input(
-                    context,
-                    'Kode 4',
-                    code4,
-                    suffixIcon: InkWell(
-                      onTap: () async {
-                        await _scanQr();
-
-                        setState(() {
-                          code4.text = scanResult!.rawContent;
-                          scanResult = null;
-                        });
-                      },
-                      child: Icon(
-                        Icons.qr_code,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  _input(
-                    context,
-                    'Kode 5',
-                    code5,
-                    suffixIcon: InkWell(
-                      onTap: () async {
-                        await _scanQr();
-
-                        setState(() {
-                          code5.text = scanResult!.rawContent;
-                          scanResult = null;
-                        });
-                      },
-                      child: Icon(
-                        Icons.qr_code,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  _input(
-                    context,
-                    'Kode 6',
-                    code6,
-                    suffixIcon: InkWell(
-                      onTap: () async {
-                        await _scanQr();
-
-                        setState(() {
-                          code6.text = scanResult!.rawContent;
-                          scanResult = null;
-                        });
-                      },
-                      child: Icon(
-                        Icons.qr_code,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  _input(
-                    context,
-                    'Kode 7',
-                    code7,
-                    suffixIcon: InkWell(
-                      onTap: () async {
-                        await _scanQr();
-
-                        setState(() {
-                          code7.text = scanResult!.rawContent;
-                          scanResult = null;
-                        });
-                      },
-                      child: Icon(
-                        Icons.qr_code,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  _input(
-                    context,
-                    'Kode 8',
-                    code8,
-                    suffixIcon: InkWell(
-                      onTap: () async {
-                        await _scanQr();
-
-                        setState(() {
-                          code8.text = scanResult!.rawContent;
-                          scanResult = null;
-                        });
-                      },
-                      child: Icon(
-                        Icons.qr_code,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  _input(
-                    context,
-                    'Kode 9',
-                    code9,
-                    suffixIcon: InkWell(
-                      onTap: () async {
-                        await _scanQr();
-
-                        setState(() {
-                          code9.text = scanResult!.rawContent;
-                          scanResult = null;
-                        });
-                      },
-                      child: Icon(
-                        Icons.qr_code,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  _input(
-                    context,
-                    'Kode 10',
-                    code10,
-                    suffixIcon: InkWell(
-                      onTap: () async {
-                        await _scanQr();
-
-                        setState(() {
-                          code10.text = scanResult!.rawContent;
-                          scanResult = null;
-                        });
-                      },
-                      child: Icon(
-                        Icons.qr_code,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  _input(context, 'Nama Barang', name),
-                  _input(context, 'Deskripsi', description),
-                  Row(
+            Column(
+              children: [
+                SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: _input(
-                          context,
-                          'Per Unit',
-                          perUnit,
-                          type: TextInputType.number,
+                      InkWell(
+                        onTap: (() => Get.back()),
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color(0xCEFFFFFF),
+                          ),
+                          child: Icon(
+                            Icons.arrow_back_ios_new,
+                            color: secondaryColor,
+                            size: 24,
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: _input(context, 'Unit', unit),
+                      Text(
+                        'Edit Barang',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(8),
                       ),
                     ],
                   ),
-                  _input(
-                    context,
-                    'Harga Beli',
-                    takePrice,
-                    type: TextInputType.number,
-                  ),
-                  _input(
-                    context,
-                    'Harga Jual',
-                    price,
-                    type: TextInputType.number,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: height(context) * 0.02),
-            Container(
-              width: width(context),
-              height: height(context) * 0.04,
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
                 ),
-                onPressed: () async {
-                  bool res = await productCon.editItem(
-                    id,
-                    code1.text,
-                    code2.text,
-                    code3.text,
-                    code4.text,
-                    code5.text,
-                    code6.text,
-                    code7.text,
-                    code8.text,
-                    code9.text,
-                    code10.text,
-                    name.text,
-                    description.text,
-                    perUnit.text,
-                    unit.text,
-                    takePrice.text,
-                    price.text,
-                  );
+                SizedBox(height: 30),
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    children: [
+                      const SizedBox(height: 10),
+                      _input(
+                        context,
+                        'Kode 1',
+                        code1,
+                        suffixIcon: InkWell(
+                          onTap: () async {
+                            await _scanQr();
 
-                  if (res) {
-                    getToast('Berhasil mengubah barang');
-                    productCon.getProduct(1);
-                    // delay 2 second
-                    await Future.delayed(const Duration(seconds: 2));
-
-                    // back to list
-                    Get.back();
-                    // Get.offAndToNamed(ListBarang.routeName);
-                  } else {
-                    getToast('Gagal mengubah barang');
-                  }
-                },
-                child: productCon.isLoading.value == true
-                    ? const CircularProgressIndicator()
-                    : const Text(
-                        'Edit',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          // fontWeight: FontWeight.w600,
+                            setState(() {
+                              code1.text = scanResult!.rawContent;
+                              scanResult = null;
+                            });
+                          },
+                          child: Icon(
+                            Icons.qr_code,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
-              ),
+                      _input(
+                        context,
+                        'Kode 2',
+                        code2,
+                        suffixIcon: InkWell(
+                          onTap: () async {
+                            await _scanQr();
+
+                            setState(() {
+                              code2.text = scanResult!.rawContent;
+                              scanResult = null;
+                            });
+                          },
+                          child: Icon(
+                            Icons.qr_code,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      _input(
+                        context,
+                        'Kode 3',
+                        code3,
+                        suffixIcon: InkWell(
+                          onTap: () async {
+                            await _scanQr();
+
+                            setState(() {
+                              code3.text = scanResult!.rawContent;
+                              scanResult = null;
+                            });
+                          },
+                          child: Icon(
+                            Icons.qr_code,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      _input(
+                        context,
+                        'Kode 4',
+                        code4,
+                        suffixIcon: InkWell(
+                          onTap: () async {
+                            await _scanQr();
+
+                            setState(() {
+                              code4.text = scanResult!.rawContent;
+                              scanResult = null;
+                            });
+                          },
+                          child: Icon(
+                            Icons.qr_code,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      _input(
+                        context,
+                        'Kode 5',
+                        code5,
+                        suffixIcon: InkWell(
+                          onTap: () async {
+                            await _scanQr();
+
+                            setState(() {
+                              code5.text = scanResult!.rawContent;
+                              scanResult = null;
+                            });
+                          },
+                          child: Icon(
+                            Icons.qr_code,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      _input(
+                        context,
+                        'Kode 6',
+                        code6,
+                        suffixIcon: InkWell(
+                          onTap: () async {
+                            await _scanQr();
+
+                            setState(() {
+                              code6.text = scanResult!.rawContent;
+                              scanResult = null;
+                            });
+                          },
+                          child: Icon(
+                            Icons.qr_code,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      _input(
+                        context,
+                        'Kode 7',
+                        code7,
+                        suffixIcon: InkWell(
+                          onTap: () async {
+                            await _scanQr();
+
+                            setState(() {
+                              code7.text = scanResult!.rawContent;
+                              scanResult = null;
+                            });
+                          },
+                          child: Icon(
+                            Icons.qr_code,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      _input(
+                        context,
+                        'Kode 8',
+                        code8,
+                        suffixIcon: InkWell(
+                          onTap: () async {
+                            await _scanQr();
+
+                            setState(() {
+                              code8.text = scanResult!.rawContent;
+                              scanResult = null;
+                            });
+                          },
+                          child: Icon(
+                            Icons.qr_code,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      _input(
+                        context,
+                        'Kode 9',
+                        code9,
+                        suffixIcon: InkWell(
+                          onTap: () async {
+                            await _scanQr();
+
+                            setState(() {
+                              code9.text = scanResult!.rawContent;
+                              scanResult = null;
+                            });
+                          },
+                          child: Icon(
+                            Icons.qr_code,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      _input(
+                        context,
+                        'Kode 10',
+                        code10,
+                        suffixIcon: InkWell(
+                          onTap: () async {
+                            await _scanQr();
+
+                            setState(() {
+                              code10.text = scanResult!.rawContent;
+                              scanResult = null;
+                            });
+                          },
+                          child: Icon(
+                            Icons.qr_code,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      _input(context, 'Nama Barang', name),
+                      _input(context, 'Deskripsi', description),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _input(
+                              context,
+                              'Per Unit',
+                              perUnit,
+                              type: TextInputType.number,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: _input(context, 'Unit', unit),
+                          ),
+                        ],
+                      ),
+                      _input(
+                        context,
+                        'Harga Beli',
+                        takePrice,
+                        type: TextInputType.number,
+                      ),
+                      _input(
+                        context,
+                        'Harga Jual',
+                        price,
+                        type: TextInputType.number,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: height(context) * 0.02),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  width: width(context),
+                  child: button(
+                    "Edit",
+                    onPressed: () async {
+                      bool res = await productCon.editItem(
+                        id,
+                        code1.text,
+                        code2.text,
+                        code3.text,
+                        code4.text,
+                        code5.text,
+                        code6.text,
+                        code7.text,
+                        code8.text,
+                        code9.text,
+                        code10.text,
+                        name.text,
+                        description.text,
+                        perUnit.text,
+                        unit.text,
+                        takePrice.text,
+                        price.text,
+                      );
+
+                      if (res) {
+                        getToast('Berhasil mengubah barang');
+                        productCon.getProduct(1);
+                        // delay 2 second
+                        await Future.delayed(const Duration(seconds: 2));
+
+                        // back to list
+                        Get.back();
+                        // Get.offAndToNamed(ListBarang.routeName);
+                      } else {
+                        getToast('Gagal mengubah barang');
+                      }
+                    },
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    colorText: Colors.white,
+                    color: Colors.amber,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: height(context) * 0.02),
+              ],
             ),
-            SizedBox(height: height(context) * 0.02),
           ],
         ),
       ),
@@ -448,6 +465,7 @@ class _EditBarangState extends State<EditBarang> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: 12),
         Padding(
           padding: EdgeInsets.only(left: 8),
           child: Text(
@@ -455,34 +473,26 @@ class _EditBarangState extends State<EditBarang> {
             style: TextStyle(
               fontSize: 16,
               color: Colors.black87,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
+              height: 0.1,
             ),
           ),
         ),
-        const SizedBox(height: 10),
         Container(
           width: width(context),
-          margin: const EdgeInsets.only(bottom: 10),
+          margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
-            color: Colors.white,
-            border: Border.all(
-              color: Colors.grey,
-              width: 2,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 6,
-                offset: Offset(0, 2),
-              ),
-            ],
+            border: Border.all(color: secondaryColor, width: 1),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: TextField(
             controller: controller,
+            style: TextStyle(color: secondaryColor),
             keyboardType: type,
             decoration: InputDecoration(
-              hintText: 'Masukkan $hint',
+              fillColor: secondaryColor,
+              hintText: hint,
+              hintStyle: TextStyle(color: secondaryColor),
               suffixIcon: suffixIcon,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),

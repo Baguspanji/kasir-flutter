@@ -39,6 +39,14 @@ class _NavUIState extends State<NavUI> with SingleTickerProviderStateMixin {
         indexNav = _tabController.index;
       });
     });
+
+    var args = Get.arguments;
+    if (args != null) {
+      setState(() {
+        indexNav = args;
+        _tabController.animateTo(args);
+      });
+    }
   }
 
   DateTime currentBackPressTime = DateTime.now();

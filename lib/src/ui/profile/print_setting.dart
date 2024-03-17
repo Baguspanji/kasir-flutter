@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/ui/profile/test_print.dart';
@@ -120,154 +121,183 @@ class _PrintSettingUIState extends State<PrintSettingUI> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        body: Stack(
           children: [
-            SizedBox(height: height(context) * 0.01),
             Container(
               width: width(context),
-              height: height(context) * 0.04,
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      size: 20,
-                    ),
-                  ),
-                  SizedBox(width: width(context) * 0.02),
-                  Text(
-                    'Pengaturan Printer',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Spacer(),
-                ],
+              height: height(context),
+              color: Colors.white,
+            ),
+            Container(
+              width: width(context),
+              height: height(context) * 0.11,
+              decoration: BoxDecoration(
+                gradient: bgGradient,
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(30)),
               ),
             ),
-            SizedBox(height: height(context) * 0.02),
-            Container(
-              width: width(context),
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Device',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(height: height(context) * 0.01),
-                  Container(
-                    width: width(context),
-                    height: height(context) * 0.06,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 1,
-                          offset: Offset(0, 1),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 10),
+            Column(
+              children: [
+                SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: (() => Get.back()),
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color(0xCEFFFFFF),
+                          ),
                           child: Icon(
-                            Icons.print,
-                            color: Colors.black87,
+                            Icons.arrow_back_ios_new,
+                            color: secondaryColor,
+                            size: 24,
                           ),
                         ),
-                        Expanded(
-                          child: DropdownButton(
-                            hint: Text('Pilih Device'),
-                            underline: SizedBox(),
-                            items: _getDeviceItems(),
-                            onChanged: (BluetoothDevice? value) =>
-                                setState(() => _device = value),
-                            value: _device,
-                          ),
+                      ),
+                      Text(
+                        'Pengaturan Printer',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
                         ),
-                      ],
-                    ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(8),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: height(context) * 0.02),
-                  Row(
+                ),
+                SizedBox(height: 40),
+                Container(
+                  width: width(context),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Status :',
+                        'Device',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.black87,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                      SizedBox(width: width(context) * 0.02),
-                      Text(
-                        _connected ? 'Connected' : 'Disconnected',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: _connected ? Colors.green : Colors.red,
-                          fontWeight: FontWeight.w400,
+                      SizedBox(height: height(context) * 0.01),
+                      Container(
+                        width: width(context),
+                        height: height(context) * 0.06,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 1,
+                              blurRadius: 1,
+                              offset: Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              child: Icon(
+                                Icons.print,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            Expanded(
+                              child: DropdownButton(
+                                hint: Text('Pilih Device'),
+                                underline: SizedBox(),
+                                items: _getDeviceItems(),
+                                onChanged: (BluetoothDevice? value) =>
+                                    setState(() => _device = value),
+                                value: _device,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: height(context) * 0.02),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      button(
-                        'Refresh',
-                        color: Colors.grey,
-                        radius: 10,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 40,
-                          vertical: 10,
-                        ),
-                        onPressed: () {
-                          initPlatformState();
-                        },
+                      SizedBox(height: height(context) * 0.02),
+                      Row(
+                        children: [
+                          Text(
+                            'Status :',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          SizedBox(width: width(context) * 0.02),
+                          Text(
+                            _connected ? 'Connected' : 'Disconnected',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: _connected ? Colors.green : Colors.red,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
                       ),
-                      button(
-                        _connected ? 'Disconnect' : 'Connect',
-                        color: _connected ? Colors.red : Colors.green,
-                        radius: 10,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 40,
-                          vertical: 10,
-                        ),
-                        onPressed: _connected ? _disconnect : _connect,
-                      )
+                      SizedBox(height: height(context) * 0.02),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          button(
+                            'Refresh',
+                            color: Colors.grey,
+                            colorText: Colors.white,
+                            fontSize: 16,
+                            radius: 10,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 40,
+                              vertical: 10,
+                            ),
+                            onPressed: () {
+                              initPlatformState();
+                            },
+                          ),
+                          button(
+                            _connected ? 'Disconnect' : 'Connect',
+                            color: _connected ? Colors.red : Colors.green,
+                            colorText: Colors.white,
+                            fontSize: 16,
+                            radius: 10,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 40,
+                              vertical: 10,
+                            ),
+                            onPressed: _connected ? _disconnect : _connect,
+                          )
+                        ],
+                      ),
+                      SizedBox(height: height(context) * 0.1),
+                      // Center(
+                      //   child: button(
+                      //     'Test Print',
+                      //     color: _connected ? Colors.red : Colors.green,
+                      //     radius: 10,
+                      //     padding: EdgeInsets.symmetric(
+                      //       horizontal: 40,
+                      //       vertical: 10,
+                      //     ),
+                      //     onPressed: (() => testPrint.sample()),
+                      //   ),
+                      // ),
                     ],
                   ),
-                  SizedBox(height: height(context) * 0.1),
-                  // Center(
-                  //   child: button(
-                  //     'Test Print',
-                  //     color: _connected ? Colors.red : Colors.green,
-                  //     radius: 10,
-                  //     padding: EdgeInsets.symmetric(
-                  //       horizontal: 40,
-                  //       vertical: 10,
-                  //     ),
-                  //     onPressed: (() => testPrint.sample()),
-                  //   ),
-                  // ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

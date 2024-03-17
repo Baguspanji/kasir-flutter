@@ -5,6 +5,7 @@ import 'package:kasir_app/src/config/constans_assets.dart';
 import 'package:kasir_app/src/config/constans_config.dart';
 import 'package:kasir_app/src/config/size_config.dart';
 import 'package:kasir_app/src/controller/auth_controller.dart';
+import 'package:kasir_app/src/ui/profile/income.dart';
 import 'package:kasir_app/src/ui/profile/barang/index.dart';
 import 'package:kasir_app/src/ui/profile/change_password.dart';
 import 'package:kasir_app/src/ui/profile/print_setting.dart';
@@ -252,19 +253,24 @@ class _ProfileUIState extends State<ProfileUI> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 children: [
                   _itemProfile(
-                    icon: Icons.lock,
-                    title: 'Ganti Password',
-                    onTap: () => Get.toNamed(ChangePasswordUI.routeName),
-                  ),
-                  _itemProfile(
                     icon: Icons.add_box,
                     title: 'Produk Toko',
                     onTap: () => Get.toNamed(ListBarang.routeName),
                   ),
                   _itemProfile(
+                    icon: Icons.add_box,
+                    title: 'Pendapatan Toko',
+                    onTap: () => Get.toNamed(IncomeUI.routeName),
+                  ),
+                  _itemProfile(
                     icon: Icons.settings,
                     title: 'Pengaturan Printer',
                     onTap: () => Get.toNamed(PrintSettingUI.routeName),
+                  ),
+                  _itemProfile(
+                    icon: Icons.lock,
+                    title: 'Ganti Password',
+                    onTap: () => Get.toNamed(ChangePasswordUI.routeName),
                   ),
                   _itemProfile(
                     icon: Icons.info,

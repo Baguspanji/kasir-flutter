@@ -6,7 +6,7 @@ import 'package:kasir_app/src/ui/auth/index.dart';
 import 'size_config.dart';
 import 'dart:ui' as ui;
 
-const globalApi = 'https://kasirjj.com';
+const globalApi = 'https://tokopalapa.jojatech.biz.id';
 
 const cardColor = Color(0xFFFAFBFB);
 const primaryColor = Color(0xFF5CB65F);

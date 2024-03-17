@@ -73,7 +73,7 @@ class Modals {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: secondaryColor,
+                  color: Colors.green,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(

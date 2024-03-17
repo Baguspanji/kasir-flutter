@@ -101,197 +101,239 @@ class _TransaksiDetailUIState extends State<TransaksiDetailUI> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        body: Stack(
           children: [
-            SizedBox(height: height(context) * 0.01),
             Container(
               width: width(context),
-              height: height(context) * 0.04,
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.arrow_back_ios),
-                  ),
-                  Text(
-                    'Detail Transaksi',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Spacer(),
-                  IconButton(
-                    onPressed: () => scren(args.object!),
-                    icon: Icon(Icons.share),
-                  ),
-                ],
+              height: height(context),
+              color: Colors.white,
+            ),
+            Container(
+              width: width(context),
+              height: height(context) * 0.11,
+              decoration: BoxDecoration(
+                gradient: bgGradient,
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(30)),
               ),
             ),
-            SizedBox(height: height(context) * 0.02),
-            Expanded(
-              child: ListView(
-                children: [
-                  _itemDetailTransaksi(
-                    context,
-                    'Tanggal',
-                    dateFormatddMMMMyyyy(
-                        DateTime.parse(args.object!.date ?? '')),
-                  ),
-                  _itemDetailTransaksi(
-                    context,
-                    'Nama Pembeli',
-                    args.object!.name ?? '-',
-                  ),
-                  SizedBox(height: height(context) * 0.01),
-                  Divider(
-                    color: Colors.black26,
-                    thickness: 1,
-                    indent: 20,
-                    endIndent: 20,
-                  ),
-                  SizedBox(height: height(context) * 0.01),
-                  ...args.object!.details!.map(
-                    (e) => Column(
-                      children: [
-                        _itemDetailTransaksi(
-                          context,
-                          e.item!.name ?? '-',
-                          desc: e.item!.unit ?? '-',
-                          '',
+            Column(
+              children: [
+                SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: (() => Get.back()),
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color(0xCEFFFFFF),
+                          ),
+                          child: Icon(
+                            Icons.arrow_back_ios_new,
+                            color: secondaryColor,
+                            size: 24,
+                          ),
                         ),
+                      ),
+                      Text(
+                        'Detail Transaksi',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => scren(args.object!),
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color(0xCEFFFFFF),
+                          ),
+                          child: Icon(
+                            Icons.share,
+                            color: secondaryColor,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 40),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      _itemDetailTransaksi(
+                        context,
+                        'Tanggal',
+                        dateFormatddMMMMyyyy(
+                            DateTime.parse(args.object!.date ?? '')),
+                      ),
+                      _itemDetailTransaksi(
+                        context,
+                        'Nama Pembeli',
+                        args.object!.name ?? '-',
+                      ),
+                      SizedBox(height: height(context) * 0.01),
+                      Divider(
+                        color: Colors.black26,
+                        thickness: 1,
+                        indent: 20,
+                        endIndent: 20,
+                      ),
+                      SizedBox(height: height(context) * 0.01),
+                      ...args.object!.details!.map(
+                        (e) => Column(
+                          children: [
+                            _itemDetailTransaksi(
+                              context,
+                              e.item!.name ?? '-',
+                              desc: e.item!.unit ?? '-',
+                              '',
+                            ),
+                            _itemDetailTransaksi(
+                              context,
+                              '${e.quantity ?? '-'} x ${toRupiah(double.parse(e.price ?? "0"))}',
+                              toRupiah(
+                                double.parse(
+                                  (int.parse(e.price ?? "0") *
+                                          int.parse(e.quantity ?? "0"))
+                                      .toString(),
+                                ),
+                              ),
+                              titleBold: false,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: height(context) * 0.01),
+                      Divider(
+                        color: Colors.black26,
+                        thickness: 1,
+                        indent: 20,
+                        endIndent: 20,
+                      ),
+                      SizedBox(height: height(context) * 0.01),
+                      _itemDetailTransaksi(
+                        context,
+                        'Total Harga',
+                        toRupiah(double.parse(args.object!.totalPrice ?? "0")),
+                      ),
+                      if (args.object!.amountPaid != '0')
                         _itemDetailTransaksi(
                           context,
-                          '${e.quantity ?? '-'} x ${toRupiah(double.parse(e.price ?? "0"))}',
+                          'Jumlah Bayar',
+                          toRupiah(
+                              double.parse(args.object!.amountPaid ?? "0")),
+                        ),
+                      if (args.object!.amountPaid != '0')
+                        _itemDetailTransaksi(
+                          context,
+                          'Kembalian',
                           toRupiah(
                             double.parse(
-                              (int.parse(e.price ?? "0") *
-                                      int.parse(e.quantity ?? "0"))
+                              (int.parse(args.object!.amountPaid ?? "0") -
+                                      int.parse(args.object!.totalPrice ?? "0"))
                                   .toString(),
                             ),
                           ),
-                          titleBold: false,
                         ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: height(context) * 0.01),
-                  Divider(
-                    color: Colors.black26,
-                    thickness: 1,
-                    indent: 20,
-                    endIndent: 20,
-                  ),
-                  SizedBox(height: height(context) * 0.01),
-                  _itemDetailTransaksi(
-                    context,
-                    'Total Harga',
-                    toRupiah(double.parse(args.object!.totalPrice ?? "0")),
-                  ),
-                  if (args.object!.amountPaid != '0')
-                    _itemDetailTransaksi(
-                      context,
-                      'Jumlah Bayar',
-                      toRupiah(double.parse(args.object!.amountPaid ?? "0")),
-                    ),
-                  if (args.object!.amountPaid != '0')
-                    _itemDetailTransaksi(
-                      context,
-                      'Kembalian',
-                      toRupiah(
-                        double.parse(
-                          (int.parse(args.object!.amountPaid ?? "0") -
-                                  int.parse(args.object!.totalPrice ?? "0"))
-                              .toString(),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            SizedBox(height: height(context) * 0.02),
-            Container(
-              width: width(context),
-              height: height(context) * 0.04,
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    ],
                   ),
                 ),
-                onPressed: () async {
-                  var app = await getUser();
+                SizedBox(height: height(context) * 0.02),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  width: width(context),
+                  child: button(
+                    "Cetak",
+                    onPressed: () async {
+                      var app = await getUser();
 
-                  var data = AppModel.fromJson(jsonDecode(app)['data']['app']);
+                      var data =
+                          AppModel.fromJson(jsonDecode(app)['data']['app']);
 
-                  final List<CartDBModel> cart = [
-                    ...args.object!.details!.map((e) => CartDBModel.fromMap({
+                      final List<CartDBModel> cart = [
+                        ...args.object!.details!
+                            .map((e) => CartDBModel.fromMap({
+                                  '_id': int.parse(e.itemId!),
+                                  'name': e.item!.name,
+                                  'unit': e.item!.unit,
+                                  'price': int.parse(e.price!),
+                                  'qty': int.parse(e.quantity!),
+                                }))
+                      ];
+
+                      print1.sample(
+                        cart,
+                        appName: data.name ?? '',
+                        appAddress: data.address ?? '',
+                        appPhone: data.phone ?? '',
+                        openTime: data.openTime ?? '',
+                        strukMessage: data.strukMessage ?? '',
+                        total: int.parse(args.object!.totalPrice ?? '0'),
+                        buyerName: args.object!.name ?? '',
+                        amountPaid: args.object!.amountPaid ?? '0',
+                        dateTransaction: args.object!.createdAt ?? '',
+                      );
+                    },
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    colorText: Colors.white,
+                    color: primaryColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  width: width(context),
+                  child: button(
+                    "Edit",
+                    onPressed: () async {
+                      conCart.status.value = "edit";
+                      conCart.idEdit.value = args.id!;
+
+                      conCart.listCart.clear();
+                      await conCart.clearCart();
+                      // print(conCart.status.value);
+                      for (var i = 0; i < args.object!.details!.length; i++) {
+                        final e = args.object!.details![i];
+                        await conCart.addCart(CartDBModel.fromMap({
                           '_id': int.parse(e.itemId!),
                           'name': e.item!.name,
                           'unit': e.item!.unit,
                           'price': int.parse(e.price!),
                           'qty': int.parse(e.quantity!),
-                        }))
-                  ];
+                        }));
+                      }
 
-                  print1.sample(
-                    cart,
-                    appName: data.name ?? '',
-                    appAddress: data.address ?? '',
-                    appPhone: data.phone ?? '',
-                    openTime: data.openTime ?? '',
-                    strukMessage: data.strukMessage ?? '',
-                    total: int.parse(args.object!.totalPrice ?? '0'),
-                    buyerName: args.object!.name ?? '',
-                    amountPaid: args.object!.amountPaid ?? '0',
-                    dateTransaction: args.object!.createdAt ?? '',
-                  );
-                },
-                child: Text("Cetak", style: TextStyle(fontSize: 18)),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              width: width(context),
-              height: height(context) * 0.04,
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                      Get.offAndToNamed(NavUI.routeName, arguments: 1);
+                      // print(item);
+                    },
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    colorText: Colors.white,
+                    color: Colors.amber,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                onPressed: () async {
-                  conCart.status.value = "edit";
-                  conCart.idEdit.value = args.id!;
-
-                  conCart.listCart.clear();
-                  await conCart.clearCart();
-                  // print(conCart.status.value);
-                  for (var i = 0; i < args.object!.details!.length; i++) {
-                    final e = args.object!.details![i];
-                    await conCart.addCart(CartDBModel.fromMap({
-                      '_id': int.parse(e.itemId!),
-                      'name': e.item!.name,
-                      'unit': e.item!.unit,
-                      'price': int.parse(e.price!),
-                      'qty': int.parse(e.quantity!),
-                    }));
-                  }
-
-                  Get.offAndToNamed(NavUI.routeName);
-                  // print(item);
-                },
-                child: Text("Edit", style: TextStyle(fontSize: 18)),
-              ),
+                SizedBox(height: height(context) * 0.02),
+              ],
             ),
-            SizedBox(height: height(context) * 0.02),
           ],
         ),
       ),

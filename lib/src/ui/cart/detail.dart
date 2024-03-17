@@ -34,195 +34,220 @@ class _CartDetailUIState extends State<CartDetailUI> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Obx(() {
-          final cartData = conCart.listCart.value;
-          final total = conCart.totalAmountCart;
+        body: Stack(
+          children: [
+            Container(
+              width: width(context),
+              height: height(context),
+              color: Colors.white,
+            ),
+            Container(
+              width: width(context),
+              height: height(context) * 0.11,
+              decoration: BoxDecoration(
+                gradient: bgGradient,
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(30)),
+              ),
+            ),
+            Obx(() {
+              final cartData = conCart.listCart.value;
+              final total = conCart.totalAmountCart;
 
-          return Column(
-            children: [
-              SizedBox(height: height(context) * 0.01),
-              Container(
-                width: width(context),
-                height: height(context) * 0.04,
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        size: 20,
-                      ),
-                    ),
-                    SizedBox(width: width(context) * 0.02),
-                    Text(
-                      'Detail Keranjang',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Spacer(),
-                    InkWell(
-                      onTap: () => _openModal(context),
-                      child: Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: primaryColor,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: height(context) * 0.02),
-              Expanded(
-                child: ListView(
-                  children: [
-                    _itemDetailTransaksi(
-                      context,
-                      'Nama Pembeli',
-                      _formName.text != '' ? '-' : _formName.text,
-                    ),
-                    SizedBox(height: height(context) * 0.01),
-                    Divider(
-                      color: Colors.black26,
-                      thickness: 1,
-                      indent: 20,
-                      endIndent: 20,
-                    ),
-                    SizedBox(height: height(context) * 0.01),
-                    ...cartData.map(
-                      (e) => Column(
-                        children: [
-                          _itemDetailTransaksi(
-                            context,
-                            e.name ?? '-',
-                            '',
-                            desc: e.unit ?? '-',
-                          ),
-                          _itemDetailTransaksi(
-                            context,
-                            '${e.qty} x ${toRupiah(double.parse(e.price.toString()))}',
-                            toRupiah(
-                              double.parse(
-                                (e.price! * e.qty!).toString(),
-                              ),
+              return Column(
+                children: [
+                  SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: (() => Get.back()),
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xCEFFFFFF),
                             ),
-                            titleBold: false,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: height(context) * 0.01),
-                    Divider(
-                      color: Colors.black26,
-                      thickness: 1,
-                      indent: 20,
-                      endIndent: 20,
-                    ),
-                    SizedBox(height: height(context) * 0.01),
-                    _itemDetailTransaksi(
-                      context,
-                      'Total Harga',
-                      toRupiah(double.parse(total.toString())),
-                    ),
-                    if (_formAmount.text != '')
-                      _itemDetailTransaksi(
-                        context,
-                        'Jumlah Bayar',
-                        toRupiah(double.parse(_formAmount.text)),
-                      ),
-                    if (_formAmount.text != '')
-                      _itemDetailTransaksi(
-                        context,
-                        'Kembalian',
-                        toRupiah(
-                          double.parse(
-                            (int.parse(_formAmount.text) - total).toString(),
+                            child: Icon(
+                              Icons.arrow_back_ios_new,
+                              color: secondaryColor,
+                              size: 24,
+                            ),
                           ),
                         ),
-                      ),
-                  ],
-                ),
-              ),
-              SizedBox(height: height(context) * 0.02),
-              Container(
-                width: width(context),
-                height: height(context) * 0.04,
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: conCart.status.value == 'edit'
-                        ? Colors.amber
-                        : primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                        Text(
+                          'Detail Keranjang',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () => _openModal(context),
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xCEFFFFFF),
+                            ),
+                            child: Icon(
+                              Icons.person,
+                              color: secondaryColor,
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  onPressed: () async {
-                    var app = await getUser();
+                  SizedBox(height: 40),
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        _itemDetailTransaksi(
+                          context,
+                          'Nama Pembeli',
+                          _formName.text != '' ? '-' : _formName.text,
+                        ),
+                        SizedBox(height: height(context) * 0.01),
+                        Divider(
+                          color: Colors.black26,
+                          thickness: 1,
+                          indent: 20,
+                          endIndent: 20,
+                        ),
+                        SizedBox(height: height(context) * 0.01),
+                        ...cartData.map(
+                          (e) => Column(
+                            children: [
+                              _itemDetailTransaksi(
+                                context,
+                                e.name ?? '-',
+                                '',
+                                desc: e.unit ?? '-',
+                              ),
+                              _itemDetailTransaksi(
+                                context,
+                                '${e.qty} x ${toRupiah(double.parse(e.price.toString()))}',
+                                toRupiah(
+                                  double.parse(
+                                    (e.price! * e.qty!).toString(),
+                                  ),
+                                ),
+                                titleBold: false,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: height(context) * 0.01),
+                        Divider(
+                          color: Colors.black26,
+                          thickness: 1,
+                          indent: 20,
+                          endIndent: 20,
+                        ),
+                        SizedBox(height: height(context) * 0.01),
+                        _itemDetailTransaksi(
+                          context,
+                          'Total Harga',
+                          toRupiah(double.parse(total.toString())),
+                        ),
+                        if (_formAmount.text != '')
+                          _itemDetailTransaksi(
+                            context,
+                            'Jumlah Bayar',
+                            toRupiah(double.parse(_formAmount.text)),
+                          ),
+                        if (_formAmount.text != '')
+                          _itemDetailTransaksi(
+                            context,
+                            'Kembalian',
+                            toRupiah(
+                              double.parse(
+                                (int.parse(_formAmount.text) - total)
+                                    .toString(),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: height(context) * 0.02),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    width: width(context),
+                    child: button(
+                      "Proses",
+                      onPressed: () async {
+                        var app = await getUser();
 
-                    var data =
-                        AppModel.fromJson(jsonDecode(app)['data']['app']);
+                        var data =
+                            AppModel.fromJson(jsonDecode(app)['data']['app']);
 
-                    Response<dynamic> res;
-                    if (conCart.status.value == 'edit') {
-                      res = await conCart.editTransaction(
-                        name: _formName.text,
-                        amount: _formAmount.text,
-                      );
-                    } else {
-                      res = await conCart.addTransaction(
-                        name: _formName.text,
-                        amount: _formAmount.text,
-                      );
-                    }
+                        Response<dynamic> res;
+                        if (conCart.status.value == 'edit') {
+                          res = await conCart.editTransaction(
+                            name: _formName.text,
+                            amount: _formAmount.text,
+                          );
+                        } else {
+                          res = await conCart.addTransaction(
+                            name: _formName.text,
+                            amount: _formAmount.text,
+                          );
+                        }
 
-                    if (res.statusCode == 201) {
-                      print.sample(
-                        cartData,
-                        appName: data.name ?? '',
-                        appAddress: data.address ?? '',
-                        appPhone: data.phone ?? '',
-                        openTime: data.openTime ?? '',
-                        strukMessage: data.strukMessage ?? '',
-                        total: total,
-                        buyerName: _formName.text,
-                        amountPaid: _formAmount.text,
-                      );
+                        if (res.statusCode == 201) {
+                          print.sample(
+                            cartData,
+                            appName: data.name ?? '',
+                            appAddress: data.address ?? '',
+                            appPhone: data.phone ?? '',
+                            openTime: data.openTime ?? '',
+                            strukMessage: data.strukMessage ?? '',
+                            total: total,
+                            buyerName: _formName.text,
+                            amountPaid: _formAmount.text,
+                          );
 
-                      conCart.clearCart();
-                      if (conCart.status.value == 'edit') {
-                        getToast('Berhasil mengubah transaksi');
-                        conCart.status.value = 'new';
-                        conCart.idEdit.value = 0;
-                      } else {
-                        getToast('Berhasil menambahkan transaksi');
-                      }
+                          conCart.clearCart();
+                          if (conCart.status.value == 'edit') {
+                            getToast('Berhasil mengubah transaksi');
+                            conCart.status.value = 'new';
+                            conCart.idEdit.value = 0;
+                          } else {
+                            getToast('Berhasil menambahkan transaksi');
+                          }
 
-                      Future.delayed(Duration(seconds: 2), () {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      });
-                    } else {
-                      getToast('Gagal menambahkan transaksi');
-                    }
-                  },
-                  child: Text("Proses", style: TextStyle(fontSize: 18)),
-                ),
-              ),
-              SizedBox(height: height(context) * 0.02),
-            ],
-          );
-        }),
+                          Future.delayed(Duration(seconds: 2), () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          });
+                        } else {
+                          getToast('Gagal menambahkan transaksi');
+                        }
+                      },
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      colorText: Colors.white,
+                      color: conCart.status.value == 'edit'
+                          ? Colors.amber
+                          : primaryColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: height(context) * 0.02),
+                ],
+              );
+            }),
+          ],
+        ),
       ),
     );
   }
